@@ -1,0 +1,24 @@
+# IDE Files
+.idea/
+
+# Gradle files
+.gradle/
+gradle.properties
+*.iml
+
+# Local configuration
+local.properties
+
+# Build outputs
+build/
+
+# Generated files
+captures/
+.externalNativeBuild/
+.cxx/
+
+# macOS files
+.DS_Store
+
+# Google Services
+google-services.json
