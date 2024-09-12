@@ -1,4 +1,4 @@
-package com.do55anto5.quinto_code.presenter.components
+package com.do55anto5.quinto_code.presenter.components.welcome_slider
 
 
 import androidx.compose.foundation.ExperimentalFoundationApi

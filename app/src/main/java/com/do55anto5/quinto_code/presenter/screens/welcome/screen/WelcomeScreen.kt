@@ -17,7 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.do55anto5.quinto_code.R
-import com.do55anto5.quinto_code.presenter.components.WelcomeSliderUI
+import com.do55anto5.quinto_code.presenter.components.welcome_slider.WelcomeSliderUI
 import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
 
 @Composable
