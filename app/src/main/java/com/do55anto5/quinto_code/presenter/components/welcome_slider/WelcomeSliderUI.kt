@@ -33,45 +33,63 @@ fun WelcomeSliderUI(
     slideItems: List<Pair<String, String>>,
     pagerState: PagerState
 ) {
-    HorizontalPager(
-        state = pagerState,
-        Modifier
+
+    Column(
+        modifier = modifier
             .fillMaxSize(),
-        pageContent = {
-            Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        content = {
+
+            HorizontalPager(
+                state = pagerState,
                 Modifier
                     .fillMaxSize()
-                    .padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Bottom,
-                content = {
-                    Text(
-                        text = slideItems[pagerState.currentPage].first,
-                        style = TextStyle(
-                            fontSize = 40.sp,
-                            lineHeight = 48.sp,
-                            fontFamily = UrbanistFamily,
-                            fontWeight = FontWeight.Bold,
-                            color = QuintoCodeTheme.colorScheme.whiteColor,
-                            textAlign = TextAlign.Center
-                        )
-                    )
+                    .weight(1f),
+                pageContent = {
+                    Column(
+                        Modifier
+                            .fillMaxSize()
+                            .padding(24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Bottom,
+                        content = {
+                            Text(
+                                text = slideItems[pagerState.currentPage].first,
+                                style = TextStyle(
+                                    fontSize = 40.sp,
+                                    lineHeight = 48.sp,
+                                    fontFamily = UrbanistFamily,
+                                    fontWeight = FontWeight.Bold,
+                                    color = QuintoCodeTheme.colorScheme.whiteColor,
+                                    textAlign = TextAlign.Center
+                                )
+                            )
 
-                    Spacer(modifier = Modifier.height(24.dp))
+                            Spacer(modifier = Modifier.height(24.dp))
 
-                    Text(
-                        text = slideItems[pagerState.currentPage].second,
-                        style = TextStyle(
-                            fontSize = 18.sp,
-                            lineHeight = 26.2.sp,
-                            fontFamily = UrbanistFamily,
-                            fontWeight = FontWeight.Medium,
-                            color = QuintoCodeTheme.colorScheme.whiteColor,
-                            textAlign = TextAlign.Center,
-                            letterSpacing = 0.2.sp
-                        )
+                            Text(
+                                text = slideItems[pagerState.currentPage].second,
+                                style = TextStyle(
+                                    fontSize = 18.sp,
+                                    lineHeight = 26.2.sp,
+                                    fontFamily = UrbanistFamily,
+                                    fontWeight = FontWeight.Medium,
+                                    color = QuintoCodeTheme.colorScheme.whiteColor,
+                                    textAlign = TextAlign.Center,
+                                    letterSpacing = 0.2.sp
+                                )
+                            )
+                        }
                     )
                 }
+            )
+
+            SlideIndicatorUI(
+                modifier = Modifier
+                    .padding(bottom = 24.dp),
+                totalIndicators = slideItems.size,
+                currentIndicator = pagerState.currentPage
             )
         }
     )
@@ -84,7 +102,8 @@ private fun WelcomeSliderUIPreview() {
     val slideItems = listOf(
         Pair(
             stringResource(id = R.string.welcome_slider_title),
-            stringResource(id = R.string.welcome_slider_slide1)),
+            stringResource(id = R.string.welcome_slider_slide1)
+        ),
         Pair(
             stringResource(id = R.string.welcome_slider_title),
             stringResource(id = R.string.welcome_slider_slide2)
