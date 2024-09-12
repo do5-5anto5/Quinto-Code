@@ -75,6 +75,9 @@ dependencies {
     implementation(libs.firebase.authentication)
     implementation(libs.firebase.realtime.database)
 
+    // SplashScreen
+    implementation(libs.androidx.core.splashscreen)
+
     // Texts
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
