@@ -8,6 +8,7 @@
     <string name="welcome_slider_title3">Tempo livre para você!</string>
     <string name="welcome_slider_slide1">Atendimento automático, 24 horas por dia</string>
     <string name="welcome_slider_slide2">Negócios mais simples e eficientes</string>
-    <string name="welcome_slider_slide3">Um dia a dia mais leve e produtivo</string>
+    <string name="welcome_slider_slide3">Um dia a dia mais leve e produtivo</string>.
+    <string name="button_title_welcome_screen">Continue</string>
 
 </resources>
