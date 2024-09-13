@@ -1,3 +1,13 @@
 <resources>
+
     <string name="app_name">Quinto-Code</string>
+
+    <!-- Welcome Screen -->
+    <string name="welcome_slider_title1">Seja bem-vindo!</string>
+    <string name="welcome_slider_title2">Rotina mais leve, sem complicação</string>
+    <string name="welcome_slider_title3">Tempo livre para você!</string>
+    <string name="welcome_slider_slide1">Atendimento automático, 24 horas por dia</string>
+    <string name="welcome_slider_slide2">Negócios mais simples e eficientes</string>
+    <string name="welcome_slider_slide3">Um dia a dia mais leve e produtivo</string>
+
 </resources>
