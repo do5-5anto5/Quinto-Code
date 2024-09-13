@@ -31,15 +31,15 @@ fun WelcomeContent() {
 
     val slideItems = listOf(
         Pair(
-            stringResource(id = R.string.welcome_slider_title),
+            stringResource(id = R.string.welcome_slider_title1),
             stringResource(id = R.string.welcome_slider_slide1)
         ),
         Pair(
-            stringResource(id = R.string.welcome_slider_title),
+            stringResource(id = R.string.welcome_slider_title2),
             stringResource(id = R.string.welcome_slider_slide2)
         ),
         Pair(
-            stringResource(id = R.string.welcome_slider_title),
+            stringResource(id = R.string.welcome_slider_title3),
             stringResource(id = R.string.welcome_slider_slide3)
         )
     )
