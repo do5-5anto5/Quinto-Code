@@ -5,7 +5,9 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
@@ -16,7 +18,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.dp
 import com.do55anto5.quinto_code.R
+import com.do55anto5.quinto_code.presenter.components.button.PrimaryButton
 import com.do55anto5.quinto_code.presenter.components.welcome_slider.WelcomeSliderUI
 import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
 
@@ -48,6 +52,8 @@ fun WelcomeContent() {
     }
 
     Scaffold (
+        modifier = Modifier
+            .fillMaxSize(),
         content = { paddingValues ->
             Box(modifier = Modifier
                 .fillMaxSize()
@@ -69,9 +75,24 @@ fun WelcomeContent() {
                             .align(Alignment.BottomCenter)
                     )
 
-                    WelcomeSliderUI(
-                        slideItems = slideItems,
-                        pagerState = pagerState
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        content = {
+                            WelcomeSliderUI(
+                                modifier = Modifier
+                                    .weight(1f),
+                                slideItems = slideItems,
+                                pagerState = pagerState
+                            )
+
+                            PrimaryButton(
+                                modifier = Modifier
+                                    .padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
+                                text = stringResource(id = R.string.button_title_welcome_screen),
+                                onClick = {}
+                            )
+                        }
                     )
                 }
             )
