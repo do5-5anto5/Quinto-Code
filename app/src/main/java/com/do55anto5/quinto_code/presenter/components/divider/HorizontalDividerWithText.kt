@@ -11,14 +11,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.do55anto5.quinto_code.R
 import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
 import com.do55anto5.quinto_code.presenter.theme.UrbanistFamily
 
@@ -38,7 +36,7 @@ fun HorizontalDividerWithText(
             )
 
             Text(
-                text = stringResource(id = R.string.label_or_authentication_screen),
+                text = text,
                 modifier = modifier
                     .padding(horizontal = 16.dp, vertical = 10.dp),
                 style = TextStyle(
