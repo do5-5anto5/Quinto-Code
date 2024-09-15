@@ -11,4 +11,12 @@
     <string name="welcome_slider_slide3">Um dia a dia mais leve e produtivo</string>.
     <string name="button_title_welcome_screen">Continue</string>
 
+    <!-- Authentication Home Screen -->
+    <string name="label_title_authentication_screen">Entrar</string>
+    <string name="label_sign_with_google_authentication_screen">Continuar com Google</string>
+    <string name="label_or_authentication_screen">ou</string>
+    <string name="label_sign_with_password_authentication_screen">Entrar com email e senha</string>
+    <string name="label_sign_up_account_authentication_screen">Não tem uma conta?</string>
+    <string name="label_sign_up_authentication_screen">Criar conta</string>
+
 </resources>
