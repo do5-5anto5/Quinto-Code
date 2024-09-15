@@ -16,7 +16,7 @@ val BorderColorLight = Color(0xFF1A2634)
 val BorderColorDark = Color(0xFF35383F)
 
 // HorizontalDivider
-val DividerColorLight = Color(0xFF1A2634)
+val DividerColorLight = Color(0xFF35383F)
 val DividerColorDark = Color(0xFF35383F)
 
 // TopAppBar
