@@ -24,8 +24,8 @@ val TopAppBarColorLight = Color(0xFFffffff)
 val TopAppBarColorDark = Color(0xFFffffff)
 
 // TextField
-val TextFieldBackGroundColorLight = Color(0xFF1A2634)
-val TextFieldBackGroundColorDark = Color(0xFF1F222A)
+val TextFieldBackGroundColorLight = Color(0xFF202F3E)
+val TextFieldBackGroundColorDark = Color(0xFF1A2634)
 
 // Social Button
 val BackgroundSocialButtonColorLight = Color.Transparent
