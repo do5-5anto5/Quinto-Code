@@ -20,8 +20,8 @@ val DividerColorLight = Color(0xFF35383F)
 val DividerColorDark = Color(0xFF35383F)
 
 // TopAppBar
-val TopAppBarColorLight = Color(0xFFD4AF37)
-val TopAppBarColorDark = Color(0xFFD4AF37)
+val TopAppBarColorLight = Color(0xFFffffff)
+val TopAppBarColorDark = Color(0xFFffffff)
 
 // TextField
 val TextFieldBackGroundColorLight = Color(0xFF1A2634)
