@@ -35,6 +35,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -64,6 +66,7 @@ fun SignupContent(
 
     var emailValue by remember { mutableStateOf("") }
     var passwordValue by remember { mutableStateOf("") }
+    var showPassword by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -139,6 +142,12 @@ fun SignupContent(
                         value = passwordValue,
                         label = stringResource(R.string.label_input_password_signup_screen),
                         placeholder = stringResource(R.string.placeholder_input_password_signup_screen),
+                        visualTransformation =
+                        if (showPassword) {
+                            VisualTransformation.None
+                        } else {
+                            PasswordVisualTransformation()
+                        },
                         mLeadingIcon = {
                             Icon(
                                 painter = painterResource(R.drawable.ic_password_mine),
@@ -148,12 +157,20 @@ fun SignupContent(
                         },
                         mTrailingIcon = {
                             IconButton(
-                                onClick = { },
+                                onClick = {
+                                    showPassword = !showPassword
+                                },
                                 content = {
                                     if (passwordValue.isNotEmpty()) {
                                         Icon(
-                                            painter = painterResource(R.drawable.ic_show),
+                                            painter =
+                                            if (showPassword) {
+                                                painterResource(R.drawable.ic_hide)
+                                            } else {
+                                                painterResource(R.drawable.ic_show)
+                                            },
                                             contentDescription = null,
+                                            tint = QuintoCodeTheme.colorScheme.greyscale500Color
                                         )
                                     }
                                 }
