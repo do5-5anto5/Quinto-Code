@@ -1,4 +1,4 @@
-package com.do55anto5.quinto_code.presenter.screens.authentication.signup
+package com.do55anto5.quinto_code.presenter.screens.authentication.signup.screen
 
 
 import androidx.compose.foundation.Image
@@ -23,6 +23,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,12 +42,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.do55anto5.quinto_code.R
+import com.do55anto5.quinto_code.core.enums.InputType.EMAIL
+import com.do55anto5.quinto_code.core.enums.InputType.PASSWORD
 import com.do55anto5.quinto_code.presenter.components.button.PrimaryButton
 import com.do55anto5.quinto_code.presenter.components.button.SocialButton
 import com.do55anto5.quinto_code.presenter.components.divider.HorizontalDividerWithText
 import com.do55anto5.quinto_code.presenter.components.text_field.TextFieldUI
 import com.do55anto5.quinto_code.presenter.components.top_app_bar.TopAppBarUI
+import com.do55anto5.quinto_code.presenter.screens.authentication.signup.action.SignupAction
+import com.do55anto5.quinto_code.presenter.screens.authentication.signup.state.SignupState
+import com.do55anto5.quinto_code.presenter.screens.authentication.signup.viewmodel.SignupViewModel
 import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
 import com.do55anto5.quinto_code.presenter.theme.UrbanistFamily
 
@@ -54,14 +61,22 @@ import com.do55anto5.quinto_code.presenter.theme.UrbanistFamily
 fun SignupScreen(
     onBackPressed: () -> Unit
 ) {
+
+    val viewModel: SignupViewModel = viewModel()
+    val state = viewModel.state.collectAsState().value
+
     SignupContent(
+        state = state,
+        action = viewModel::submitAction,
         onBackPressed = { }
     )
 }
 
 @Composable
 fun SignupContent(
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    state: SignupState,
+    action: (SignupAction) -> Unit
 ) {
 
     var emailValue by remember { mutableStateOf("") }
@@ -116,7 +131,7 @@ fun SignupContent(
                     // EMAIL INPUT FIELD
                     TextFieldUI(
                         modifier = Modifier,
-                        value = emailValue,
+                        value = state.email,
                         label = stringResource(R.string.label_input_email_signup_screen),
                         placeholder = stringResource(R.string.placeholder_input_email_signup_screen),
                         mLeadingIcon = {
@@ -130,7 +145,13 @@ fun SignupContent(
                             keyboardType = KeyboardType.Email
                         ),
                         onValueChange = {
-                            emailValue = it
+                            action(
+                                SignupAction.OnValueChange(
+                                    value = it,
+                                    type = EMAIL
+                                )
+
+                            )
                         }
                     )
 
@@ -139,7 +160,7 @@ fun SignupContent(
                     // PASSWORD INPUT FIELD
                     TextFieldUI(
                         modifier = Modifier,
-                        value = passwordValue,
+                        value = state.password,
                         label = stringResource(R.string.label_input_password_signup_screen),
                         placeholder = stringResource(R.string.placeholder_input_password_signup_screen),
                         visualTransformation =
@@ -161,7 +182,7 @@ fun SignupContent(
                                     showPassword = !showPassword
                                 },
                                 content = {
-                                    if (passwordValue.isNotEmpty()) {
+                                    if (state.password.isNotEmpty()) {
                                         Icon(
                                             painter =
                                             if (showPassword) {
@@ -180,7 +201,12 @@ fun SignupContent(
                             keyboardType = KeyboardType.Email
                         ),
                         onValueChange = {
-                            passwordValue = it
+                            action(
+                                SignupAction.OnValueChange(
+                                    value = it,
+                                    type = PASSWORD
+                                )
+                            )
                         }
                     )
 
@@ -260,6 +286,9 @@ fun SignupContent(
 @Composable
 private fun SignupScreenPreview() {
     QuintoCodeTheme {
-        SignupContent(onBackPressed = {})
+        SignupContent(
+            state = SignupState(),
+            action = {},
+            onBackPressed = {})
     }
 }
