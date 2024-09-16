@@ -5,6 +5,6 @@ import com.do55anto5.quinto_code.core.enums.InputType
 sealed class SignupAction {
     data class OnValueChange(
         val value: String,
-        val inputType: InputType
+        val type: InputType
     ) : SignupAction()
 }
