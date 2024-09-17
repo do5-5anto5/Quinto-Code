@@ -24,10 +24,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -78,10 +74,6 @@ fun SignupContent(
     state: SignupState,
     action: (SignupAction) -> Unit
 ) {
-
-    var emailValue by remember { mutableStateOf("") }
-    var passwordValue by remember { mutableStateOf("") }
-    var showPassword by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -164,7 +156,7 @@ fun SignupContent(
                         label = stringResource(R.string.label_input_password_signup_screen),
                         placeholder = stringResource(R.string.placeholder_input_password_signup_screen),
                         visualTransformation =
-                        if (showPassword) {
+                        if (state.passwordVisibility) {
                             VisualTransformation.None
                         } else {
                             PasswordVisualTransformation()
@@ -177,15 +169,16 @@ fun SignupContent(
                             )
                         },
                         mTrailingIcon = {
+                            if (state.password.isNotEmpty()) {
                             IconButton(
                                 onClick = {
-                                    showPassword = !showPassword
+                                    action(SignupAction.OnPasswordVisibilityChange)
                                 },
                                 content = {
                                     if (state.password.isNotEmpty()) {
                                         Icon(
                                             painter =
-                                            if (showPassword) {
+                                            if (state.passwordVisibility) {
                                                 painterResource(R.drawable.ic_hide)
                                             } else {
                                                 painterResource(R.drawable.ic_show)
@@ -196,6 +189,7 @@ fun SignupContent(
                                     }
                                 }
                             )
+                                }
                         },
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Email
