@@ -2,6 +2,7 @@ package com.do55anto5.quinto_code.presenter.screens.authentication.signup.viewmo
 
 import androidx.lifecycle.ViewModel
 import com.do55anto5.quinto_code.core.enums.InputType
+import com.do55anto5.quinto_code.core.util.isValidEmail
 import com.do55anto5.quinto_code.presenter.screens.authentication.signup.action.SignupAction
 import com.do55anto5.quinto_code.presenter.screens.authentication.signup.state.SignupState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,6 +36,7 @@ class SignupViewModel : ViewModel() {
                 onPasswordChange(value)
             }
         }
+        enableSignupButton()
     }
 
     private fun onPasswordChange(value: String) {
@@ -52,6 +54,15 @@ class SignupViewModel : ViewModel() {
     private fun onPasswordVisibilityChange() {
         _state.update { currentState ->
             currentState.copy(passwordVisibility = !currentState.passwordVisibility)
+        }
+    }
+
+    private fun enableSignupButton() {
+        val emailValid = isValidEmail(_state.value.email)
+        val passwordValid = _state.value.password.isNotBlank()
+
+        _state.update { currentState ->
+            currentState.copy(enableSignupButton = emailValid && passwordValid)
         }
     }
 }
