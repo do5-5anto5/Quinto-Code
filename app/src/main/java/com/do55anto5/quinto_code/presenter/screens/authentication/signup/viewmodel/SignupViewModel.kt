@@ -18,6 +18,10 @@ class SignupViewModel : ViewModel() {
             is SignupAction.OnValueChange -> {
                 onValueChange(action.value, action.type)
             }
+
+            SignupAction.OnPasswordVisibilityChange -> {
+                onPasswordVisibilityChange()
+            }
         }
     }
 
@@ -26,6 +30,7 @@ class SignupViewModel : ViewModel() {
             InputType.EMAIL -> {
                 onEmailChange(value)
             }
+
             InputType.PASSWORD -> {
                 onPasswordChange(value)
             }
@@ -41,6 +46,12 @@ class SignupViewModel : ViewModel() {
     private fun onEmailChange(value: String) {
         _state.update { currentState ->
             currentState.copy(email = value)
+        }
+    }
+
+    private fun onPasswordVisibilityChange() {
+        _state.update { currentState ->
+            currentState.copy(passwordVisibility = !currentState.passwordVisibility)
         }
     }
 }
