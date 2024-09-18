@@ -24,6 +24,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -48,6 +49,7 @@ import com.do55anto5.quinto_code.presenter.components.divider.HorizontalDividerW
 import com.do55anto5.quinto_code.presenter.components.text_field.TextFieldUI
 import com.do55anto5.quinto_code.presenter.components.top_app_bar.TopAppBarUI
 import com.do55anto5.quinto_code.presenter.screens.authentication.signup.action.SignupAction
+import com.do55anto5.quinto_code.presenter.screens.authentication.signup.action.SignupAction.*
 import com.do55anto5.quinto_code.presenter.screens.authentication.signup.state.SignupState
 import com.do55anto5.quinto_code.presenter.screens.authentication.signup.viewmodel.SignupViewModel
 import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
@@ -60,7 +62,7 @@ fun SignupScreen(
 ) {
 
     val viewModel = koinViewModel<SignupViewModel>()
-    val state = viewModel.state.collectAsState().value
+    val state by viewModel.state.collectAsState()
 
     SignupContent(
         state = state,
@@ -140,7 +142,7 @@ fun SignupContent(
                         ),
                         onValueChange = {
                             action(
-                                SignupAction.OnValueChange(
+                                OnValueChange(
                                     value = it,
                                     type = EMAIL
                                 )
@@ -174,7 +176,7 @@ fun SignupContent(
                             if (state.password.isNotEmpty()) {
                             IconButton(
                                 onClick = {
-                                    action(SignupAction.OnPasswordVisibilityChange)
+                                    action(OnPasswordVisibilityChange)
                                 },
                                 content = {
                                     if (state.password.isNotEmpty()) {
@@ -199,7 +201,7 @@ fun SignupContent(
                         ),
                         onValueChange = {
                             action(
-                                SignupAction.OnValueChange(
+                                OnValueChange(
                                     value = it,
                                     type = PASSWORD
                                 )
@@ -213,7 +215,7 @@ fun SignupContent(
                         text = stringResource(R.string.label_button_signup_screen),
                         isLoading = false,
                         enabled = state.enableSignupButton,
-                        onClick = {}
+                        onClick = { action(OnSignup) }
                     )
 
                     Spacer(Modifier.height(20.dp))
