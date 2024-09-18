@@ -2,6 +2,17 @@
 
     <string name="app_name">Quinto-Code</string>
 
+    <!--    Generic-->
+    <string name="error_generic">Ocorreu um erro, por favor tente novamente mais tarde.</string>
+
+    <!--    Firebase Authentication-->
+    <string name="email_in_use_firebase_authentication">Este e-mail já está em uso.</string>
+    <string name="strong_password_firebase_authentication">Insira uma senha mais forte.</string>
+    <string name="invalid_email_firebase_authentication">Insira um e-mail válido.</string>
+    <string name="user_not_found_firebase_authentication">Usuário não encontrado.</string>
+    <string name="invalid_password_firebase_authentication">Senha inválida, tente novamente.</string>
+    <string name="account_not_firebase_authentication">Nenhuma conta encontrada com este e-mail.</string>
+
     <!-- Welcome Screen -->
     <string name="welcome_slider_title1">Seja bem-vindo!</string>
     <string name="welcome_slider_title2">Rotina mais leve, sem complicação</string>
