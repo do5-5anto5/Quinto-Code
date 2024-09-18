@@ -9,4 +9,7 @@ sealed class SignupAction {
     ) : SignupAction()
 
     data object OnPasswordVisibilityChange : SignupAction()
+
+    data object OnSignup : SignupAction()
+
 }
