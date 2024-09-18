@@ -39,7 +39,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.do55anto5.quinto_code.R
 import com.do55anto5.quinto_code.core.enums.InputType.EMAIL
 import com.do55anto5.quinto_code.core.enums.InputType.PASSWORD
@@ -53,13 +52,14 @@ import com.do55anto5.quinto_code.presenter.screens.authentication.signup.state.S
 import com.do55anto5.quinto_code.presenter.screens.authentication.signup.viewmodel.SignupViewModel
 import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
 import com.do55anto5.quinto_code.presenter.theme.UrbanistFamily
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SignupScreen(
     onBackPressed: () -> Unit
 ) {
 
-    val viewModel: SignupViewModel = viewModel()
+    val viewModel = koinViewModel<SignupViewModel>()
     val state = viewModel.state.collectAsState().value
 
     SignupContent(
