@@ -1,14 +1,21 @@
-package com.do55anto5.quinto_code.data.remote.repository.authentication
+package com.do55anto5.quinto_code.data.remote.repository.user
 
 import com.do55anto5.quinto_code.core.helper.FirebaseHelper
-import com.do55anto5.quinto_code.domain.remote.repository.authentication.SignupRepository
+import com.do55anto5.quinto_code.domain.remote.model.User
+import com.do55anto5.quinto_code.domain.remote.repository.user.UserRepository
 import kotlin.coroutines.suspendCoroutine
 
-class SignupRepositoryImpl : SignupRepository {
+class UserRepositoryImpl : UserRepository {
 
-    override suspend fun register(email: String, password: String) {
+    private val usersReference =
+        FirebaseHelper.getDatabase()
+            .child("users")
+            .child(FirebaseHelper.getUserId())
+
+    override suspend fun saveUser(user: User) {
         return suspendCoroutine { continuation ->
-           FirebaseHelper.getAuth().createUserWithEmailAndPassword(email, password)
+            usersReference
+                .setValue(user)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         continuation.resumeWith(Result.success(Unit))
