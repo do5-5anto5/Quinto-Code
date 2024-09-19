@@ -7,5 +7,5 @@ data class SignupState(
     val passwordVisibility: Boolean = false,
     val enableSignupButton: Boolean = false,
     val hasFeedBack: Boolean = false,
-    val feedBackMessage: String? = null
+    val feedBackMessage: Int? = null
 )
