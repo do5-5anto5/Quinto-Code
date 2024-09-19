@@ -7,6 +7,5 @@ val appModules = module {
         repositoryModule,
         useCaseModule,
         presenterModule,
-        firebaseModule
     )
 }
