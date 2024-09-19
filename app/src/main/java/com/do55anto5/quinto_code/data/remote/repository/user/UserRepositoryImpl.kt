@@ -1,7 +1,8 @@
-package com.do55anto5.quinto_code.domain.remote.repository.user
+package com.do55anto5.quinto_code.data.remote.repository.user
 
 import com.do55anto5.quinto_code.core.helper.FirebaseHelper
 import com.do55anto5.quinto_code.domain.remote.model.User
+import com.do55anto5.quinto_code.domain.remote.repository.user.UserRepository
 import kotlin.coroutines.suspendCoroutine
 
 class UserRepositoryImpl : UserRepository {
