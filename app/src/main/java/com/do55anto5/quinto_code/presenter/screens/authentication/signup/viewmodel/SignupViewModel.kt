@@ -3,6 +3,7 @@ package com.do55anto5.quinto_code.presenter.screens.authentication.signup.viewmo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.do55anto5.quinto_code.core.enums.InputType
+import com.do55anto5.quinto_code.core.helper.FirebaseHelper
 import com.do55anto5.quinto_code.core.util.isValidEmail
 import com.do55anto5.quinto_code.domain.remote.usecase.authentication.RegisterUseCase
 import com.do55anto5.quinto_code.presenter.screens.authentication.signup.action.SignupAction
@@ -77,10 +78,21 @@ class SignupViewModel(
 
     private fun onSignup() {
         viewModelScope.launch {
-            registerUseCase(
-                email = _state.value.email,
-                password = _state.value.password
-            )
+            try {
+                registerUseCase(
+                    email = _state.value.email,
+                    password = _state.value.password
+                )
+            } catch (exception: Exception) {
+                exception.printStackTrace()
+
+                _state.update { currentState ->
+                    currentState.copy(
+                        hasFeedBack = true,
+                        feedBackMessage = FirebaseHelper.validateError(exception.message)
+                    )
+                }
+            }
         }
     }
 }

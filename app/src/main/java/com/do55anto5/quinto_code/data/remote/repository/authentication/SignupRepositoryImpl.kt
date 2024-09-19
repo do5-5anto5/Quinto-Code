@@ -13,9 +13,11 @@ class SignupRepositoryImpl(
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-//                        continuation.resumeWith(Result.success(Unit))
+                        continuation.resumeWith(Result.success(Unit))
                     } else {
-//                        continuation.resumeWith(Result.failure(task.exception ?: Exception("Unknown error")))
+                        task.exception?.let { exception ->
+                            continuation.resumeWith(Result.failure(exception))
+                        }
                     }
                 }
         }
