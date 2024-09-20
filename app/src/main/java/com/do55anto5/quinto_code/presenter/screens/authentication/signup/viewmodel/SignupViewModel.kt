@@ -2,7 +2,8 @@ package com.do55anto5.quinto_code.presenter.screens.authentication.signup.viewmo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.do55anto5.quinto_code.core.enums.InputType
+import com.do55anto5.quinto_code.core.enums.feedback.FeedbackType
+import com.do55anto5.quinto_code.core.enums.input.InputType
 import com.do55anto5.quinto_code.core.helper.FirebaseHelper
 import com.do55anto5.quinto_code.core.util.isValidEmail
 import com.do55anto5.quinto_code.domain.remote.model.User
@@ -35,6 +36,10 @@ class SignupViewModel(
 
             SignupAction.OnSignup -> {
                 onSignup()
+            }
+
+            SignupAction.ResetErrorState -> {
+                resetErrorState()
             }
         }
     }
@@ -93,10 +98,23 @@ class SignupViewModel(
                 _state.update { currentState ->
                     currentState.copy(
                         hasFeedBack = true,
-                        feedBackMessage = FirebaseHelper.validateError(exception.message)
+                        feedbackUI = Pair(
+                            FeedbackType.ERROR,
+                            FirebaseHelper.validateError(exception.message)
+                        )
                     )
                 }
             }
         }
     }
+
+    private fun resetErrorState() {
+        _state.update { currentState ->
+            currentState.copy(
+                hasFeedBack = false,
+                feedbackUI = null
+            )
+        }
+    }
+
 }
