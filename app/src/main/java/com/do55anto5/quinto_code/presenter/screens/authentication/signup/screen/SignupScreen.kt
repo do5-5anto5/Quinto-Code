@@ -21,13 +21,20 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -41,11 +48,12 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.do55anto5.quinto_code.R
-import com.do55anto5.quinto_code.core.enums.InputType.EMAIL
-import com.do55anto5.quinto_code.core.enums.InputType.PASSWORD
+import com.do55anto5.quinto_code.core.enums.input.InputType.EMAIL
+import com.do55anto5.quinto_code.core.enums.input.InputType.PASSWORD
 import com.do55anto5.quinto_code.presenter.components.button.PrimaryButton
 import com.do55anto5.quinto_code.presenter.components.button.SocialButton
 import com.do55anto5.quinto_code.presenter.components.divider.HorizontalDividerWithText
+import com.do55anto5.quinto_code.presenter.components.snackbar.FeedbackUI
 import com.do55anto5.quinto_code.presenter.components.text_field.TextFieldUI
 import com.do55anto5.quinto_code.presenter.components.top_app_bar.TopAppBarUI
 import com.do55anto5.quinto_code.presenter.screens.authentication.signup.action.SignupAction
@@ -54,6 +62,7 @@ import com.do55anto5.quinto_code.presenter.screens.authentication.signup.state.S
 import com.do55anto5.quinto_code.presenter.screens.authentication.signup.viewmodel.SignupViewModel
 import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
 import com.do55anto5.quinto_code.presenter.theme.UrbanistFamily
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -78,10 +87,42 @@ fun SignupContent(
     action: (SignupAction) -> Unit
 ) {
 
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(state.hasFeedBack) {
+        scope.launch {
+            val result = snackbarHostState
+                .showSnackbar(
+                    message = context.getString(
+                        state.feedbackUI?.second ?: R.string.error_generic
+                    )
+                )
+
+            if (result == SnackbarResult.Dismissed) {
+                action(ResetErrorState)
+            }
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBarUI(
                 onClick = {}
+            )
+        },
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState,
+                snackbar = { snackbarData ->
+                    state.feedbackUI?.let { feedbackUI ->
+                        FeedbackUI(
+                            message = snackbarData.visuals.message,
+                            type = feedbackUI.first
+                        )
+                    }
+                }
             )
         },
         content = { paddingValues ->
@@ -174,26 +215,26 @@ fun SignupContent(
                         },
                         mTrailingIcon = {
                             if (state.password.isNotEmpty()) {
-                            IconButton(
-                                onClick = {
-                                    action(OnPasswordVisibilityChange)
-                                },
-                                content = {
-                                    if (state.password.isNotEmpty()) {
-                                        Icon(
-                                            painter =
-                                            if (state.passwordVisibility) {
-                                                painterResource(R.drawable.ic_hide)
-                                            } else {
-                                                painterResource(R.drawable.ic_show)
-                                            },
-                                            contentDescription = null,
-                                            tint = QuintoCodeTheme.colorScheme.greyscale500Color
-                                        )
+                                IconButton(
+                                    onClick = {
+                                        action(OnPasswordVisibilityChange)
+                                    },
+                                    content = {
+                                        if (state.password.isNotEmpty()) {
+                                            Icon(
+                                                painter =
+                                                if (state.passwordVisibility) {
+                                                    painterResource(R.drawable.ic_hide)
+                                                } else {
+                                                    painterResource(R.drawable.ic_show)
+                                                },
+                                                contentDescription = null,
+                                                tint = QuintoCodeTheme.colorScheme.greyscale500Color
+                                            )
+                                        }
                                     }
-                                }
-                            )
-                                }
+                                )
+                            }
                         },
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Email,
