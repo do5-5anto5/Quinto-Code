@@ -41,4 +41,16 @@
     <string name="label_sign_up_question_signup_screen">Já tem uma conta?</string>
     <string name="label_sign_in_signup_screen">Entrar</string>
 
+    <!--    LoginScreen-->
+    <string name="label_title_login_screen">Login no seu Perfil</string>
+    <string name="placeholder_input_email_login_screen">Insira seu email</string>
+    <string name="placeholder_input_password_login_screen">Insira sua senha</string>
+    <string name="label_input_email_login_screen">Email</string>
+    <string name="label_input_password_login_screen">Senha</string>
+    <string name="label_button_login_screen">Entrar</string>
+    <string name="label_forgot_password_login_screen">Esqueceu a senha?</string>
+    <string name="label_or_login_screen">ou continue com</string>
+    <string name="label_sign_up_account_login_screen">Não tem uma conta?</string>
+    <string name="label_sign_up_login_screen">Criar conta</string>
+
 </resources>
