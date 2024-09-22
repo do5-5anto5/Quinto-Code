@@ -11,7 +11,7 @@
     <string name="invalid_email_firebase_authentication">Insira um e-mail válido.</string>
     <string name="user_not_found_firebase_authentication">Usuário não encontrado.</string>
     <string name="invalid_password_firebase_authentication">Senha inválida, tente novamente.</string>
-    <string name="account_not_firebase_authentication">Nenhuma conta encontrada com este e-mail.</string>
+    <string name="account_not_firebase_authentication">A credencial de autenticação fornecida está incorreta, malformada ou expirou.</string>
 
     <!-- Welcome Screen -->
     <string name="welcome_slider_title1">Seja bem-vindo!</string>
