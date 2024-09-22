@@ -1,10 +1,10 @@
 package com.do55anto5.quinto_code.data.remote.repository.authentication
 
 import com.do55anto5.quinto_code.core.helper.FirebaseHelper
-import com.do55anto5.quinto_code.domain.remote.repository.authentication.SignupRepository
+import com.do55anto5.quinto_code.domain.remote.repository.authentication.AuthenticationRepository
 import kotlin.coroutines.suspendCoroutine
 
-class SignupRepositoryImpl : SignupRepository {
+class AuthenticationRepositoryImpl : AuthenticationRepository {
 
     override suspend fun register(email: String, password: String) {
         return suspendCoroutine { continuation ->
