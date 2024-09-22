@@ -21,4 +21,19 @@ class AuthenticationRepositoryImpl : AuthenticationRepository {
         }
     }
 
+    override suspend fun login(email: String, password: String) {
+        return suspendCoroutine { continuation ->
+            FirebaseHelper.getAuth().signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        continuation.resumeWith(Result.success(Unit))
+                    } else {
+                        task.exception?.let { exception ->
+                            continuation.resumeWith(Result.failure(exception))
+                        }
+                    }
+                }
+        }
+    }
+
 }
