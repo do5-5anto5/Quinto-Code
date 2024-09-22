@@ -229,6 +229,7 @@ fun LoginContent(
                                                 painterResource(R.drawable.ic_show)
                                             },
                                             contentDescription = null,
+                                            tint = QuintoCodeTheme.colorScheme.greyscale500Color
                                         )
                                     }
                                 )
