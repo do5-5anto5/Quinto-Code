@@ -3,13 +3,17 @@ package com.do55anto5.quinto_code.presenter.screens.authentication.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -99,6 +103,46 @@ fun HomeAuthenticationContent() {
                         text = stringResource(id = R.string.label_sign_with_password_authentication_screen),
                         isLoading = false,
                         onClick = {}
+                    )
+
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
+                        content = {
+                            Text(
+                                text = stringResource(id = R.string.label_sign_up_account_authentication_screen),
+                                style = TextStyle(
+                                    fontSize = 16.sp,
+                                    lineHeight = 19.6.sp,
+                                    fontFamily = UrbanistFamily,
+                                    color = QuintoCodeTheme.colorScheme.textColor,
+                                    textAlign = TextAlign.Right,
+                                    letterSpacing = 0.2.sp
+                                )
+                            )
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            Text(
+                                modifier = Modifier
+                                    .clickable {  },
+                                text = stringResource(id = R.string.label_sign_up_authentication_screen),
+                                style = TextStyle(
+                                    fontSize = 16.sp,
+                                    lineHeight = 19.6.sp,
+                                    fontFamily = UrbanistFamily,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = QuintoCodeTheme.colorScheme.defaultColor,
+                                    textAlign = TextAlign.Right,
+                                    letterSpacing = 0.2.sp
+                                )
+                            )
+                        }
                     )
                 }
             )
