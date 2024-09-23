@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -27,23 +28,41 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.do55anto5.quinto_code.R
 import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
-fun SplashScreen(modifier: Modifier = Modifier) {
-    SplashContent()
+fun SplashScreen(
+    navigateToWelcomeScreen: () -> Unit
+) {
+
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(key1 = true) {
+        scope.launch {
+            delay(2000)
+            navigateToWelcomeScreen()
+        }
+    }
+
+    SplashContent(
+        navigateToWelcomeScreen = navigateToWelcomeScreen
+    )
 }
 
 @Composable
-fun SplashContent() {
-
+fun SplashContent(
+    navigateToWelcomeScreen: () -> Unit
+) {
 
     val alpha = remember { Animatable(0f) }
 
     LaunchedEffect(key1 = true) {
-        alpha.animateTo(1f,
-            animationSpec = tween(durationMillis = 1500))
+        alpha.animateTo(
+            1f,
+            animationSpec = tween(durationMillis = 1500)
+        )
     }
-
 
     val composition by rememberLottieComposition(LottieCompositionSpec.Asset("loading.json"))
 
@@ -93,6 +112,6 @@ fun SplashContent() {
 @Composable
 private fun SplashScreenView() {
     QuintoCodeTheme {
-        SplashContent()
+        SplashContent( navigateToWelcomeScreen = {} )
     }
 }
