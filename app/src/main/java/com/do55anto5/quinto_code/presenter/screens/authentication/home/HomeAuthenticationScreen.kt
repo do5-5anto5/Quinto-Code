@@ -37,12 +37,21 @@ import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
 import com.do55anto5.quinto_code.presenter.theme.UrbanistFamily
 
 @Composable
-fun HomeAuthenticationScreen() {
-    HomeAuthenticationContent()
+fun HomeAuthenticationScreen(
+    navigateToSignUpScreen: () -> Unit,
+    navigateToLoginScreen: () -> Unit
+) {
+    HomeAuthenticationContent(
+        navigateToSignUpScreen = navigateToSignUpScreen,
+        navigateToLoginScreen = navigateToLoginScreen
+    )
 }
 
 @Composable
-fun HomeAuthenticationContent() {
+private fun HomeAuthenticationContent(
+    navigateToSignUpScreen: () -> Unit,
+    navigateToLoginScreen: () -> Unit
+) {
     Scaffold(
         containerColor = QuintoCodeTheme.colorScheme.backgroundColor,
         content = { paddingValues ->
@@ -102,7 +111,7 @@ fun HomeAuthenticationContent() {
                     PrimaryButton(
                         text = stringResource(id = R.string.label_sign_with_password_authentication_screen),
                         isLoading = false,
-                        onClick = {}
+                        onClick = { navigateToLoginScreen() }
                     )
 
                     Spacer(modifier = Modifier.height(32.dp))
@@ -130,7 +139,7 @@ fun HomeAuthenticationContent() {
 
                             Text(
                                 modifier = Modifier
-                                    .clickable {  },
+                                    .clickable { navigateToSignUpScreen() },
                                 text = stringResource(id = R.string.label_sign_up_authentication_screen),
                                 style = TextStyle(
                                     fontSize = 16.sp,
@@ -154,6 +163,9 @@ fun HomeAuthenticationContent() {
 @Composable
 private fun HomeAuthenticationScreenPreview() {
     QuintoCodeTheme {
-        HomeAuthenticationScreen()
+        HomeAuthenticationScreen(
+            navigateToSignUpScreen = {},
+            navigateToLoginScreen = {}
+        )
     }
 }
