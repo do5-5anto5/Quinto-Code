@@ -1,4 +1,4 @@
-package com.do55anto5.quinto_code.core.navigation.hosts
+package com.do55anto5.quinto_code.core.navigation.hosts.onboarding
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
