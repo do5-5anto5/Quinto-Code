@@ -4,6 +4,7 @@ package com.do55anto5.quinto_code.presenter.screens.authentication.login.screen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -65,6 +66,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LoginScreen(
+    navigateToSignupScreen: () -> Unit,
     onBackPressed: () -> Unit
 ) {
 
@@ -72,6 +74,7 @@ fun LoginScreen(
     val state by viewModel.state.collectAsState()
 
     LoginContent(
+        navigateToSignupScreen = navigateToSignupScreen,
         state = state,
         action = viewModel::submitAction,
         onBackPressed = { }
@@ -79,7 +82,8 @@ fun LoginScreen(
 }
 
 @Composable
-fun LoginContent(
+private fun LoginContent(
+    navigateToSignupScreen: () -> Unit,
     state: LoginState = LoginState(),
     action: (LoginAction) -> Unit,
     onBackPressed: () -> Unit
@@ -110,7 +114,7 @@ fun LoginContent(
     Scaffold(
         topBar = {
             TopAppBarUI(
-                onClick = {}
+                onClick = { onBackPressed() }
             )
         },
         snackbarHost = {
@@ -261,6 +265,8 @@ fun LoginContent(
                     Spacer(Modifier.height(20.dp))
 
                     Text(
+                        modifier = Modifier
+                            .clickable { navigateToSignupScreen() },
                         text = stringResource(R.string.label_forgot_password_login_screen),
                         style = TextStyle(
                             fontSize = 16.sp,
@@ -342,6 +348,7 @@ private fun LoginScreenPreview() {
     QuintoCodeTheme {
 
         LoginContent(
+            navigateToSignupScreen = {},
             state = LoginState(),
             action = {},
             onBackPressed = {}
