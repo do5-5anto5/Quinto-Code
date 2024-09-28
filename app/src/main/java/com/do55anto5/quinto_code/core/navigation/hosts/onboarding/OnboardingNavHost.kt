@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.do55anto5.quinto_code.core.navigation.hosts.authentication.authenticationNavHost
+import com.do55anto5.quinto_code.core.navigation.routes.authentication.AuthenticationRoutes
 import com.do55anto5.quinto_code.core.navigation.routes.onboarding.OnboardingRoutes
 import com.do55anto5.quinto_code.presenter.screens.welcome.screen.WelcomeScreen
 import com.do55anto5.quinto_code.presenter.splash.screen.SplashScreen
@@ -27,7 +29,17 @@ fun OnboardingNavHost(navHostController: NavHostController) {
         }
 
         composable<OnboardingRoutes.Welcome> {
-            WelcomeScreen()
+            WelcomeScreen(
+                navigateToAuthenticationScreen = {
+                    navHostController.navigate(AuthenticationRoutes.Home) {
+                        popUpTo(OnboardingRoutes.Welcome) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
         }
+
+        authenticationNavHost(navHostController = navHostController)
     }
 }
