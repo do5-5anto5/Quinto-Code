@@ -25,13 +25,19 @@ import com.do55anto5.quinto_code.presenter.components.welcome_slider.WelcomeSlid
 import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
 
 @Composable
-fun WelcomeScreen() {
-    WelcomeContent()
+fun WelcomeScreen(
+    navigateToAuthenticationScreen: () -> Unit
+) {
+    WelcomeContent(
+        navigateToAuthenticationScreen = navigateToAuthenticationScreen
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun WelcomeContent() {
+fun WelcomeContent(
+    navigateToAuthenticationScreen: () -> Unit
+) {
 
     val slideItems = listOf(
         Pair(
@@ -90,7 +96,7 @@ fun WelcomeContent() {
                                 modifier = Modifier
                                     .padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
                                 text = stringResource(id = R.string.button_title_welcome_screen),
-                                onClick = {}
+                                onClick = { navigateToAuthenticationScreen() }
                             )
                         }
                     )
@@ -103,5 +109,7 @@ fun WelcomeContent() {
 @PreviewLightDark
 @Composable
 private fun WelcomeScreenPreview() {
-    WelcomeContent()
+    WelcomeContent(
+        navigateToAuthenticationScreen = {}
+    )
 }
