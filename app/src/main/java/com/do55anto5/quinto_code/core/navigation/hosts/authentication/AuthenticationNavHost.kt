@@ -1,18 +1,16 @@
 package com.do55anto5.quinto_code.core.navigation.hosts.authentication
 
-import androidx.compose.runtime.Composable
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
 import com.do55anto5.quinto_code.core.navigation.routes.authentication.AuthenticationRoutes
 import com.do55anto5.quinto_code.presenter.screens.authentication.home.HomeAuthenticationScreen
 import com.do55anto5.quinto_code.presenter.screens.authentication.login.screen.LoginScreen
 import com.do55anto5.quinto_code.presenter.screens.authentication.signup.screen.SignupScreen
 
-@Composable
-fun AuthenticationNavHost(navHostController: NavHostController) {
-    NavHost(
-        navController = navHostController,
+fun NavGraphBuilder.authenticationNavHost(navHostController: NavHostController) {
+    navigation<AuthenticationRoutes.Graph>(
         startDestination = AuthenticationRoutes.Home
     ) {
         composable<AuthenticationRoutes.Home> {
