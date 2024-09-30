@@ -60,5 +60,6 @@
     <string name="label_favorite_navigation_drawer_item">Favoritos</string>
     <string name="label_notification_navigation_drawer_item">Notificações</string>
     <string name="label_hub_navigation_drawer_item">Hub</string>
+    <string name="label_show_profile_navigation_drawer_header">ver perfil</string>
 
 </resources>
