@@ -31,7 +31,7 @@ sealed class DrawerItem(
     data object Bag : DrawerItem(
         type = DrawerItemType.BAG,
         badge = 0,
-        title = R.string.label_search_navigation_drawer_item,
+        title = R.string.label_bag_navigation_drawer_item,
         selectedIcon = R.drawable.ic_bag_fill,
         unselectedIcon = R.drawable.ic_bag_line
     )
@@ -55,7 +55,7 @@ sealed class DrawerItem(
     data object Notification : DrawerItem(
         type = DrawerItemType.NOTIFICATION,
         badge = 0,
-        title = R.string.label_favorite_navigation_drawer_item,
+        title = R.string.label_notification_navigation_drawer_item,
         selectedIcon = R.drawable.ic_notification_fill,
         unselectedIcon = R.drawable.ic_notification_line
     )
