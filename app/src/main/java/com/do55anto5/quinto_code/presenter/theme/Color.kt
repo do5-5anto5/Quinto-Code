@@ -7,6 +7,11 @@ val DefaultColor = Color(0xFFD4AF37)
 val DisabledDefaultColor = Color(0xFFA1893D)
 val AlphaDefaultColor = Color(0x12D4AF37)
 
+// Navigation Drawer
+val DrawerItemSelectedColor = Color(0xFF1A2634)
+val DrawerItemUnselectedColor = Color(0xFF757575)
+val DrawerBadgeColor = Color(0xFFff981f)
+
 // Background
 val BackgroundColorLight = Color(0xFF1A2634)
 val BackgroundColorDark = Color(0xFF181A20)
