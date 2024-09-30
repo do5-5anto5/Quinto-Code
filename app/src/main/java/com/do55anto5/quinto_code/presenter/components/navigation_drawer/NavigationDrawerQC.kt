@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,23 +34,35 @@ import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
 
 @Composable
 fun NavigationDrawerQC(
-    modifier: Modifier = Modifier,
     drawerState: DrawerState,
     items: List<DrawerItem>,
     drawerIndex: Int,
     onClick: (Int) -> Unit
 ) {
+
     ModalNavigationDrawer(
-        modifier = modifier,
         drawerState = drawerState,
         content = {},
         drawerContent = {
-            ModalDrawerSheet {
+            ModalDrawerSheet(
+                drawerContainerColor = QuintoCodeTheme.colorScheme.backgroundColor,
+            ) {
                 Spacer(modifier = Modifier.size(16.dp))
                 items.forEachIndexed { index, drawerItem ->
                     androidx.compose.material3.NavigationDrawerItem(
                         label = {
-                            Text(text = stringResource(id = drawerItem.title))
+                            Text(
+                                text = stringResource(id = drawerItem.title),
+                                style = TextStyle(
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Medium,
+                                    color = if (index == drawerIndex) {
+                                       QuintoCodeTheme.colorScheme.drawerItemSelectedColor
+                                    } else {
+                                        QuintoCodeTheme.colorScheme.drawerItemUnselectedColor
+                                    }
+                                )
+                            )
                         },
                         selected = index == drawerIndex,
                         onClick = { onClick(index) },
@@ -63,6 +76,11 @@ fun NavigationDrawerQC(
                                 } else {
                                     painterResource(id = drawerItem.unselectedIcon)
                                 },
+                                tint = if (index == drawerIndex) {
+                                    QuintoCodeTheme.colorScheme.drawerItemSelectedColor
+                                } else {
+                                    QuintoCodeTheme.colorScheme.drawerItemUnselectedColor
+                                },
                                 contentDescription = null
                             )
                         },
@@ -71,14 +89,17 @@ fun NavigationDrawerQC(
                                 Box(
                                     modifier = Modifier
                                         .size(20.dp)
-                                        .background(Color.Red, RoundedCornerShape(4.dp)),
+                                        .background(
+                                            QuintoCodeTheme.colorScheme.drawerBadgeColor,
+                                            RoundedCornerShape(4.dp)
+                                        ),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Text(
                                         text = drawerItem.badge.toString(),
                                         style = TextStyle(
                                             fontSize = 12.sp,
-                                            color = Color.White
+                                            color = QuintoCodeTheme.colorScheme.textColor
                                         )
                                     )
                                 }
@@ -99,14 +120,16 @@ fun NavigationDrawerQC(
 @PreviewLightDark
 @Composable
 private fun Preview() {
-    val drawerState = rememberDrawerState(DrawerValue.Open)
-    var drawerIndex by remember { mutableIntStateOf(0) }
-    NavigationDrawerQC(
-        drawerState = drawerState,
-        items = DrawerItem.items,
-        drawerIndex = drawerIndex,
-        onClick = {
-            drawerIndex = it
-        }
-    )
+    QuintoCodeTheme {
+        val drawerState = rememberDrawerState(DrawerValue.Open)
+        var drawerIndex by remember { mutableIntStateOf(0) }
+        NavigationDrawerQC(
+            drawerState = drawerState,
+            items = DrawerItem.items,
+            drawerIndex = drawerIndex,
+            onClick = {
+                drawerIndex = it
+            }
+        )
+    }
 }
