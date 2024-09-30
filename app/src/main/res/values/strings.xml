@@ -53,4 +53,12 @@
     <string name="label_sign_up_account_login_screen">Não tem uma conta?</string>
     <string name="label_sign_up_login_screen">Criar conta</string>
 
+    <!--    NavigationDrawerItems-->
+    <string name="label_home_navigation_drawer_item">Inicio</string>
+    <string name="label_search_navigation_drawer_item">Buscar</string>
+    <string name="label_cart_navigation_drawer_item">Bag</string>
+    <string name="label_favorite_navigation_drawer_item">Favoritos</string>
+    <string name="label_notification_navigation_drawer_item">Notificações</string>
+    <string name="label_hub_navigation_drawer_item">Hub</string>
+
 </resources>
