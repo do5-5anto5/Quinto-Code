@@ -119,11 +119,7 @@ fun NavigationDrawerQC(
                                     style = TextStyle(
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.Medium,
-                                        color = if (index == drawerIndex) {
-                                            QuintoCodeTheme.colorScheme.drawerItemSelectedColor
-                                        } else {
-                                            QuintoCodeTheme.colorScheme.drawerItemUnselectedColor
-                                        }
+                                        color = checkIndexToSetColor(index, drawerIndex)
                                     )
                                 )
                             },
@@ -139,11 +135,7 @@ fun NavigationDrawerQC(
                                     } else {
                                         painterResource(id = drawerItem.unselectedIcon)
                                     },
-                                    tint = if (index == drawerIndex) {
-                                        QuintoCodeTheme.colorScheme.drawerItemSelectedColor
-                                    } else {
-                                        QuintoCodeTheme.colorScheme.drawerItemUnselectedColor
-                                    },
+                                    tint = checkIndexToSetColor(index, drawerIndex),
                                     contentDescription = null
                                 )
                             },
@@ -179,6 +171,18 @@ fun NavigationDrawerQC(
             }
         }
     )
+}
+
+@Composable
+fun checkIndexToSetColor(
+    index: Int,
+    drawerIndex: Int
+) : Color {
+    return if (index == drawerIndex) {
+        QuintoCodeTheme.colorScheme.drawerItemSelectedColor
+    } else {
+        QuintoCodeTheme.colorScheme.drawerItemUnselectedColor
+    }
 }
 
 @PreviewLightDark
