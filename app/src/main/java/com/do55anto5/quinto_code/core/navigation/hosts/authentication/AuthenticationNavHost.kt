@@ -4,6 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.do55anto5.quinto_code.core.navigation.hosts.app.appNavHost
 import com.do55anto5.quinto_code.core.navigation.routes.authentication.AuthenticationRoutes
 import com.do55anto5.quinto_code.presenter.screens.authentication.home.HomeAuthenticationScreen
 import com.do55anto5.quinto_code.presenter.screens.authentication.login.screen.LoginScreen
@@ -41,5 +42,8 @@ fun NavGraphBuilder.authenticationNavHost(navHostController: NavHostController) 
                 onBackPressed = navHostController::popBackStack
             )
         }
+
+        appNavHost()
+
     }
 }
