@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.do55anto5.quinto_code.core.navigation.hosts.app.appNavHost
 import com.do55anto5.quinto_code.core.navigation.hosts.authentication.authenticationNavHost
 import com.do55anto5.quinto_code.core.navigation.routes.authentication.AuthenticationRoutes
 import com.do55anto5.quinto_code.core.navigation.routes.onboarding.OnboardingRoutes
@@ -41,5 +42,6 @@ fun OnboardingNavHost(navHostController: NavHostController) {
         }
 
         authenticationNavHost(navHostController = navHostController)
+        appNavHost()
     }
 }
