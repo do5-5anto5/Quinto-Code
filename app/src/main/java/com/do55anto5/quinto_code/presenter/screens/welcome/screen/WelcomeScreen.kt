@@ -1,6 +1,7 @@
 package com.do55anto5.quinto_code.presenter.screens.welcome.screen
 
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -12,6 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -22,21 +26,33 @@ import androidx.compose.ui.unit.dp
 import com.do55anto5.quinto_code.R
 import com.do55anto5.quinto_code.presenter.components.button.PrimaryButton
 import com.do55anto5.quinto_code.presenter.components.welcome_slider.WelcomeSliderUI
+import com.do55anto5.quinto_code.presenter.screens.welcome.action.WelcomeAction
+import com.do55anto5.quinto_code.presenter.screens.welcome.viewmodel.WelcomeViewModel
 import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun WelcomeScreen(
-    navigateToAuthenticationScreen: () -> Unit
+    navigateToHomeAuthenticationScreen: () -> Unit
 ) {
+
+    val viewModel = koinViewModel<WelcomeViewModel>()
+    val state by viewModel.state.collectAsState()
+
+    LaunchedEffect(state.nextScreen) {
+        if (state.nextScreen) {
+            navigateToHomeAuthenticationScreen()
+        }
+    }
+
     WelcomeContent(
-        navigateToAuthenticationScreen = navigateToAuthenticationScreen
+        action = viewModel::submitAction
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun WelcomeContent(
-    navigateToAuthenticationScreen: () -> Unit
+    action: (WelcomeAction) -> Unit
 ) {
 
     val slideItems = listOf(
@@ -57,7 +73,7 @@ fun WelcomeContent(
         slideItems.size
     }
 
-    Scaffold (
+    Scaffold(
         modifier = Modifier
             .fillMaxSize(),
         content = { paddingValues ->
@@ -96,7 +112,7 @@ fun WelcomeContent(
                                 modifier = Modifier
                                     .padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
                                 text = stringResource(id = R.string.button_title_welcome_screen),
-                                onClick = { navigateToAuthenticationScreen() }
+                                onClick = { action(WelcomeAction.OnNextScreen) }
                             )
                         }
                     )
@@ -109,7 +125,5 @@ fun WelcomeContent(
 @PreviewLightDark
 @Composable
 private fun WelcomeScreenPreview() {
-    WelcomeContent(
-        navigateToAuthenticationScreen = {}
-    )
+    WelcomeContent( action = {} )
 }
