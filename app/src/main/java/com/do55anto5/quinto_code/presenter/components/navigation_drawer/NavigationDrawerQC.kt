@@ -14,11 +14,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DismissibleDrawerSheet
+import androidx.compose.material3.DismissibleNavigationDrawer
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
@@ -48,14 +48,14 @@ fun NavigationDrawerQC(
     drawerState: DrawerState,
     items: List<DrawerItem>,
     drawerIndex: Int,
-    onClick: (Int) -> Unit
+    onClick: (Int) -> Unit,
+    content: @Composable () -> Unit
 ) {
 
-    ModalNavigationDrawer(
+    DismissibleNavigationDrawer(
         drawerState = drawerState,
-        content = {},
         drawerContent = {
-            ModalDrawerSheet(
+            DismissibleDrawerSheet(
                 drawerContainerColor = QuintoCodeTheme.colorScheme.defaultColor,
             ) {
                 Row(
@@ -169,7 +169,8 @@ fun NavigationDrawerQC(
                     }
                 }
             }
-        }
+        },
+        content = content
     )
 }
 
@@ -177,7 +178,7 @@ fun NavigationDrawerQC(
 fun checkIndexToSetColor(
     index: Int,
     drawerIndex: Int
-) : Color {
+): Color {
     return if (index == drawerIndex) {
         QuintoCodeTheme.colorScheme.drawerItemSelectedColor
     } else {
@@ -197,7 +198,8 @@ private fun Preview() {
             drawerIndex = drawerIndex,
             onClick = {
                 drawerIndex = it
-            }
+            },
+            content = {}
         )
     }
 }
