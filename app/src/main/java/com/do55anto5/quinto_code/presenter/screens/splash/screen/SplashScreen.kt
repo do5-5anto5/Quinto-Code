@@ -1,4 +1,4 @@
-package com.do55anto5.quinto_code.presenter.splash.screen
+package com.do55anto5.quinto_code.presenter.screens.splash.screen
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween

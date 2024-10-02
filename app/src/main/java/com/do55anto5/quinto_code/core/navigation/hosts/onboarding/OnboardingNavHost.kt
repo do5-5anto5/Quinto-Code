@@ -8,8 +8,8 @@ import com.do55anto5.quinto_code.core.navigation.hosts.app.appNavHost
 import com.do55anto5.quinto_code.core.navigation.hosts.authentication.authenticationNavHost
 import com.do55anto5.quinto_code.core.navigation.routes.authentication.AuthenticationRoutes
 import com.do55anto5.quinto_code.core.navigation.routes.onboarding.OnboardingRoutes
+import com.do55anto5.quinto_code.presenter.screens.splash.screen.SplashScreen
 import com.do55anto5.quinto_code.presenter.screens.welcome.screen.WelcomeScreen
-import com.do55anto5.quinto_code.presenter.splash.screen.SplashScreen
 
 @Composable
 fun OnboardingNavHost(navHostController: NavHostController) {
