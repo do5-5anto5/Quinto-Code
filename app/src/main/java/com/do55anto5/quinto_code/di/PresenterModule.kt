@@ -10,10 +10,24 @@ import com.do55anto5.quinto_code.presenter.screens.main.hub.viewmodel.HubViewMod
 import com.do55anto5.quinto_code.presenter.screens.main.notification.viewmodel.NotificationViewModel
 import com.do55anto5.quinto_code.presenter.screens.main.profile.viewmodel.ProfileViewModel
 import com.do55anto5.quinto_code.presenter.screens.main.search.viewmodel.SearchViewModel
+import com.do55anto5.quinto_code.presenter.screens.splash.viewmodel.SplashViewModel
+import com.do55anto5.quinto_code.presenter.screens.welcome.viewmodel.WelcomeViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val presenterModule = module {
+
+    viewModel {
+        SplashViewModel(
+            appPreferences = get()
+        )
+    }
+
+    viewModel {
+        WelcomeViewModel(
+            appPreferences = get()
+        )
+    }
 
     viewModel {
         SignupViewModel(

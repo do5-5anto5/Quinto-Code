@@ -1,5 +1,6 @@
 package com.do55anto5.quinto_code.presenter.screens.splash.screen
 
+import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -12,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -27,32 +29,53 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.do55anto5.quinto_code.R
+import com.do55anto5.quinto_code.presenter.screens.splash.action.SplashAction
+import com.do55anto5.quinto_code.presenter.screens.splash.viewmodel.SplashViewModel
 import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SplashScreen(
-    navigateToWelcomeScreen: () -> Unit
+    navigateToAppScreen: () -> Unit,
+    navigateToWelcomeScreen: () -> Unit,
+    navigateToHomeAuthenticationScreen: () -> Unit
 ) {
 
+    val viewModel = koinViewModel<SplashViewModel>()
+    val state by viewModel.state.collectAsState()
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(key1 = true) {
-        scope.launch {
-            delay(2000)
-            navigateToWelcomeScreen()
+    LaunchedEffect(state.isLoading) {
+        if (!state.isLoading) {
+            if (state.isWelcomeVisited) {
+                if (state.isAuthenticated) {
+                    navigateToAppScreen()
+                } else {
+                    navigateToHomeAuthenticationScreen()
+                }
+            } else {
+                navigateToWelcomeScreen()
+            }
         }
     }
 
-    SplashContent(
-        navigateToWelcomeScreen = navigateToWelcomeScreen
-    )
+    Log.i("INFOTEST", "WIV: ${state.isWelcomeVisited} \n" +
+            "iA: ${state.isAuthenticated}")
+
+    LaunchedEffect(true) {
+        scope.launch {
+            delay(2000)
+            viewModel.submitAction(action = SplashAction.OnNextScreen)
+        }
+    }
+
+    SplashContent()
 }
 
 @Composable
 fun SplashContent(
-    navigateToWelcomeScreen: () -> Unit
 ) {
 
     val alpha = remember { Animatable(0f) }
@@ -112,6 +135,6 @@ fun SplashContent(
 @Composable
 private fun SplashScreenView() {
     QuintoCodeTheme {
-        SplashContent( navigateToWelcomeScreen = {} )
+        SplashContent()
     }
 }

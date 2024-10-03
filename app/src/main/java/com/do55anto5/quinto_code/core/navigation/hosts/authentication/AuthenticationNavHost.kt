@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.do55anto5.quinto_code.core.navigation.hosts.app.appNavHost
+import com.do55anto5.quinto_code.core.navigation.routes.app.AppRoutes
 import com.do55anto5.quinto_code.core.navigation.routes.authentication.AuthenticationRoutes
 import com.do55anto5.quinto_code.presenter.screens.authentication.home.HomeAuthenticationScreen
 import com.do55anto5.quinto_code.presenter.screens.authentication.login.screen.LoginScreen
@@ -27,6 +28,13 @@ fun NavGraphBuilder.authenticationNavHost(navHostController: NavHostController) 
 
         composable<AuthenticationRoutes.SignUp> {
             SignupScreen(
+                navigateToAppScreen = {
+                    navHostController.navigate(AppRoutes.Graph) {
+                        popUpTo(AuthenticationRoutes.Graph) {
+                            inclusive = true
+                        }
+                    }
+                },
                 navigateToLoginScreen = {
                     navHostController.navigate(AuthenticationRoutes.Login)
                 },
@@ -36,6 +44,13 @@ fun NavGraphBuilder.authenticationNavHost(navHostController: NavHostController) 
 
         composable<AuthenticationRoutes.Login> {
             LoginScreen(
+                navigateToAppScreen = {
+                    navHostController.navigate(AppRoutes.Graph) {
+                        popUpTo(AuthenticationRoutes.Graph) {
+                            inclusive = true
+                        }
+                    }
+                },
                 navigateToSignupScreen = {
                     navHostController.navigate(AuthenticationRoutes.SignUp)
                 },

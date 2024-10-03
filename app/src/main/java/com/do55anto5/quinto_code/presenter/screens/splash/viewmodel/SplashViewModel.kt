@@ -1,6 +1,7 @@
 package com.do55anto5.quinto_code.presenter.screens.splash.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.do55anto5.quinto_code.core.helper.FirebaseHelper
 import com.do55anto5.quinto_code.core.preferences.AppPreferences
 import com.do55anto5.quinto_code.presenter.screens.splash.action.SplashAction
 import com.do55anto5.quinto_code.presenter.screens.splash.state.SplashState
@@ -27,7 +28,8 @@ class SplashViewModel(
         _state.update { currentState ->
             currentState.copy(
                 isWelcomeVisited = appPreferences.getWelcomeVisited(),
-                isLoading = false
+                isLoading = false,
+                isAuthenticated = FirebaseHelper.isAuthenticated()
             )
         }
     }
