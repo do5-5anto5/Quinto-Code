@@ -8,6 +8,9 @@ sealed class AppRoutes {
     data object Graph : AppRoutes()
 
     @Serializable
+    data object App : AppRoutes()
+
+    @Serializable
     data object Profile : AppRoutes()
 
     @Serializable
