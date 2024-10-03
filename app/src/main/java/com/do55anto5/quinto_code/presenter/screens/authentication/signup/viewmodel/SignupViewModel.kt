@@ -92,6 +92,9 @@ class SignupViewModel(
                     password = _state.value.password
                 )
                 saveUserUseCase(user = User(email = _state.value.email))
+                _state.update { currentState ->
+                    currentState.copy(isAuthenticated = true)
+                }
             } catch (exception: Exception) {
                 exception.printStackTrace()
 
