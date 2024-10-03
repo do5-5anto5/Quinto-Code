@@ -48,6 +48,9 @@ class LoginViewModel(
                     email = _state.value.email,
                     password = _state.value.password
                 )
+                _state.update { currentState ->
+                    currentState.copy(isAuthenticated = true)
+                }
             } catch (exception: Exception) {
                 exception.printStackTrace()
 

@@ -9,5 +9,6 @@ data class LoginState(
     val passwordVisibility: Boolean = false,
     val enableSignInButton: Boolean = false,
     val hasFeedback: Boolean = false,
-    val feedbackUI: Pair<FeedbackType, Int>? = null
+    val feedbackUI: Pair<FeedbackType, Int>? = null,
+    val isAuthenticated: Boolean = false
 )
