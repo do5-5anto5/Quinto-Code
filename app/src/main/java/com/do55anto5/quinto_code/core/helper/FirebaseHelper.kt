@@ -15,6 +15,8 @@ class FirebaseHelper {
 
         fun getUserId() = getAuth().currentUser?.uid.orEmpty()
 
+        fun isAuthenticated() = getAuth().currentUser != null
+
         fun validateError(error: String?) : Int {
             return when {
                 error?.contains("The email address is already in use by another account") == true -> {
