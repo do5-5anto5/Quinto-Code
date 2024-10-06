@@ -95,7 +95,7 @@ fun SignupScreen(
         state = state,
         action = viewModel::submitAction,
         googleSignInAction = googleSignInViewModel::submitAction,
-        onBackPressed = { }
+        onBackPressed = onBackPressed
     )
 }
 

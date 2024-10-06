@@ -282,8 +282,6 @@ private fun LoginContent(
                     Spacer(Modifier.height(20.dp))
 
                     Text(
-                        modifier = Modifier
-                            .clickable { navigateToSignupScreen() },
                         text = stringResource(R.string.label_forgot_password_login_screen),
                         style = TextStyle(
                             fontSize = 16.sp,
@@ -321,7 +319,8 @@ private fun LoginContent(
 
                     Row(
                         modifier = Modifier
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                                .clickable { navigateToSignupScreen() },
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center,
                         content = {
