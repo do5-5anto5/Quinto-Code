@@ -5,4 +5,5 @@ sealed class GoogleSignInState {
     data object Loading : GoogleSignInState()
     data class Success(val message: String) : GoogleSignInState()
     data class Error(val message: String) : GoogleSignInState()
+    data class IsAuthenticated(val isAuthenticated: Boolean = true) : GoogleSignInState()
 }

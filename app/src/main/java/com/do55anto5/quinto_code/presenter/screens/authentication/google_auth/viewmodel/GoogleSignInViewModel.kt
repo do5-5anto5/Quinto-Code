@@ -30,6 +30,7 @@ class GoogleSignInViewModel(
                 useCase(context).fold(
                     onSuccess = {
                         _state.value = GoogleSignInState.Success("Successfully signed in")
+                        _state.value = GoogleSignInState.IsAuthenticated(true)
                     },
                     onFailure = { exception ->
                         _state.value = GoogleSignInState.Error(exception.message ?: "Unknown error")
