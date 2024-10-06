@@ -18,9 +18,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -33,25 +37,47 @@ import com.do55anto5.quinto_code.R
 import com.do55anto5.quinto_code.presenter.components.button.PrimaryButton
 import com.do55anto5.quinto_code.presenter.components.button.SocialButton
 import com.do55anto5.quinto_code.presenter.components.divider.HorizontalDividerWithText
+import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.action.GoogleSignInAction
+import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.state.GoogleSignInState
+import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.viewmodel.GoogleSignInViewModel
 import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
 import com.do55anto5.quinto_code.presenter.theme.UrbanistFamily
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeAuthenticationScreen(
     navigateToSignUpScreen: () -> Unit,
     navigateToLoginScreen: () -> Unit
 ) {
+
+    val googleSignInViewModel = koinViewModel<GoogleSignInViewModel>()
+    val googleState by googleSignInViewModel.state.collectAsState()
+
+    LaunchedEffect(true) {
+        when (googleState) {
+            is GoogleSignInState.Error -> {}
+            GoogleSignInState.Idle -> {}
+            GoogleSignInState.Loading -> {}
+            is GoogleSignInState.Success -> {}
+        }
+    }
+
     HomeAuthenticationContent(
         navigateToSignUpScreen = navigateToSignUpScreen,
-        navigateToLoginScreen = navigateToLoginScreen
+        navigateToLoginScreen = navigateToLoginScreen,
+        googleSignInAction = googleSignInViewModel::submitAction
     )
 }
 
 @Composable
 private fun HomeAuthenticationContent(
     navigateToSignUpScreen: () -> Unit,
-    navigateToLoginScreen: () -> Unit
+    navigateToLoginScreen: () -> Unit,
+    googleSignInAction: (GoogleSignInAction) -> Unit
 ) {
+
+    val context = LocalContext.current
+
     Scaffold(
         containerColor = QuintoCodeTheme.colorScheme.backgroundColor,
         content = { paddingValues ->
@@ -97,7 +123,7 @@ private fun HomeAuthenticationContent(
                         icon = painterResource(id = R.drawable.ic_google),
                         isLoading = false,
                         text = stringResource(R.string.label_sign_with_google_authentication_screen),
-                        onClick = {}
+                        onClick = { googleSignInAction(GoogleSignInAction.SignIn(context)) }
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
