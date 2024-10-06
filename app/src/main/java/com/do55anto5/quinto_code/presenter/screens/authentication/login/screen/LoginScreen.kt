@@ -59,6 +59,9 @@ import com.do55anto5.quinto_code.presenter.components.top_app_bar.TopAppBarUI
 import com.do55anto5.quinto_code.presenter.screens.authentication.login.action.LoginAction
 import com.do55anto5.quinto_code.presenter.screens.authentication.login.state.LoginState
 import com.do55anto5.quinto_code.presenter.screens.authentication.login.viewmodel.LoginViewModel
+import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.action.GoogleSignInAction
+import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.state.GoogleSignInState
+import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.viewmodel.GoogleSignInViewModel
 import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
 import com.do55anto5.quinto_code.presenter.theme.UrbanistFamily
 import kotlinx.coroutines.launch
@@ -72,11 +75,19 @@ fun LoginScreen(
 ) {
 
     val viewModel = koinViewModel<LoginViewModel>()
+    val googleSignInViewModel = koinViewModel<GoogleSignInViewModel>()
     val state by viewModel.state.collectAsState()
+    val googleState by googleSignInViewModel.state.collectAsState()
 
     LaunchedEffect(state.isAuthenticated) {
         if (state.isAuthenticated) {
             navigateToAppScreen()
+        }
+        when (googleState) {
+            is GoogleSignInState.Error -> {}
+            GoogleSignInState.Idle -> {}
+            GoogleSignInState.Loading -> {}
+            is GoogleSignInState.Success -> {}
         }
     }
 
@@ -84,7 +95,8 @@ fun LoginScreen(
         navigateToSignupScreen = navigateToSignupScreen,
         state = state,
         action = viewModel::submitAction,
-        onBackPressed = { }
+        googleSignInAction = googleSignInViewModel::submitAction,
+        onBackPressed = onBackPressed
     )
 }
 
@@ -93,6 +105,7 @@ private fun LoginContent(
     navigateToSignupScreen: () -> Unit,
     state: LoginState = LoginState(),
     action: (LoginAction) -> Unit,
+    googleSignInAction: (GoogleSignInAction) -> Unit,
     onBackPressed: () -> Unit
 ) {
 
@@ -302,7 +315,7 @@ private fun LoginContent(
                         content = {
                             SocialButton(
                                 icon = painterResource(id = R.drawable.ic_google),
-                                onClick = {}
+                                onClick = { googleSignInAction(GoogleSignInAction.SignIn(context)) }
                             )
                         }
                     )
@@ -358,6 +371,7 @@ private fun LoginScreenPreview() {
             navigateToSignupScreen = {},
             state = LoginState(),
             action = {},
+            googleSignInAction = {},
             onBackPressed = {}
         )
     }
