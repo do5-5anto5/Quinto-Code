@@ -84,6 +84,11 @@ dependencies {
     // SplashScreen
     implementation(libs.androidx.core.splashscreen)
 
+    // Google Credentials
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
+
     // Texts
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
