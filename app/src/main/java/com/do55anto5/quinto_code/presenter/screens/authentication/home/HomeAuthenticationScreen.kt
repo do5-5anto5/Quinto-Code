@@ -47,24 +47,23 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeAuthenticationScreen(
     navigateToSignUpScreen: () -> Unit,
-    navigateToLoginScreen: () -> Unit
+    navigateToLoginScreen: () -> Unit,
+    navigateToAppScreen: () -> Unit
 ) {
 
     val googleSignInViewModel = koinViewModel<GoogleSignInViewModel>()
     val googleState by googleSignInViewModel.state.collectAsState()
 
-    LaunchedEffect(true) {
-        when (googleState) {
-            is GoogleSignInState.Error -> {}
-            GoogleSignInState.Idle -> {}
-            GoogleSignInState.Loading -> {}
-            is GoogleSignInState.Success -> {}
+    LaunchedEffect(googleState == GoogleSignInState.IsAuthenticated(true)) {
+        if (googleState == GoogleSignInState.IsAuthenticated(true)){
+            navigateToAppScreen()
         }
     }
 
     HomeAuthenticationContent(
         navigateToSignUpScreen = navigateToSignUpScreen,
         navigateToLoginScreen = navigateToLoginScreen,
+        navigateToAppScreen = navigateToAppScreen,
         googleSignInAction = googleSignInViewModel::submitAction
     )
 }
@@ -73,6 +72,7 @@ fun HomeAuthenticationScreen(
 private fun HomeAuthenticationContent(
     navigateToSignUpScreen: () -> Unit,
     navigateToLoginScreen: () -> Unit,
+    navigateToAppScreen: () -> Unit,
     googleSignInAction: (GoogleSignInAction) -> Unit
 ) {
 
@@ -191,7 +191,8 @@ private fun HomeAuthenticationScreenPreview() {
     QuintoCodeTheme {
         HomeAuthenticationScreen(
             navigateToSignUpScreen = {},
-            navigateToLoginScreen = {}
+            navigateToLoginScreen = {},
+            navigateToAppScreen = {}
         )
     }
 }

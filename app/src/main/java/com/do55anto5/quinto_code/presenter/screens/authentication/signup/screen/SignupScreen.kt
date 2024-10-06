@@ -81,15 +81,12 @@ fun SignupScreen(
     val state by viewModel.state.collectAsState()
     val googleState by googleSignInViewModel.state.collectAsState()
 
-    LaunchedEffect(state.isAuthenticated) {
-        if (state.isAuthenticated) {
+    LaunchedEffect(state.isAuthenticated, GoogleSignInState.IsAuthenticated(true)) {
+        if (
+            state.isAuthenticated ||
+            googleState == GoogleSignInState.IsAuthenticated(true))
+        {
             navigateToAppScreen()
-        }
-        when (googleState) {
-            is GoogleSignInState.Error -> {}
-            GoogleSignInState.Idle -> {}
-            GoogleSignInState.Loading -> {}
-            is GoogleSignInState.Success -> {}
         }
     }
 
