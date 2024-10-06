@@ -22,6 +22,13 @@ fun NavGraphBuilder.authenticationNavHost(navHostController: NavHostController) 
                 },
                 navigateToSignUpScreen = {
                     navHostController.navigate(AuthenticationRoutes.SignUp)
+                },
+                navigateToAppScreen = {
+                    navHostController.navigate(AppRoutes.Graph) {
+                        popUpTo(AuthenticationRoutes.Graph) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
