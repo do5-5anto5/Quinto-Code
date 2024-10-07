@@ -1,0 +1,13 @@
+package com.do55anto5.quinto_code.presenter.screens.authentication.forgot_password.state
+
+import com.do55anto5.quinto_code.core.enums.feedback.FeedbackType
+
+
+data class ForgotPasswordState(
+    val email: String = "",
+    val isLoading: Boolean = false,
+    val enableSendButton: Boolean = false,
+    val hasFeedBack: Boolean = false,
+    val feedbackUI: Pair<FeedbackType, Int>? = null,
+    val isAuthenticated: Boolean = false
+)

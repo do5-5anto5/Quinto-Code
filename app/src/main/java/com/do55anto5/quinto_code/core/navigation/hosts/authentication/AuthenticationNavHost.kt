@@ -7,6 +7,7 @@ import androidx.navigation.navigation
 import com.do55anto5.quinto_code.core.navigation.hosts.app.appNavHost
 import com.do55anto5.quinto_code.core.navigation.routes.app.AppRoutes
 import com.do55anto5.quinto_code.core.navigation.routes.authentication.AuthenticationRoutes
+import com.do55anto5.quinto_code.presenter.screens.authentication.forgot_password.screen.ForgotPasswordScreen
 import com.do55anto5.quinto_code.presenter.screens.authentication.home.HomeAuthenticationScreen
 import com.do55anto5.quinto_code.presenter.screens.authentication.login.screen.LoginScreen
 import com.do55anto5.quinto_code.presenter.screens.authentication.signup.screen.SignupScreen
@@ -61,6 +62,15 @@ fun NavGraphBuilder.authenticationNavHost(navHostController: NavHostController) 
                 navigateToSignupScreen = {
                     navHostController.navigate(AuthenticationRoutes.SignUp)
                 },
+                navigateToForgotScreen = {
+                    navHostController.navigate(AuthenticationRoutes.ForgotPassword)
+                },
+                onBackPressed = navHostController::popBackStack
+            )
+        }
+
+        composable<AuthenticationRoutes.ForgotPassword> {
+            ForgotPasswordScreen(
                 onBackPressed = navHostController::popBackStack
             )
         }

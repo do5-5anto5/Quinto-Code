@@ -16,4 +16,7 @@ sealed class AuthenticationRoutes {
     @Serializable
     data object SignUp : AuthenticationRoutes()
 
+    @Serializable
+    data object ForgotPassword : AuthenticationRoutes()
+
 }

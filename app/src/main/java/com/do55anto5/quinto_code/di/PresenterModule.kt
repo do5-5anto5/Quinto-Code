@@ -1,9 +1,10 @@
 package com.do55anto5.quinto_code.di
 
 import com.do55anto5.quinto_code.presenter.screens.app.viewmodel.AppViewModel
+import com.do55anto5.quinto_code.presenter.screens.authentication.forgot_password.viewmodel.ForgotPasswordViewModel
+import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.viewmodel.GoogleSignInViewModel
 import com.do55anto5.quinto_code.presenter.screens.authentication.login.viewmodel.LoginViewModel
 import com.do55anto5.quinto_code.presenter.screens.authentication.signup.viewmodel.SignupViewModel
-import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.viewmodel.GoogleSignInViewModel
 import com.do55anto5.quinto_code.presenter.screens.main.bag.viewmodel.BagViewModel
 import com.do55anto5.quinto_code.presenter.screens.main.favorite.viewmodel.FavoriteViewModel
 import com.do55anto5.quinto_code.presenter.screens.main.home.viewmodel.HomeViewModel
@@ -51,6 +52,12 @@ val presenterModule = module {
 
     viewModel {
         AppViewModel()
+    }
+
+    viewModel {
+        ForgotPasswordViewModel(
+            forgotPasswordUseCase = get()
+        )
     }
 
     viewModel {

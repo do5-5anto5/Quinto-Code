@@ -71,6 +71,7 @@ import org.koin.androidx.compose.koinViewModel
 fun LoginScreen(
     navigateToSignupScreen: () -> Unit,
     navigateToAppScreen: () -> Unit,
+    navigateToForgotScreen: () -> Unit,
     onBackPressed: () -> Unit
 ) {
 
@@ -90,6 +91,7 @@ fun LoginScreen(
 
     LoginContent(
         navigateToSignupScreen = navigateToSignupScreen,
+        navigateToForgotScreen = navigateToForgotScreen,
         state = state,
         action = viewModel::submitAction,
         googleSignInAction = googleSignInViewModel::submitAction,
@@ -100,6 +102,7 @@ fun LoginScreen(
 @Composable
 private fun LoginContent(
     navigateToSignupScreen: () -> Unit,
+    navigateToForgotScreen: () -> Unit,
     state: LoginState = LoginState(),
     action: (LoginAction) -> Unit,
     googleSignInAction: (GoogleSignInAction) -> Unit,
@@ -282,6 +285,8 @@ private fun LoginContent(
                     Spacer(Modifier.height(20.dp))
 
                     Text(
+                        modifier = Modifier
+                            .clickable { navigateToForgotScreen() },
                         text = stringResource(R.string.label_forgot_password_login_screen),
                         style = TextStyle(
                             fontSize = 16.sp,
@@ -365,6 +370,7 @@ private fun LoginScreenPreview() {
 
         LoginContent(
             navigateToSignupScreen = {},
+            navigateToForgotScreen = {},
             state = LoginState(),
             action = {},
             googleSignInAction = {},

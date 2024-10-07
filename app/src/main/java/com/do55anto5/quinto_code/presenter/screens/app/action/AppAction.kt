@@ -5,5 +5,5 @@ sealed class AppAction {
     data class DrawerItemClicked(val index: Int) : AppAction()
     data class DrawerStateChanged(val isOpen: Boolean) : AppAction()
     data object NavigateBack : AppAction()
-
+    data object OnLogout : AppAction()
 }
