@@ -10,4 +10,6 @@ interface AuthenticationRepository {
 
     suspend fun signInWithGoogle(context: Context): Result<Unit>
 
+    suspend fun forgotPassword(email: String)
+
 }

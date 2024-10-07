@@ -75,4 +75,19 @@ class AuthenticationRepositoryImpl : AuthenticationRepository {
             Result.failure(e)
         }
     }
+
+    override suspend fun forgotPassword(email: String) {
+        return suspendCoroutine { continuation ->
+            getAuth().sendPasswordResetEmail(email)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        continuation.resumeWith(Result.success(Unit))
+                    } else {
+                        task.exception?.let { exception ->
+                            continuation.resumeWith(Result.failure(exception))
+                        }
+                    }
+                }
+        }
+    }
 }
