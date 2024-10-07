@@ -53,6 +53,12 @@
     <string name="label_sign_up_account_login_screen">Não tem uma conta?</string>
     <string name="label_sign_up_login_screen">Criar conta</string>
 
+    <!--    ForgotPasswordScreen-->
+    <string name="label_title_forgot_password_screen">Recuperar senha</string>
+    <string name="label_input_email_forgot_password_screen">Email</string>
+    <string name="placeholder_input_email_forgot_password_screen">Insira seu email</string>
+    <string name="button_send_email_forgot_password_screen">Enviar email de recuperação</string>
+
     <!--    NavigationDrawerItems-->
     <string name="label_home_navigation_drawer_item">Inicio</string>
     <string name="label_search_navigation_drawer_item">Buscar</string>

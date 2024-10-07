@@ -57,13 +57,16 @@ import com.do55anto5.quinto_code.presenter.components.divider.HorizontalDividerW
 import com.do55anto5.quinto_code.presenter.components.snackbar.FeedbackUI
 import com.do55anto5.quinto_code.presenter.components.text_field.TextFieldUI
 import com.do55anto5.quinto_code.presenter.components.top_app_bar.TopAppBarUI
-import com.do55anto5.quinto_code.presenter.screens.authentication.signup.action.SignupAction
-import com.do55anto5.quinto_code.presenter.screens.authentication.signup.action.SignupAction.*
-import com.do55anto5.quinto_code.presenter.screens.authentication.signup.state.SignupState
-import com.do55anto5.quinto_code.presenter.screens.authentication.signup.viewmodel.SignupViewModel
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.action.GoogleSignInAction
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.state.GoogleSignInState
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.viewmodel.GoogleSignInViewModel
+import com.do55anto5.quinto_code.presenter.screens.authentication.signup.action.SignupAction
+import com.do55anto5.quinto_code.presenter.screens.authentication.signup.action.SignupAction.OnPasswordVisibilityChange
+import com.do55anto5.quinto_code.presenter.screens.authentication.signup.action.SignupAction.OnSignup
+import com.do55anto5.quinto_code.presenter.screens.authentication.signup.action.SignupAction.OnValueChange
+import com.do55anto5.quinto_code.presenter.screens.authentication.signup.action.SignupAction.ResetErrorState
+import com.do55anto5.quinto_code.presenter.screens.authentication.signup.state.SignupState
+import com.do55anto5.quinto_code.presenter.screens.authentication.signup.viewmodel.SignupViewModel
 import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
 import com.do55anto5.quinto_code.presenter.theme.UrbanistFamily
 import kotlinx.coroutines.launch
@@ -81,11 +84,11 @@ fun SignupScreen(
     val state by viewModel.state.collectAsState()
     val googleState by googleSignInViewModel.state.collectAsState()
 
-    LaunchedEffect(state.isAuthenticated, GoogleSignInState.IsAuthenticated(true)) {
+    LaunchedEffect(state.isAuthenticated, googleState == GoogleSignInState.IsAuthenticated(true)) {
         if (
             state.isAuthenticated ||
-            googleState == GoogleSignInState.IsAuthenticated(true))
-        {
+            googleState == GoogleSignInState.IsAuthenticated(true)
+        ) {
             navigateToAppScreen()
         }
     }
@@ -325,7 +328,7 @@ private fun SignupContent(
 
                             Text(
                                 modifier = Modifier
-                                    .clickable{ navigateToLoginScreen() },
+                                    .clickable { navigateToLoginScreen() },
                                 text = stringResource(id = R.string.label_sign_in_signup_screen),
                                 style = TextStyle(
                                     fontSize = 14.sp,

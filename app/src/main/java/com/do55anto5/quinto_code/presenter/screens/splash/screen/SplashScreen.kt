@@ -1,6 +1,5 @@
 package com.do55anto5.quinto_code.presenter.screens.splash.screen
 
-import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -60,9 +59,6 @@ fun SplashScreen(
             }
         }
     }
-
-    Log.i("INFOTEST", "WIV: ${state.isWelcomeVisited} \n" +
-            "iA: ${state.isAuthenticated}")
 
     LaunchedEffect(true) {
         scope.launch {

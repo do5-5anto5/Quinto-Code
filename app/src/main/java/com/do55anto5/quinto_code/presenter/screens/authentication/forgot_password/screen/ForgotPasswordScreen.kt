@@ -142,7 +142,7 @@ private fun ForgotPasswordContent(
                     Spacer(Modifier.height(48.dp))
 
                     Text(
-                        text = stringResource(R.string.label_title_signup_screen),
+                        text = stringResource(R.string.label_title_forgot_password_screen),
                         style = TextStyle(
                             fontSize = 32.sp,
                             lineHeight = 38.4.sp,
@@ -159,8 +159,8 @@ private fun ForgotPasswordContent(
                     TextFieldUI(
                         modifier = Modifier,
                         value = state.email,
-                        label = stringResource(R.string.label_input_email_signup_screen),
-                        placeholder = stringResource(R.string.placeholder_input_email_signup_screen),
+                        label = stringResource(R.string.label_input_email_forgot_password_screen),
+                        placeholder = stringResource(R.string.placeholder_input_email_forgot_password_screen),
                         mLeadingIcon = {
                             Icon(
                                 painter = painterResource(R.drawable.ic_email_fill),
@@ -188,7 +188,7 @@ private fun ForgotPasswordContent(
                     Spacer(Modifier.height(20.dp))
 
                     PrimaryButton(
-                        text = stringResource(R.string.label_button_signup_screen),
+                        text = stringResource(R.string.button_send_email_forgot_password_screen),
                         isLoading = false,
                         enabled = state.enableSendButton,
                         onClick = { action(OnSend) }
