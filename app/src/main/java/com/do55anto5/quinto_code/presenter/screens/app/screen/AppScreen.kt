@@ -1,6 +1,7 @@
 package com.do55anto5.quinto_code.presenter.screens.app.screen
 
 
+import android.content.Intent
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -11,7 +12,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerValue
@@ -30,12 +30,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.do55anto5.quinto_code.MainActivity
+import com.do55anto5.quinto_code.R
+import com.do55anto5.quinto_code.core.helper.FirebaseHelper.Companion.logout
 import com.do55anto5.quinto_code.core.navigation.drawer.DrawerItem
 import com.do55anto5.quinto_code.presenter.components.navigation_drawer.NavigationDrawerQC
 import com.do55anto5.quinto_code.presenter.screens.app.action.AppAction
@@ -56,9 +61,20 @@ fun AppScreen() {
     val viewModel = koinViewModel<AppViewModel>()
     val appState by viewModel.state.collectAsState()
 
+    val context = LocalContext.current
+
+    LaunchedEffect(!appState.isAuthenticated) {
+        if (!appState.isAuthenticated)
+        {
+            val intent = Intent(context, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            context.startActivity(intent)
+        }
+    }
+
     AppContent(
         state = appState,
-        action = viewModel::submitAction,
+        action = viewModel::submitAction
     )
 }
 
@@ -110,13 +126,6 @@ private fun AppContent(
                                 }
                             )
                         },
-                        actions = {
-                            Box(
-                                modifier = Modifier
-                                    .size(24.dp)
-                                    .padding(end = 48.dp)
-                            )
-                        },
                         navigationIcon = {
                             IconButton(
                                 onClick = {
@@ -129,6 +138,21 @@ private fun AppContent(
                                 content = {
                                     Icon(
                                         imageVector = Icons.Default.Menu,
+                                        contentDescription = null,
+                                        tint = QuintoCodeTheme.colorScheme.defaultColor
+                                    )
+                                }
+                            )
+                        },
+                        actions = {
+                            IconButton(
+                                onClick = {
+                                    logout()
+                                    action(AppAction.OnLogout)
+                                },
+                                content = {
+                                    Icon(
+                                        painter = painterResource(R.drawable.ic_logout),
                                         contentDescription = null,
                                         tint = QuintoCodeTheme.colorScheme.defaultColor
                                     )

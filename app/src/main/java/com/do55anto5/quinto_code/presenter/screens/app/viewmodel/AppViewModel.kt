@@ -19,7 +19,8 @@ class AppViewModel : ViewModel() {
         when (action) {
             is AppAction.DrawerItemClicked -> handleDrawerItemClick(action.index)
             is AppAction.DrawerStateChanged -> handleDrawerStateChange(action.isOpen)
-            AppAction.NavigateBack -> handleNavigateBack()
+            is AppAction.NavigateBack -> handleNavigateBack()
+            is AppAction.OnLogout -> onLogout()
         }
     }
 
@@ -43,5 +44,11 @@ class AppViewModel : ViewModel() {
 
     private fun handleNavigateBack() {
         // Implement
+    }
+
+    private fun onLogout() {
+        _state.update { currentState ->
+            currentState.copy(isAuthenticated = false)
+        }
     }
 }

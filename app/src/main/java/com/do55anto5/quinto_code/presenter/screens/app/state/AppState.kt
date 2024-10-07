@@ -5,5 +5,6 @@ import androidx.compose.material3.DrawerValue
 data class AppState(
     val currentDrawerIndex: Int = 0,
     val previousDrawerIndex: Int = 0,
-    val drawerStateValue: DrawerValue = DrawerValue.Closed
+    val drawerStateValue: DrawerValue = DrawerValue.Closed,
+    val isAuthenticated: Boolean = true
 )
