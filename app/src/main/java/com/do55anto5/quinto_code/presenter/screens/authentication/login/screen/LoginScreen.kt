@@ -30,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -56,12 +57,12 @@ import com.do55anto5.quinto_code.presenter.components.divider.HorizontalDividerW
 import com.do55anto5.quinto_code.presenter.components.snackbar.FeedbackUI
 import com.do55anto5.quinto_code.presenter.components.text_field.TextFieldUI
 import com.do55anto5.quinto_code.presenter.components.top_app_bar.TopAppBarUI
-import com.do55anto5.quinto_code.presenter.screens.authentication.login.action.LoginAction
-import com.do55anto5.quinto_code.presenter.screens.authentication.login.state.LoginState
-import com.do55anto5.quinto_code.presenter.screens.authentication.login.viewmodel.LoginViewModel
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.action.GoogleSignInAction
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.state.GoogleSignInState
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.viewmodel.GoogleSignInViewModel
+import com.do55anto5.quinto_code.presenter.screens.authentication.login.action.LoginAction
+import com.do55anto5.quinto_code.presenter.screens.authentication.login.state.LoginState
+import com.do55anto5.quinto_code.presenter.screens.authentication.login.viewmodel.LoginViewModel
 import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
 import com.do55anto5.quinto_code.presenter.theme.UrbanistFamily
 import kotlinx.coroutines.launch
@@ -112,6 +113,7 @@ private fun LoginContent(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
+    val isLoadingButton = remember { mutableStateOf(false) }
 
     LaunchedEffect(state.hasFeedback) {
         if (state.hasFeedback) {
@@ -315,7 +317,11 @@ private fun LoginContent(
                         content = {
                             SocialButton(
                                 icon = painterResource(id = R.drawable.ic_google),
-                                onClick = { googleSignInAction(GoogleSignInAction.SignIn(context)) }
+                                isLoading = isLoadingButton.value,
+                                onClick = {
+                                    googleSignInAction(GoogleSignInAction.SignIn(context))
+                                    isLoadingButton.value = true
+                                }
                             )
                         }
                     )
