@@ -4,4 +4,5 @@ import android.content.Context
 
 sealed class GoogleSignInAction {
     data class SignIn(val context: Context) : GoogleSignInAction()
+    data object ResetErrorState: GoogleSignInAction()
 }
