@@ -3,6 +3,9 @@ package com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.v
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.do55anto5.quinto_code.R
+import com.do55anto5.quinto_code.core.custom_errors.AuthError
+import com.do55anto5.quinto_code.core.enums.feedback.FeedbackType
 import com.do55anto5.quinto_code.domain.remote.usecase.authentication.GoogleSignInUseCase
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.action.GoogleSignInAction
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.state.GoogleSignInState
@@ -20,6 +23,7 @@ class GoogleSignInViewModel(
     fun submitAction(action: GoogleSignInAction) {
         when (action) {
             is GoogleSignInAction.SignIn -> signIn(action.context)
+            is GoogleSignInAction.ResetErrorState -> resetErrorState()
         }
     }
 
@@ -29,16 +33,37 @@ class GoogleSignInViewModel(
             try {
                 useCase(context).fold(
                     onSuccess = {
-                        _state.value = GoogleSignInState.Success("Successfully signed in")
                         _state.value = GoogleSignInState.IsAuthenticated(true)
                     },
                     onFailure = { exception ->
-                        _state.value = GoogleSignInState.Error(exception.message ?: "Unknown error")
+                        when (exception) {
+                            is AuthError -> {
+                                _state.value = GoogleSignInState.Error(
+                                    hasFeedback = true,
+                                    feedbackUI = exception.toFeedbackUI()
+                                )
+                            }
+                            else -> {
+                                _state.value = GoogleSignInState.Error(
+                                    hasFeedback = true,
+                                    feedbackUI = FeedbackType.ERROR to R.string.error_generic
+                                )
+                            }
+                        }
                     }
                 )
             } catch (e: Exception) {
-                _state.value = GoogleSignInState.Error(e.message ?: "Unknown error")
+                _state.value = GoogleSignInState.Error(
+                    hasFeedback = true,
+                    feedbackUI = (e as? AuthError)?.toFeedbackUI()
+                        ?: (FeedbackType.ERROR to R.string.error_generic)
+                )
             }
         }
     }
+
+    private fun resetErrorState() {
+        _state.value = GoogleSignInState.Idle
+    }
+
 }
