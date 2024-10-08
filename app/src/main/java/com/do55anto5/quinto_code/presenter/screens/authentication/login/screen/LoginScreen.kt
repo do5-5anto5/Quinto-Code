@@ -1,6 +1,7 @@
 package com.do55anto5.quinto_code.presenter.screens.authentication.login.screen
 
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -61,6 +62,7 @@ import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.ac
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.state.GoogleSignInState
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.viewmodel.GoogleSignInViewModel
 import com.do55anto5.quinto_code.presenter.screens.authentication.login.action.LoginAction
+import com.do55anto5.quinto_code.presenter.screens.authentication.login.action.LoginAction.*
 import com.do55anto5.quinto_code.presenter.screens.authentication.login.state.LoginState
 import com.do55anto5.quinto_code.presenter.screens.authentication.login.viewmodel.LoginViewModel
 import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
@@ -80,42 +82,19 @@ fun LoginScreen(
     val googleSignInViewModel = koinViewModel<GoogleSignInViewModel>()
     val state by viewModel.state.collectAsState()
     val googleState by googleSignInViewModel.state.collectAsState()
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val action = viewModel::submitAction
 
-    LaunchedEffect(state.isAuthenticated, googleState == GoogleSignInState.IsAuthenticated(true)) {
+    LaunchedEffect(state.isAuthenticated, state.hasFeedback, googleState == GoogleSignInState.IsAuthenticated(true)) {
         if (
             state.isAuthenticated ||
             googleState == GoogleSignInState.IsAuthenticated(true))
         {
             navigateToAppScreen()
         }
-    }
 
-    LoginContent(
-        navigateToSignupScreen = navigateToSignupScreen,
-        navigateToForgotScreen = navigateToForgotScreen,
-        state = state,
-        action = viewModel::submitAction,
-        googleSignInAction = googleSignInViewModel::submitAction,
-        onBackPressed = onBackPressed
-    )
-}
-
-@Composable
-private fun LoginContent(
-    navigateToSignupScreen: () -> Unit,
-    navigateToForgotScreen: () -> Unit,
-    state: LoginState = LoginState(),
-    action: (LoginAction) -> Unit,
-    googleSignInAction: (GoogleSignInAction) -> Unit,
-    onBackPressed: () -> Unit
-) {
-
-    val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
-    val isLoadingButton = remember { mutableStateOf(false) }
-
-    LaunchedEffect(state.hasFeedback) {
         if (state.hasFeedback) {
             scope.launch {
                 val result = snackbarHostState
@@ -126,12 +105,54 @@ private fun LoginContent(
                     )
 
                 if (result == SnackbarResult.Dismissed) {
-                    action(LoginAction.ResetErrorState)
+                    action(ResetErrorState)
                 }
 
             }
         }
+
+        if (googleState == GoogleSignInState.Error()) {
+            val errorState = googleState as GoogleSignInState.Error
+            scope.launch {
+                val result = errorState.feedbackUI?.let { context.getString(it.second) }?.let {
+                    snackbarHostState
+                        .showSnackbar(
+                            message = it
+                        )
+                }
+
+                if (result == SnackbarResult.Dismissed) {
+                    googleSignInViewModel.submitAction(GoogleSignInAction.ResetErrorState)
+                }
+            }
+        }
     }
+
+    LoginContent(
+        navigateToSignupScreen = navigateToSignupScreen,
+        navigateToForgotScreen = navigateToForgotScreen,
+        state = state,
+        action = action,
+        googleSignInAction = googleSignInViewModel::submitAction,
+        onBackPressed = onBackPressed,
+        snackbarHostState = snackbarHostState,
+        context = context
+    )
+}
+
+@Composable
+private fun LoginContent(
+    navigateToSignupScreen: () -> Unit,
+    navigateToForgotScreen: () -> Unit,
+    state: LoginState = LoginState(),
+    action: (LoginAction) -> Unit,
+    googleSignInAction: (GoogleSignInAction) -> Unit,
+    onBackPressed: () -> Unit,
+    snackbarHostState: SnackbarHostState,
+    context: Context
+) {
+
+    val isLoadingButton = remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -210,7 +231,7 @@ private fun LoginContent(
                         ),
                         onValueChange = {
                             action(
-                                LoginAction.OnValueChange(
+                                OnValueChange(
                                     value = it,
                                     type = InputType.EMAIL
                                 )
@@ -244,7 +265,7 @@ private fun LoginContent(
                             if (state.password.isNotEmpty()) {
                                 IconButton(
                                     onClick = {
-                                        action(LoginAction.OnPasswordVisibilityChange)
+                                        action(OnPasswordVisibilityChange)
                                     },
                                     content = {
                                         Icon(
@@ -267,7 +288,7 @@ private fun LoginContent(
                         ),
                         onValueChange = {
                             action(
-                                LoginAction.OnValueChange(
+                                OnValueChange(
                                     value = it,
                                     type = InputType.PASSWORD
                                 )
@@ -281,7 +302,7 @@ private fun LoginContent(
                         text = stringResource(R.string.label_button_login_screen),
                         isLoading = false,
                         enabled = state.enableSignInButton,
-                        onClick = { action(LoginAction.OnSignIn) }
+                        onClick = { action(OnSignIn) }
                     )
 
                     Spacer(Modifier.height(20.dp))
@@ -380,7 +401,9 @@ private fun LoginScreenPreview() {
             state = LoginState(),
             action = {},
             googleSignInAction = {},
-            onBackPressed = {}
+            onBackPressed = {},
+            snackbarHostState = remember { SnackbarHostState() },
+            context = LocalContext.current
         )
     }
 }

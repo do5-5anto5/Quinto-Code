@@ -1,6 +1,7 @@
 package com.do55anto5.quinto_code.presenter.screens.authentication.signup.screen
 
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -84,22 +85,60 @@ fun SignupScreen(
     val googleSignInViewModel = koinViewModel<GoogleSignInViewModel>()
     val state by viewModel.state.collectAsState()
     val googleState by googleSignInViewModel.state.collectAsState()
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val action = viewModel::submitAction
 
-    LaunchedEffect(state.isAuthenticated, googleState == GoogleSignInState.IsAuthenticated(true)) {
+    LaunchedEffect(state.isAuthenticated, state.hasFeedBack, googleState == GoogleSignInState.IsAuthenticated(true)) {
         if (
             state.isAuthenticated ||
             googleState == GoogleSignInState.IsAuthenticated(true)
         ) {
             navigateToAppScreen()
         }
+
+        if (state.hasFeedBack) {
+            scope.launch {
+                val result = snackbarHostState
+                    .showSnackbar(
+                        message = context.getString(
+                            state.feedbackUI?.second ?: R.string.error_generic
+                        )
+                    )
+
+                if (result == SnackbarResult.Dismissed) {
+                    action(ResetErrorState)
+                }
+
+            }
+        }
+
+        if (googleState == GoogleSignInState.Error()) {
+            val errorState = googleState as GoogleSignInState.Error
+            scope.launch {
+                val result = errorState.feedbackUI?.let { context.getString(it.second) }?.let {
+                    snackbarHostState
+                        .showSnackbar(
+                            message = it
+                        )
+                }
+
+                if (result == SnackbarResult.Dismissed) {
+                    googleSignInViewModel.submitAction(GoogleSignInAction.ResetErrorState)
+                }
+            }
+        }
     }
 
     SignupContent(
         navigateToLoginScreen = navigateToLoginScreen,
         state = state,
-        action = viewModel::submitAction,
+        action = action,
         googleSignInAction = googleSignInViewModel::submitAction,
-        onBackPressed = onBackPressed
+        onBackPressed = onBackPressed,
+        snackbarHostState = snackbarHostState,
+        context = context
     )
 }
 
@@ -109,28 +148,12 @@ private fun SignupContent(
     state: SignupState,
     action: (SignupAction) -> Unit,
     googleSignInAction: (GoogleSignInAction) -> Unit,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    snackbarHostState: SnackbarHostState,
+    context: Context
 ) {
 
-    val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
     val isLoadingButton = remember { mutableStateOf(false) }
-
-    LaunchedEffect(state.hasFeedBack) {
-        scope.launch {
-            val result = snackbarHostState
-                .showSnackbar(
-                    message = context.getString(
-                        state.feedbackUI?.second ?: R.string.error_generic
-                    )
-                )
-
-            if (result == SnackbarResult.Dismissed) {
-                action(ResetErrorState)
-            }
-        }
-    }
 
     Scaffold(
         topBar = {
@@ -363,7 +386,9 @@ private fun SignupScreenPreview() {
             state = SignupState(),
             action = {},
             googleSignInAction = {},
-            onBackPressed = {}
+            onBackPressed = {},
+            snackbarHostState = SnackbarHostState(),
+            context = LocalContext.current
         )
     }
 }

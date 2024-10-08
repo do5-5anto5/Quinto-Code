@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,6 +47,7 @@ import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.st
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.viewmodel.GoogleSignInViewModel
 import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
 import com.do55anto5.quinto_code.presenter.theme.UrbanistFamily
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -55,10 +59,29 @@ fun HomeAuthenticationScreen(
 
     val googleSignInViewModel = koinViewModel<GoogleSignInViewModel>()
     val googleState by googleSignInViewModel.state.collectAsState()
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(googleState == GoogleSignInState.IsAuthenticated(true)) {
-        if (googleState == GoogleSignInState.IsAuthenticated(true)){
+        if (googleState == GoogleSignInState.IsAuthenticated(true)) {
             navigateToAppScreen()
+        }
+
+        if (googleState == GoogleSignInState.Error()) {
+            val errorState = googleState as GoogleSignInState.Error
+            scope.launch {
+                val result = errorState.feedbackUI?.let { context.getString(it.second) }?.let {
+                    snackbarHostState
+                        .showSnackbar(
+                            message = it
+                        )
+                }
+
+                if (result == SnackbarResult.Dismissed) {
+                    googleSignInViewModel.submitAction(GoogleSignInAction.ResetErrorState)
+                }
+            }
         }
     }
 

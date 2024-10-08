@@ -5,6 +5,7 @@ import androidx.credentials.Credential
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
 import com.do55anto5.quinto_code.core.constants.ApiKey.WEB_CLIENT_ID
+import com.do55anto5.quinto_code.core.custom_errors.AuthError
 import com.do55anto5.quinto_code.core.helper.FirebaseHelper.Companion.getAuth
 import com.do55anto5.quinto_code.domain.remote.repository.authentication.AuthenticationRepository
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
@@ -72,7 +73,7 @@ class AuthenticationRepositoryImpl : AuthenticationRepository {
 
             Result.success(Unit)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(AuthError.fromException(e))
         }
     }
 
