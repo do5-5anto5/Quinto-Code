@@ -3,6 +3,7 @@ package com.do55anto5.quinto_code.presenter.screens.authentication.forgot_passwo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.do55anto5.quinto_code.R
 import com.do55anto5.quinto_code.core.enums.feedback.FeedbackType
 import com.do55anto5.quinto_code.core.enums.input.InputType
 import com.do55anto5.quinto_code.core.helper.FirebaseHelper
@@ -66,6 +67,16 @@ class ForgotPasswordViewModel(
                 forgotPasswordUseCase(
                     email = _state.value.email
                 )
+
+                _state.update { currentState ->
+                    currentState.copy(
+                        hasFeedBack = true,
+                        feedbackUI = Pair(
+                            FeedbackType.SUCCESS,
+                            R.string.snack_bar_text_success_forgot_password_screen
+                        )
+                    )
+                }
             } catch (exception: Exception) {
                 exception.printStackTrace()
 

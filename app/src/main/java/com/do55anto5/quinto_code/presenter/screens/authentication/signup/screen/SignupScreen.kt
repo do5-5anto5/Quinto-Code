@@ -30,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -114,6 +115,7 @@ private fun SignupContent(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
+    val isLoadingButton = remember { mutableStateOf(false) }
 
     LaunchedEffect(state.hasFeedBack) {
         scope.launch {
@@ -299,7 +301,11 @@ private fun SignupContent(
                         content = {
                             SocialButton(
                                 icon = painterResource(id = R.drawable.ic_google),
-                                onClick = { googleSignInAction(GoogleSignInAction.SignIn(context)) }
+                                isLoading = isLoadingButton.value,
+                                onClick = {
+                                    googleSignInAction(GoogleSignInAction.SignIn(context))
+                                    isLoadingButton.value = true
+                                }
                             )
                         }
                     )

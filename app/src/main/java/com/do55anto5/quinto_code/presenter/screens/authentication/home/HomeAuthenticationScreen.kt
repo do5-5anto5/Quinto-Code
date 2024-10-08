@@ -21,6 +21,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -77,6 +79,7 @@ private fun HomeAuthenticationContent(
 ) {
 
     val context = LocalContext.current
+    val isLoadingButton = remember { mutableStateOf(false) }
 
     Scaffold(
         containerColor = QuintoCodeTheme.colorScheme.backgroundColor,
@@ -121,9 +124,12 @@ private fun HomeAuthenticationContent(
                         modifier = Modifier
                             .fillMaxWidth(),
                         icon = painterResource(id = R.drawable.ic_google),
-                        isLoading = false,
+                        isLoading = isLoadingButton.value,
                         text = stringResource(R.string.label_sign_with_google_authentication_screen),
-                        onClick = { googleSignInAction(GoogleSignInAction.SignIn(context)) }
+                        onClick = {
+                            googleSignInAction(GoogleSignInAction.SignIn(context))
+                            isLoadingButton.value = true
+                        }
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
