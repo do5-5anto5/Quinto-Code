@@ -5,6 +5,11 @@
     <!--    Generic-->
     <string name="error_generic">Ocorreu um erro, por favor tente novamente mais tarde.</string>
 
+    <!--    Errors-->
+    <string name="error_sign_in_cancelled">Authenticação cancelada</string>
+    <string name="error_invalid_credential">Credencial inválida</string>
+    <string name="error_network">Sem conexão com a internet</string>
+
     <!--    Firebase Authentication-->
     <string name="email_in_use_firebase_authentication">Este e-mail já está em uso.</string>
     <string name="strong_password_firebase_authentication">Insira uma senha mais forte.</string>
