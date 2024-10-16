@@ -20,6 +20,9 @@ This project offers a starter template for Android application development using
     * Lottie Compose: Enables easy integration of animations into Compose.
     * Firebase Authentication: Secure authentication solution.
     * Firebase Realtime Database: NoSQL cloud database for real-time data synchronization.
+    * Google Id: Manage Google Account logins in Android apps.
+    * Android Credentials: Manage user credentials in Android apps.
+    * Android Credentials Play Services Auth: Manage user credentials in Android apps using Play Services Auth.
 
 ## Roadmap
 
