@@ -74,4 +74,18 @@
     <string name="label_hub_navigation_drawer_item">Hub</string>
     <string name="label_show_profile_navigation_drawer_header">ver perfil</string>
 
+<!--    Profile Screen-->
+    <string name="top_bar_label_profile_screen">Meu Perfil</string>
+    <string name="icon_description_edit_label_profile_screen">Editar foto do perfil</string>
+    <string name="text_field_label_name_profile_screen">Nome</string>
+    <string name="text_field_label_surname_profile_screen">Sobrenome</string>
+    <string name="text_field_label_email_profile_screen">Email</string>
+    <string name="text_field_label_phone_profile_screen">Celular</string>
+    <string name="text_field_label_gender_profile_screen">Gênero</string>
+    <string name="placeholder_input_name_profile_screen">Inserir/Editar Nome</string>
+    <string name="placeholder_input_surname_profile_screen">Inserir/Editar Sobrenome</string>
+    <string name="placeholder_input_email_profile_screen">Editar Email</string>
+    <string name="placeholder_input_phone_profile_screen">Editar Celular</string>
+    <string name="placeholder_input_gender_profile_screen">Editar Gênero</string>
+    <string name="text_button_edit_profile_screen">Editar</string>
 </resources>

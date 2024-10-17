@@ -78,13 +78,20 @@ fun TextFieldUI(
             enabled = enabled,
             label = {
                 Text(
-                    text = label
+                    text = label,
+                    style = TextStyle(
+                        fontSize = 18.sp,
+                        lineHeight = 19.6.sp,
+                        fontFamily = UrbanistFamily,
+                        letterSpacing = 0.2.sp
+                    )
                 )
             },
             placeholder = {
                 Text(
                     text = placeholder,
                     style = TextStyle(
+                        fontSize = 18.sp,
                         lineHeight = 19.6.sp,
                         fontFamily = UrbanistFamily,
                         letterSpacing = 0.2.sp
@@ -160,7 +167,7 @@ private fun TextFieldUIPreview() {
                 },
                 mTrailingIcon = {
                     IconButton(
-                        onClick = {  },
+                        onClick = { },
                         content = {
                             Icon(
                                 painter = painterResource(R.drawable.ic_show),
