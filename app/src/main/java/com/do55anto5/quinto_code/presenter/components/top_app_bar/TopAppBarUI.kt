@@ -54,7 +54,7 @@ fun TopAppBarUI(
             )
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = QuintoCodeTheme.colorScheme.transparentColor,
+            containerColor = QuintoCodeTheme.colorScheme.backgroundColor,
             navigationIconContentColor = QuintoCodeTheme.colorScheme.topAppBarColor,
             actionIconContentColor = QuintoCodeTheme.colorScheme.topAppBarColor,
             titleContentColor = QuintoCodeTheme.colorScheme.topAppBarColor,
