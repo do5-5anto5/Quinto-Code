@@ -2,7 +2,7 @@ package com.do55anto5.quinto_code.core.helper
 
 import com.do55anto5.quinto_code.R
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 
 class FirebaseHelper {
 
@@ -11,7 +11,7 @@ class FirebaseHelper {
 
         fun getAuth() = FirebaseAuth.getInstance()
 
-        fun getDatabase() = FirebaseDatabase.getInstance().reference
+        fun getDatabase() = FirebaseFirestore.getInstance()
 
         fun getUserId() = getAuth().currentUser?.uid.orEmpty()
 
