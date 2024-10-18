@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -106,18 +107,25 @@ fun TextFieldUI(
             singleLine = singleLine,
             shape = RoundedCornerShape(12.dp),
             colors = TextFieldDefaults.colors(
+                selectionColors = TextSelectionColors(
+                    handleColor = QuintoCodeTheme.colorScheme.defaultColor,
+                    backgroundColor = QuintoCodeTheme.colorScheme.defaultColor),
                 unfocusedContainerColor = QuintoCodeTheme.colorScheme.textFieldBackGroundColor,
                 focusedContainerColor = QuintoCodeTheme.colorScheme.textFieldBackGroundColor,
                 errorContainerColor = QuintoCodeTheme.colorScheme.alphaDefaultColor,
+                disabledContainerColor = QuintoCodeTheme.colorScheme.greyscale700Color,
                 unfocusedIndicatorColor = QuintoCodeTheme.colorScheme.transparentColor,
                 focusedIndicatorColor = QuintoCodeTheme.colorScheme.transparentColor,
                 errorIndicatorColor = QuintoCodeTheme.colorScheme.transparentColor,
+                cursorColor = QuintoCodeTheme.colorScheme.defaultColor,
                 unfocusedTextColor = QuintoCodeTheme.colorScheme.textColor,
                 focusedTextColor = QuintoCodeTheme.colorScheme.textColor,
                 errorTextColor = QuintoCodeTheme.colorScheme.textColor,
+                disabledTextColor = QuintoCodeTheme.colorScheme.greyscale500Color,
                 unfocusedLabelColor = QuintoCodeTheme.colorScheme.greyscale500Color,
                 focusedLabelColor = QuintoCodeTheme.colorScheme.greyscale500Color,
                 errorLabelColor = QuintoCodeTheme.colorScheme.greyscale500Color,
+                disabledLabelColor = QuintoCodeTheme.colorScheme.greyscale500Color,
                 unfocusedLeadingIconColor = QuintoCodeTheme.colorScheme.greyscale500Color,
                 focusedLeadingIconColor = QuintoCodeTheme.colorScheme.blackColor,
                 errorLeadingIconColor = QuintoCodeTheme.colorScheme.defaultColor,

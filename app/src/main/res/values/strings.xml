@@ -80,7 +80,9 @@
     <string name="text_field_label_name_profile_screen">Nome</string>
     <string name="text_field_label_surname_profile_screen">Sobrenome</string>
     <string name="text_field_label_email_profile_screen">Email</string>
+    <string name="text_field_label_city_profile_screen">Cidade</string>
     <string name="placeholder_input_name_profile_screen">Inserir/Editar Nome</string>
     <string name="placeholder_input_surname_profile_screen">Inserir/Editar Sobrenome</string>
+    <string name="placeholder_input_city_profile_screen">Inserir/Editar Cidade</string>
     <string name="text_button_edit_profile_screen">Salvar Edição</string>
 </resources>

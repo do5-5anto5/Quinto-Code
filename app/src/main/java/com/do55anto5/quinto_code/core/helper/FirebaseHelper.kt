@@ -13,6 +13,8 @@ class FirebaseHelper {
 
         fun getDatabase() = FirebaseFirestore.getInstance()
 
+        fun getCurrentUser() = getAuth().currentUser
+
         fun getUserId() = getAuth().currentUser?.uid.orEmpty()
 
         fun isAuthenticated() = getAuth().currentUser != null

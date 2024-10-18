@@ -45,6 +45,12 @@ val presenterModule = module {
     }
 
     viewModel {
+        ForgotPasswordViewModel(
+            forgotPasswordUseCase = get()
+        )
+    }
+
+    viewModel {
         GoogleSignInViewModel(
             useCase = get()
         )
@@ -55,8 +61,9 @@ val presenterModule = module {
     }
 
     viewModel {
-        ForgotPasswordViewModel(
-            forgotPasswordUseCase = get()
+        ProfileViewModel(
+            saveUserUseCase = get(),
+            getUserUseCase = get()
         )
     }
 
@@ -82,10 +89,6 @@ val presenterModule = module {
 
     viewModel {
         NotificationViewModel()
-    }
-
-    viewModel {
-        ProfileViewModel()
     }
 
 }

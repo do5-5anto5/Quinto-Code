@@ -4,3 +4,9 @@ enum class InputType {
     EMAIL,
     PASSWORD
 }
+
+enum class EditFieldType {
+    NAME,
+    SURNAME,
+    CITY
+}
