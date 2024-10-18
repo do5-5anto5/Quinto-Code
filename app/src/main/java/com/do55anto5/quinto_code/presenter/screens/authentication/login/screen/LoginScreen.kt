@@ -59,10 +59,12 @@ import com.do55anto5.quinto_code.presenter.components.snackbar.FeedbackUI
 import com.do55anto5.quinto_code.presenter.components.text_field.TextFieldUI
 import com.do55anto5.quinto_code.presenter.components.top_app_bar.TopAppBarUI
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.action.GoogleSignInAction
-import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.state.GoogleSignInState
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.viewmodel.GoogleSignInViewModel
 import com.do55anto5.quinto_code.presenter.screens.authentication.login.action.LoginAction
-import com.do55anto5.quinto_code.presenter.screens.authentication.login.action.LoginAction.*
+import com.do55anto5.quinto_code.presenter.screens.authentication.login.action.LoginAction.OnPasswordVisibilityChange
+import com.do55anto5.quinto_code.presenter.screens.authentication.login.action.LoginAction.OnSignIn
+import com.do55anto5.quinto_code.presenter.screens.authentication.login.action.LoginAction.OnValueChange
+import com.do55anto5.quinto_code.presenter.screens.authentication.login.action.LoginAction.ResetErrorState
 import com.do55anto5.quinto_code.presenter.screens.authentication.login.state.LoginState
 import com.do55anto5.quinto_code.presenter.screens.authentication.login.viewmodel.LoginViewModel
 import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
@@ -87,11 +89,13 @@ fun LoginScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val action = viewModel::submitAction
 
-    LaunchedEffect(state.isAuthenticated, state.hasFeedback, googleState == GoogleSignInState.IsAuthenticated(true)) {
-        if (
-            state.isAuthenticated ||
-            googleState == GoogleSignInState.IsAuthenticated(true))
-        {
+    LaunchedEffect(
+        state.isAuthenticated,
+        state.hasFeedback,
+        googleState.isAuthenticated,
+        googleState.hasFeedback
+    ) {
+        if (state.isAuthenticated || googleState.isAuthenticated) {
             navigateToAppScreen()
         }
 
@@ -111,15 +115,14 @@ fun LoginScreen(
             }
         }
 
-        if (googleState == GoogleSignInState.Error()) {
-            val errorState = googleState as GoogleSignInState.Error
+        if (googleState.hasFeedback) {
             scope.launch {
-                val result = errorState.feedbackUI?.let { context.getString(it.second) }?.let {
-                    snackbarHostState
+                   val result = snackbarHostState
                         .showSnackbar(
-                            message = it
+                            context.getString(
+                                googleState.feedbackUI?.second ?: R.string.error_generic
+                            )
                         )
-                }
 
                 if (result == SnackbarResult.Dismissed) {
                     googleSignInViewModel.submitAction(GoogleSignInAction.ResetErrorState)

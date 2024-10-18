@@ -60,7 +60,6 @@ import com.do55anto5.quinto_code.presenter.components.snackbar.FeedbackUI
 import com.do55anto5.quinto_code.presenter.components.text_field.TextFieldUI
 import com.do55anto5.quinto_code.presenter.components.top_app_bar.TopAppBarUI
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.action.GoogleSignInAction
-import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.state.GoogleSignInState
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.viewmodel.GoogleSignInViewModel
 import com.do55anto5.quinto_code.presenter.screens.authentication.signup.action.SignupAction
 import com.do55anto5.quinto_code.presenter.screens.authentication.signup.action.SignupAction.OnPasswordVisibilityChange
@@ -90,10 +89,15 @@ fun SignupScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val action = viewModel::submitAction
 
-    LaunchedEffect(state.isAuthenticated, state.hasFeedBack, googleState == GoogleSignInState.IsAuthenticated(true)) {
+    LaunchedEffect(
+        state.isAuthenticated,
+        state.hasFeedBack,
+        googleState.isAuthenticated,
+        googleState.hasFeedback
+    ) {
         if (
             state.isAuthenticated ||
-            googleState == GoogleSignInState.IsAuthenticated(true)
+            googleState.isAuthenticated
         ) {
             navigateToAppScreen()
         }
@@ -114,15 +118,14 @@ fun SignupScreen(
             }
         }
 
-        if (googleState == GoogleSignInState.Error()) {
-            val errorState = googleState as GoogleSignInState.Error
+        if (googleState.hasFeedback) {
             scope.launch {
-                val result = errorState.feedbackUI?.let { context.getString(it.second) }?.let {
-                    snackbarHostState
-                        .showSnackbar(
-                            message = it
+                val result = snackbarHostState
+                    .showSnackbar(
+                        message = context.getString(
+                            state.feedbackUI?.second ?: R.string.error_generic
                         )
-                }
+                    )
 
                 if (result == SnackbarResult.Dismissed) {
                     googleSignInViewModel.submitAction(GoogleSignInAction.ResetErrorState)

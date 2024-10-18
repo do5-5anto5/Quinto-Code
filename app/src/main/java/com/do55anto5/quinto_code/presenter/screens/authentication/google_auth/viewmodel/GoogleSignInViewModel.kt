@@ -10,15 +10,15 @@ import com.do55anto5.quinto_code.domain.remote.usecase.authentication.GoogleSign
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.action.GoogleSignInAction
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.state.GoogleSignInState
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class GoogleSignInViewModel(
     private val useCase: GoogleSignInUseCase
 ) : ViewModel() {
-    private val _state = MutableStateFlow<GoogleSignInState>(GoogleSignInState.Idle)
-    val state: StateFlow<GoogleSignInState> = _state.asStateFlow()
+    private val _state = MutableStateFlow(GoogleSignInState())
+    val state = _state.asStateFlow()
 
     fun submitAction(action: GoogleSignInAction) {
         when (action) {
@@ -29,41 +29,62 @@ class GoogleSignInViewModel(
 
     private fun signIn(context: Context) {
         viewModelScope.launch {
-            _state.value = GoogleSignInState.Loading
+            _state.update { currentState ->
+                currentState.copy(
+                    isLoading = true
+                )
+            }
             try {
                 useCase(context).fold(
                     onSuccess = {
-                        _state.value = GoogleSignInState.IsAuthenticated(true)
+                        _state.update { currentState ->
+                            currentState.copy(
+                                isAuthenticated = true
+                            )
+                        }
                     },
                     onFailure = { exception ->
                         when (exception) {
                             is AuthError -> {
-                                _state.value = GoogleSignInState.Error(
-                                    hasFeedback = true,
-                                    feedbackUI = exception.toFeedbackUI()
-                                )
+                                _state.update { currentState ->
+                                    currentState.copy(
+                                        hasFeedback = true,
+                                        feedbackUI = exception.toFeedbackUI()
+                                    )
+                                }
                             }
+
                             else -> {
-                                _state.value = GoogleSignInState.Error(
-                                    hasFeedback = true,
-                                    feedbackUI = FeedbackType.ERROR to R.string.error_generic
-                                )
+                                _state.update { currentState ->
+                                    currentState.copy(
+                                        hasFeedback = true,
+                                        feedbackUI = FeedbackType.ERROR to R.string.error_generic
+                                    )
+                                }
                             }
                         }
                     }
                 )
             } catch (e: Exception) {
-                _state.value = GoogleSignInState.Error(
-                    hasFeedback = true,
-                    feedbackUI = (e as? AuthError)?.toFeedbackUI()
-                        ?: (FeedbackType.ERROR to R.string.error_generic)
-                )
+                _state.update { currentState ->
+                    currentState.copy(
+                        hasFeedback = true,
+                        feedbackUI = (e as? AuthError)?.toFeedbackUI()
+                            ?: (FeedbackType.ERROR to R.string.error_generic)
+                    )
+                }
             }
         }
     }
 
+
     private fun resetErrorState() {
-        _state.value = GoogleSignInState.Idle
+        _state.update { currentState ->
+            currentState.copy(
+                hasFeedback = false,
+                feedbackUI = null
+            )
+        }
     }
 
 }
