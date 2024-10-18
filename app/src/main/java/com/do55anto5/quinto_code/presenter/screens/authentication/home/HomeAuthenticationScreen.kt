@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -43,7 +45,6 @@ import com.do55anto5.quinto_code.presenter.components.button.PrimaryButton
 import com.do55anto5.quinto_code.presenter.components.button.SocialButton
 import com.do55anto5.quinto_code.presenter.components.divider.HorizontalDividerWithText
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.action.GoogleSignInAction
-import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.state.GoogleSignInState
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.viewmodel.GoogleSignInViewModel
 import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
 import com.do55anto5.quinto_code.presenter.theme.UrbanistFamily
@@ -63,20 +64,22 @@ fun HomeAuthenticationScreen(
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    LaunchedEffect(googleState == GoogleSignInState.IsAuthenticated(true)) {
-        if (googleState == GoogleSignInState.IsAuthenticated(true)) {
+    LaunchedEffect(
+        googleState.isAuthenticated,
+        googleState.hasFeedback
+    ) {
+        if (googleState.isAuthenticated) {
             navigateToAppScreen()
         }
 
-        if (googleState == GoogleSignInState.Error()) {
-            val errorState = googleState as GoogleSignInState.Error
+        if (googleState.hasFeedback) {
             scope.launch {
-                val result = errorState.feedbackUI?.let { context.getString(it.second) }?.let {
-                    snackbarHostState
-                        .showSnackbar(
-                            message = it
+                val result = snackbarHostState
+                    .showSnackbar(
+                        context.getString(
+                            googleState.feedbackUI?.second ?: R.string.error_generic
                         )
-                }
+                    )
 
                 if (result == SnackbarResult.Dismissed) {
                     googleSignInViewModel.submitAction(GoogleSignInAction.ResetErrorState)
@@ -88,7 +91,6 @@ fun HomeAuthenticationScreen(
     HomeAuthenticationContent(
         navigateToSignUpScreen = navigateToSignUpScreen,
         navigateToLoginScreen = navigateToLoginScreen,
-        navigateToAppScreen = navigateToAppScreen,
         googleSignInAction = googleSignInViewModel::submitAction
     )
 }
@@ -97,7 +99,6 @@ fun HomeAuthenticationScreen(
 private fun HomeAuthenticationContent(
     navigateToSignUpScreen: () -> Unit,
     navigateToLoginScreen: () -> Unit,
-    navigateToAppScreen: () -> Unit,
     googleSignInAction: (GoogleSignInAction) -> Unit
 ) {
 
@@ -110,6 +111,7 @@ private fun HomeAuthenticationContent(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
                     .padding(paddingValues)
                     .padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
