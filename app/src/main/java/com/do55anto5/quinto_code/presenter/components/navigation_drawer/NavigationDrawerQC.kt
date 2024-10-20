@@ -3,6 +3,7 @@ package com.do55anto5.quinto_code.presenter.components.navigation_drawer
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -49,6 +50,7 @@ fun NavigationDrawerQC(
     items: List<DrawerItem>,
     drawerIndex: Int,
     onClick: (Int) -> Unit,
+    navigateToProfileScreen: () -> Unit,
     content: @Composable () -> Unit
 ) {
 
@@ -83,6 +85,7 @@ fun NavigationDrawerQC(
                             .fillMaxWidth()
                             .weight(1f)
                             .padding(horizontal = 16.dp)
+                            .clickable { navigateToProfileScreen() }
                     ) {
                         Text(
                             text = "MockName",
@@ -199,6 +202,7 @@ private fun Preview() {
             onClick = {
                 drawerIndex = it
             },
+            navigateToProfileScreen = {},
             content = {}
         )
     }

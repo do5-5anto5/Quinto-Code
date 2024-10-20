@@ -19,8 +19,18 @@ class AppViewModel : ViewModel() {
         when (action) {
             is AppAction.DrawerItemClicked -> handleDrawerItemClick(action.index)
             is AppAction.DrawerStateChanged -> handleDrawerStateChange(action.isOpen)
-            is AppAction.NavigateBack -> handleNavigateBack()
+            is AppAction.NavigateBack -> navigateBack()
             is AppAction.OnLogout -> onLogout()
+        }
+    }
+
+    private fun navigateBack() {
+        viewModelScope.launch {
+            _state.update { currentState ->
+                currentState.copy(
+                    currentDrawerIndex = 0
+                )
+            }
         }
     }
 
@@ -28,7 +38,6 @@ class AppViewModel : ViewModel() {
         viewModelScope.launch {
             _state.update { currentState ->
                 currentState.copy(
-                    previousDrawerIndex = currentState.currentDrawerIndex,
                     currentDrawerIndex = index,
                     drawerStateValue = DrawerValue.Closed
                 )
@@ -40,10 +49,6 @@ class AppViewModel : ViewModel() {
         _state.update {
             it.copy(drawerStateValue = if (isOpen) DrawerValue.Open else DrawerValue.Closed)
         }
-    }
-
-    private fun handleNavigateBack() {
-        // Implement
     }
 
     private fun onLogout() {

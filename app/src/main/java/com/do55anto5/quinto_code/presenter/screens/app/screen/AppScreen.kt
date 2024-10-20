@@ -2,6 +2,7 @@ package com.do55anto5.quinto_code.presenter.screens.app.screen
 
 
 import android.content.Intent
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -11,6 +12,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -35,8 +37,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.do55anto5.quinto_code.MainActivity
 import com.do55anto5.quinto_code.R
@@ -56,7 +57,9 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun AppScreen() {
+fun AppScreen(
+    navigateToProfileScreen: () -> Unit
+) {
 
     val viewModel = koinViewModel<AppViewModel>()
     val appState by viewModel.state.collectAsState()
@@ -64,8 +67,7 @@ fun AppScreen() {
     val context = LocalContext.current
 
     LaunchedEffect(!appState.isAuthenticated) {
-        if (!appState.isAuthenticated)
-        {
+        if (!appState.isAuthenticated) {
             val intent = Intent(context, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             context.startActivity(intent)
@@ -74,7 +76,8 @@ fun AppScreen() {
 
     AppContent(
         state = appState,
-        action = viewModel::submitAction
+        action = viewModel::submitAction,
+        navigateToProfileScreen = navigateToProfileScreen
     )
 }
 
@@ -82,7 +85,8 @@ fun AppScreen() {
 @Composable
 private fun AppContent(
     state: AppState,
-    action: (AppAction) -> Unit
+    action: (AppAction) -> Unit,
+    navigateToProfileScreen: () -> Unit
 ) {
 
     val drawerState = rememberDrawerState(state.drawerStateValue)
@@ -102,6 +106,9 @@ private fun AppContent(
                 action(AppAction.DrawerItemClicked(it))
             }
         },
+        navigateToProfileScreen = {
+            navigateToProfileScreen()
+        },
         content = {
             Scaffold(
                 modifier = Modifier,
@@ -109,11 +116,12 @@ private fun AppContent(
                     TopAppBar(
                         title = {
                             Box(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
                                 contentAlignment = Alignment.Center,
                                 content = {
                                     Text(
-                                        modifier = Modifier
-                                            .padding(start = 120.dp),
+                                        modifier = Modifier,
                                         text = stringResource(
                                             DrawerItem.items[state.currentDrawerIndex].title
                                         ),
@@ -174,7 +182,8 @@ private fun AppContent(
                             AnimatedContent(
                                 targetState = state.currentDrawerIndex,
                                 transitionSpec = {
-                                    val direction = if (targetState > state.previousDrawerIndex) 1 else -1
+                                    val direction =
+                                        if (targetState > state.previousDrawerIndex) 1 else -1
                                     (slideInHorizontally { width -> direction * width } + fadeIn()).togetherWith(
                                         slideOutHorizontally { width -> -direction * width } + fadeOut())
                                 },
@@ -187,6 +196,9 @@ private fun AppContent(
                                         3 -> HubScreen()
                                         4 -> FavoriteScreen()
                                     }
+                                    BackHandler {
+                                        action(AppAction.NavigateBack)
+                                    }
                                 },
                                 label = ""
                             )
@@ -198,11 +210,10 @@ private fun AppContent(
     )
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun AppScreenPreview() {
-    AppContent(
-        state = AppState(),
-        action = {}
+    AppScreen(
+        navigateToProfileScreen = {}
     )
 }
