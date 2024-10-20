@@ -75,7 +75,7 @@ fun NavGraphBuilder.authenticationNavHost(navHostController: NavHostController) 
             )
         }
 
-        appNavHost()
+        appNavHost(navHostController = navHostController)
 
     }
 }
