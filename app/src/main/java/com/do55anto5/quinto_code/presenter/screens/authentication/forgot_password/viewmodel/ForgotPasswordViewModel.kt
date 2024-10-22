@@ -64,6 +64,9 @@ class ForgotPasswordViewModel(
     private fun onSend() {
         viewModelScope.launch {
             try {
+                _state.update { currentState ->
+                    currentState.copy(isLoading = true)
+                }
                 forgotPasswordUseCase(
                     email = _state.value.email
                 )
@@ -74,7 +77,8 @@ class ForgotPasswordViewModel(
                         feedbackUI = Pair(
                             FeedbackType.SUCCESS,
                             R.string.snack_bar_text_success_forgot_password_screen
-                        )
+                        ),
+                        isLoading = false
                     )
                 }
             } catch (exception: Exception) {
@@ -86,7 +90,8 @@ class ForgotPasswordViewModel(
                         feedbackUI = Pair(
                             FeedbackType.ERROR,
                             FirebaseHelper.validateError(exception.message)
-                        )
+                        ),
+                        isLoading = false
                     )
                 }
             }

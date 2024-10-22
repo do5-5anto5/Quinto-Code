@@ -31,7 +31,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -154,8 +153,6 @@ private fun LoginContent(
     snackbarHostState: SnackbarHostState,
     context: Context
 ) {
-
-    val isLoadingButton = remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -303,7 +300,7 @@ private fun LoginContent(
 
                     PrimaryButton(
                         text = stringResource(R.string.label_button_login_screen),
-                        isLoading = false,
+                        isLoading = state.isLoading,
                         enabled = state.enableSignInButton,
                         onClick = { action(OnSignIn) }
                     )
@@ -341,10 +338,9 @@ private fun LoginContent(
                         content = {
                             SocialButton(
                                 icon = painterResource(id = R.drawable.ic_google),
-                                isLoading = isLoadingButton.value,
+                                isLoading = state.isLoading,
                                 onClick = {
                                     googleSignInAction(GoogleSignInAction.SignIn(context))
-                                    isLoadingButton.value = true
                                 }
                             )
                         }
