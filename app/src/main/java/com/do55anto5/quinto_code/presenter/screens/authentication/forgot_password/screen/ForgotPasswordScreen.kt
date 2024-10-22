@@ -189,7 +189,7 @@ private fun ForgotPasswordContent(
 
                     PrimaryButton(
                         text = stringResource(R.string.button_send_email_forgot_password_screen),
-                        isLoading = false,
+                        isLoading = state.isLoading,
                         enabled = state.enableSendButton,
                         onClick = { action(OnSend) }
                     )
