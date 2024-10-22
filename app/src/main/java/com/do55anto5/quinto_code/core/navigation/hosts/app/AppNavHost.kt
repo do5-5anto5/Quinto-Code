@@ -1,5 +1,9 @@
 package com.do55anto5.quinto_code.core.navigation.hosts.app
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.scaleIn
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -12,7 +16,18 @@ fun NavGraphBuilder.appNavHost(navHostController: NavHostController) {
     navigation<AppRoutes.Graph>(
         startDestination = AppRoutes.App
     ) {
-        composable<AppRoutes.App> {
+        composable<AppRoutes.App>(
+            enterTransition = {
+                scaleIn(
+                    animationSpec = spring(
+                        stiffness = Spring.StiffnessVeryLow,
+                        dampingRatio = Spring.DampingRatioMediumBouncy
+                        ),
+                    initialScale = 0f,
+                    transformOrigin = TransformOrigin(0.5f, 0.5f)
+                )
+            }
+        ) {
             AppScreen(
                 navigateToProfileScreen = {
                     navHostController.navigate(AppRoutes.Profile)
@@ -20,7 +35,18 @@ fun NavGraphBuilder.appNavHost(navHostController: NavHostController) {
             )
         }
 
-        composable<AppRoutes.Profile> {
+        composable<AppRoutes.Profile>(
+            enterTransition = {
+                scaleIn(
+                    animationSpec = spring(
+                        stiffness = Spring.StiffnessVeryLow,
+                        dampingRatio = Spring.DampingRatioLowBouncy
+                    ),
+                    initialScale = 0f,
+                    transformOrigin = TransformOrigin(0.5f, 0.5f)
+                )
+            }
+        ) {
             ProfileScreen(
                 navigateBack = { navHostController.navigateUp() }
             )

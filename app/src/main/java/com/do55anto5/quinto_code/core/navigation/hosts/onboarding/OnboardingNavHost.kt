@@ -1,6 +1,10 @@
 package com.do55anto5.quinto_code.core.navigation.hosts.onboarding
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.scaleIn
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -18,7 +22,18 @@ fun OnboardingNavHost(navHostController: NavHostController) {
         navController = navHostController,
         startDestination = OnboardingRoutes.Splash
     ) {
-        composable<OnboardingRoutes.Splash> {
+        composable<OnboardingRoutes.Splash>(
+            enterTransition = {
+                scaleIn(
+                    animationSpec = spring(
+                        stiffness = Spring.StiffnessVeryLow,
+                        dampingRatio = Spring.DampingRatioLowBouncy
+                    ),
+                    initialScale = 0f,
+                    transformOrigin = TransformOrigin(0.5f, 0.5f)
+                )
+            }
+        ) {
             SplashScreen(
                 navigateToAppScreen = {
                     navHostController.navigate(AppRoutes.Graph) {
@@ -44,7 +59,18 @@ fun OnboardingNavHost(navHostController: NavHostController) {
             )
         }
 
-        composable<OnboardingRoutes.Welcome> {
+        composable<OnboardingRoutes.Welcome>(
+            enterTransition = {
+                scaleIn(
+                    animationSpec = spring(
+                        stiffness = Spring.StiffnessVeryLow,
+                        dampingRatio = Spring.DampingRatioLowBouncy
+                    ),
+                    initialScale = 0f,
+                    transformOrigin = TransformOrigin(0.5f, 0.5f)
+                )
+            }
+        ) {
             WelcomeScreen(
                 navigateToHomeAuthenticationScreen = {
                     navHostController.navigate(AuthenticationRoutes.Home) {

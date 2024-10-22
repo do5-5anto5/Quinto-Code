@@ -1,5 +1,9 @@
 package com.do55anto5.quinto_code.core.navigation.hosts.authentication
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.scaleIn
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -16,7 +20,18 @@ fun NavGraphBuilder.authenticationNavHost(navHostController: NavHostController) 
     navigation<AuthenticationRoutes.Graph>(
         startDestination = AuthenticationRoutes.Home
     ) {
-        composable<AuthenticationRoutes.Home> {
+        composable<AuthenticationRoutes.Home>(
+            enterTransition = {
+                scaleIn(
+                    animationSpec = spring(
+                        stiffness = Spring.StiffnessVeryLow,
+                        dampingRatio = Spring.DampingRatioHighBouncy
+                    ),
+                    initialScale = 0f,
+                    transformOrigin = TransformOrigin(0.5f, 0.5f)
+                )
+            }
+        ) {
             HomeAuthenticationScreen(
                 navigateToLoginScreen = {
                     navHostController.navigate(AuthenticationRoutes.Login)
@@ -34,7 +49,18 @@ fun NavGraphBuilder.authenticationNavHost(navHostController: NavHostController) 
             )
         }
 
-        composable<AuthenticationRoutes.SignUp> {
+        composable<AuthenticationRoutes.SignUp>(
+            enterTransition = {
+                scaleIn(
+                    animationSpec = spring(
+                        stiffness = Spring.StiffnessVeryLow,
+                        dampingRatio = Spring.DampingRatioLowBouncy
+                    ),
+                    initialScale = 0f,
+                    transformOrigin = TransformOrigin(0.5f, 0.5f)
+                )
+            }
+        ) {
             SignupScreen(
                 navigateToAppScreen = {
                     navHostController.navigate(AppRoutes.Graph) {
@@ -50,7 +76,18 @@ fun NavGraphBuilder.authenticationNavHost(navHostController: NavHostController) 
             )
         }
 
-        composable<AuthenticationRoutes.Login> {
+        composable<AuthenticationRoutes.Login>(
+            enterTransition = {
+                scaleIn(
+                    animationSpec = spring(
+                        stiffness = Spring.StiffnessVeryLow,
+                        dampingRatio = Spring.DampingRatioLowBouncy
+                    ),
+                    initialScale = 0f,
+                    transformOrigin = TransformOrigin(0.5f, 0.5f)
+                )
+            }
+        ) {
             LoginScreen(
                 navigateToAppScreen = {
                     navHostController.navigate(AppRoutes.Graph) {
@@ -69,7 +106,18 @@ fun NavGraphBuilder.authenticationNavHost(navHostController: NavHostController) 
             )
         }
 
-        composable<AuthenticationRoutes.ForgotPassword> {
+        composable<AuthenticationRoutes.ForgotPassword>(
+            enterTransition = {
+                scaleIn(
+                    animationSpec = spring(
+                        stiffness = Spring.StiffnessVeryLow,
+                        dampingRatio = Spring.DampingRatioLowBouncy
+                    ),
+                    initialScale = 0f,
+                    transformOrigin = TransformOrigin(0.5f, 0.5f)
+                )
+            }
+        ) {
             ForgotPasswordScreen(
                 onBackPressed = navHostController::popBackStack
             )
