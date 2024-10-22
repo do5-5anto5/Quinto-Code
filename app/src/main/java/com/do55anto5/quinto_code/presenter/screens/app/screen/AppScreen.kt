@@ -20,15 +20,19 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.material3.rememberDrawerState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,6 +47,7 @@ import com.do55anto5.quinto_code.MainActivity
 import com.do55anto5.quinto_code.R
 import com.do55anto5.quinto_code.core.helper.FirebaseHelper.Companion.logout
 import com.do55anto5.quinto_code.core.navigation.drawer.DrawerItem
+import com.do55anto5.quinto_code.presenter.components.bottom_sheet.BottomSheetUI
 import com.do55anto5.quinto_code.presenter.components.navigation_drawer.NavigationDrawerQC
 import com.do55anto5.quinto_code.presenter.screens.app.action.AppAction
 import com.do55anto5.quinto_code.presenter.screens.app.state.AppState
@@ -91,6 +96,12 @@ private fun AppContent(
 
     val drawerState = rememberDrawerState(state.drawerStateValue)
     val scope = rememberCoroutineScope()
+
+    val showBottomSheet = remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+        confirmValueChange = { true }
+    )
 
     LaunchedEffect(drawerState.currentValue) {
         action(AppAction.DrawerStateChanged(drawerState.currentValue == DrawerValue.Open))
@@ -155,8 +166,7 @@ private fun AppContent(
                         actions = {
                             IconButton(
                                 onClick = {
-                                    logout()
-                                    action(AppAction.OnLogout)
+                                    showBottomSheet.value = true
                                 },
                                 content = {
                                     Icon(
@@ -173,6 +183,8 @@ private fun AppContent(
                     )
                 },
                 content = { paddingValues ->
+
+                    
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -202,6 +214,32 @@ private fun AppContent(
                                 },
                                 label = ""
                             )
+
+                            if (showBottomSheet.value) {
+                                ModalBottomSheet(
+                                    onDismissRequest = {
+                                        showBottomSheet.value = false
+                                    },
+                                    sheetState = sheetState,
+                                    containerColor = QuintoCodeTheme.colorScheme.backgroundColor,
+                                    content = {
+                                        BottomSheetUI(
+                                            title = stringResource(R.string.bottom_sheet_title),
+                                            description = stringResource(R.string.bottom_sheet_description),
+                                            btnCancel = stringResource(R.string.bottom_sheet_cancel),
+                                            btnConfirm = stringResource(R.string.bottom_sheet_confirm),
+                                            onCancelClick = {
+                                                showBottomSheet.value = false
+                                            },
+                                            onConfirmClick = {
+                                                showBottomSheet.value = false
+                                                logout()
+                                                action(AppAction.OnLogout)
+                                            }
+                                        )
+                                    }
+                                )
+                            }
                         }
                     )
                 }
