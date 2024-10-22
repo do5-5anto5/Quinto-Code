@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color
 // Default
 val DefaultColor = Color(0xFFD4AF37)
 val DisabledDefaultColor = Color(0xFFA1893D)
-val AlphaDefaultColor = Color(0x12D4AF37)
+val AlphaDefaultColor = Color(0x31D4AF37)
 
 // Navigation Drawer
 val DrawerItemSelectedColor = Color(0xFF1A2634)
