@@ -10,6 +10,12 @@
     <string name="error_invalid_credential">Credencial inválida</string>
     <string name="error_network">Sem conexão com a internet</string>
 
+    <!--    Bootom Sheet-->
+    <string name="bottom_sheet_title">Saindo da sua conta</string>
+    <string name="bottom_sheet_description">Continuar e sair?</string>
+    <string name="bottom_sheet_confirm">Sim</string>
+    <string name="bottom_sheet_cancel">Cancelar</string>
+
     <!--    Firebase Authentication-->
     <string name="email_in_use_firebase_authentication">Este e-mail já está em uso.</string>
     <string name="strong_password_firebase_authentication">Insira uma senha mais forte.</string>
