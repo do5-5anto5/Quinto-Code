@@ -8,9 +8,8 @@ import kotlinx.coroutines.tasks.await
 
 class UserRepositoryImpl : UserRepository {
 
-    private val uid = FirebaseHelper.getUserId()
-
     override suspend fun saveUser(user: User) {
+        val uid = FirebaseHelper.getUserId()
         uid.let {
             val userRef = getDatabase().collection("users").document(it)
             userRef.set(user)
@@ -18,6 +17,7 @@ class UserRepositoryImpl : UserRepository {
     }
 
     override suspend fun getUser(): User {
+        val uid = FirebaseHelper.getUserId()
         uid.let {
             val docRef = getDatabase().collection("users").document(uid)
             val user = docRef.get()
