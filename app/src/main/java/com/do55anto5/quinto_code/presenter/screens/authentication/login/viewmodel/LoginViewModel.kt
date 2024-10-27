@@ -53,7 +53,8 @@ class LoginViewModel(
                 )
                 _state.update { currentState ->
                     currentState.copy(
-                        isAuthenticated = true
+                        isAuthenticated = true,
+                        isLoading = false
                     )
                 }
             } catch (exception: Exception) {

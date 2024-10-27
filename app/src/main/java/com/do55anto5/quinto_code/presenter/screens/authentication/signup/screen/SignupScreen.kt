@@ -59,6 +59,7 @@ import com.do55anto5.quinto_code.presenter.components.snackbar.FeedbackUI
 import com.do55anto5.quinto_code.presenter.components.text_field.TextFieldUI
 import com.do55anto5.quinto_code.presenter.components.top_app_bar.TopAppBarUI
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.action.GoogleSignInAction
+import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.state.GoogleSignInState
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.viewmodel.GoogleSignInViewModel
 import com.do55anto5.quinto_code.presenter.screens.authentication.signup.action.SignupAction
 import com.do55anto5.quinto_code.presenter.screens.authentication.signup.action.SignupAction.OnPasswordVisibilityChange
@@ -136,6 +137,7 @@ fun SignupScreen(
     SignupContent(
         navigateToLoginScreen = navigateToLoginScreen,
         state = state,
+        googleState = googleState,
         action = action,
         googleSignInAction = googleSignInViewModel::submitAction,
         onBackPressed = onBackPressed,
@@ -148,6 +150,7 @@ fun SignupScreen(
 private fun SignupContent(
     navigateToLoginScreen: () -> Unit,
     state: SignupState,
+    googleState: GoogleSignInState,
     action: (SignupAction) -> Unit,
     googleSignInAction: (GoogleSignInAction) -> Unit,
     onBackPressed: () -> Unit,
@@ -324,7 +327,7 @@ private fun SignupContent(
                         content = {
                             SocialButton(
                                 icon = painterResource(id = R.drawable.ic_google),
-                                isLoading = state.isLoading,
+                                isLoading = googleState.isLoading,
                                 onClick = {
                                     googleSignInAction(GoogleSignInAction.SignIn(context))
                                 }
@@ -384,6 +387,7 @@ private fun SignupScreenPreview() {
             navigateToLoginScreen = {},
             state = SignupState(),
             action = {},
+            googleState = GoogleSignInState(),
             googleSignInAction = {},
             onBackPressed = {},
             snackbarHostState = SnackbarHostState(),
