@@ -14,4 +14,6 @@ sealed class ProfileAction {
 
     data object OnGetUser: ProfileAction()
 
+    data object ResetErrorState: ProfileAction()
+
 }
