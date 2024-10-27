@@ -9,6 +9,15 @@
     <string name="error_sign_in_cancelled">Authenticação cancelada</string>
     <string name="error_invalid_credential">Credencial inválida</string>
     <string name="error_network">Sem conexão com a internet</string>
+    
+    <!--    Camera-->
+    <string name="empty_image_camera_screen">Ainda não há foto</string>
+    <string name="switch_camera_description_camera_screen">Switch camera</string>
+    <string name="open_gallery_description_camera_screen">Open gallery</string>
+    <string name="take_photo_description_camera_screen">Take photo</string>
+    <string name="title_photo_bottom_sheet">Salvar esta imagem?</string>
+    <string name="button_text_cancel_photo_bottom_sheet">Cancelar</string>
+    <string name="button_text_save_photo_bottom_sheet">Salvar</string>
 
     <!--    Bootom Sheet-->
     <string name="bottom_sheet_title">Saindo da sua conta</string>
@@ -91,5 +100,5 @@
     <string name="placeholder_input_surname_profile_screen">Inserir/Editar Sobrenome</string>
     <string name="placeholder_input_city_profile_screen">Inserir/Editar Cidade</string>
     <string name="text_button_edit_profile_screen">Salvar Edição</string>
-    <string name="snack_bar_text_success_profile_screen">Alterações salvas com sucesso</string>
+    <string name="snack_bar_text_success_profile_screen">Alterações salvas</string>
 </resources>
