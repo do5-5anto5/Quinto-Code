@@ -58,6 +58,7 @@ import com.do55anto5.quinto_code.presenter.components.snackbar.FeedbackUI
 import com.do55anto5.quinto_code.presenter.components.text_field.TextFieldUI
 import com.do55anto5.quinto_code.presenter.components.top_app_bar.TopAppBarUI
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.action.GoogleSignInAction
+import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.state.GoogleSignInState
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.viewmodel.GoogleSignInViewModel
 import com.do55anto5.quinto_code.presenter.screens.authentication.login.action.LoginAction
 import com.do55anto5.quinto_code.presenter.screens.authentication.login.action.LoginAction.OnPasswordVisibilityChange
@@ -134,6 +135,7 @@ fun LoginScreen(
         navigateToSignupScreen = navigateToSignupScreen,
         navigateToForgotScreen = navigateToForgotScreen,
         state = state,
+        googleState = googleState,
         action = action,
         googleSignInAction = googleSignInViewModel::submitAction,
         onBackPressed = onBackPressed,
@@ -147,6 +149,7 @@ private fun LoginContent(
     navigateToSignupScreen: () -> Unit,
     navigateToForgotScreen: () -> Unit,
     state: LoginState = LoginState(),
+    googleState: GoogleSignInState,
     action: (LoginAction) -> Unit,
     googleSignInAction: (GoogleSignInAction) -> Unit,
     onBackPressed: () -> Unit,
@@ -338,7 +341,7 @@ private fun LoginContent(
                         content = {
                             SocialButton(
                                 icon = painterResource(id = R.drawable.ic_google),
-                                isLoading = state.isLoading,
+                                isLoading = googleState.isLoading,
                                 onClick = {
                                     googleSignInAction(GoogleSignInAction.SignIn(context))
                                 }
@@ -398,6 +401,7 @@ private fun LoginScreenPreview() {
             navigateToSignupScreen = {},
             navigateToForgotScreen = {},
             state = LoginState(),
+            googleState = GoogleSignInState(),
             action = {},
             googleSignInAction = {},
             onBackPressed = {},

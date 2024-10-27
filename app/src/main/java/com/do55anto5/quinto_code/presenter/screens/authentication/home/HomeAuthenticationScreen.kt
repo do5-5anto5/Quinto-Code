@@ -45,6 +45,7 @@ import com.do55anto5.quinto_code.presenter.components.button.PrimaryButton
 import com.do55anto5.quinto_code.presenter.components.button.SocialButton
 import com.do55anto5.quinto_code.presenter.components.divider.HorizontalDividerWithText
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.action.GoogleSignInAction
+import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.state.GoogleSignInState
 import com.do55anto5.quinto_code.presenter.screens.authentication.google_auth.viewmodel.GoogleSignInViewModel
 import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
 import com.do55anto5.quinto_code.presenter.theme.UrbanistFamily
@@ -91,7 +92,8 @@ fun HomeAuthenticationScreen(
     HomeAuthenticationContent(
         navigateToSignUpScreen = navigateToSignUpScreen,
         navigateToLoginScreen = navigateToLoginScreen,
-        googleSignInAction = googleSignInViewModel::submitAction
+        googleSignInAction = googleSignInViewModel::submitAction,
+        googleState = googleState
     )
 }
 
@@ -99,7 +101,8 @@ fun HomeAuthenticationScreen(
 private fun HomeAuthenticationContent(
     navigateToSignUpScreen: () -> Unit,
     navigateToLoginScreen: () -> Unit,
-    googleSignInAction: (GoogleSignInAction) -> Unit
+    googleSignInAction: (GoogleSignInAction) -> Unit,
+    googleState: GoogleSignInState
 ) {
 
     val context = LocalContext.current
@@ -149,7 +152,7 @@ private fun HomeAuthenticationContent(
                         modifier = Modifier
                             .fillMaxWidth(),
                         icon = painterResource(id = R.drawable.ic_google),
-                        isLoading = isLoadingButton.value,
+                        isLoading = googleState.isLoading,
                         text = stringResource(R.string.label_sign_with_google_authentication_screen),
                         onClick = {
                             googleSignInAction(GoogleSignInAction.SignIn(context))

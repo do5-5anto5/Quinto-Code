@@ -1,6 +1,5 @@
 package com.do55anto5.quinto_code.presenter.screens.authentication.signup.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.do55anto5.quinto_code.core.enums.feedback.FeedbackType
@@ -88,12 +87,18 @@ class SignupViewModel(
     private fun onSignup() {
         viewModelScope.launch {
             try {
+                _state.update { currentState ->
+                    currentState.copy(isLoading = true)
+                }
                 registerUseCase(
                     email = _state.value.email,
                     password = _state.value.password
                 )
                 _state.update { currentState ->
-                    currentState.copy(isAuthenticated = true)
+                    currentState.copy(
+                        isAuthenticated = true,
+                        isLoading = false
+                    )
                 }
                 saveUserUseCase(user = User(email = _state.value.email))
             } catch (exception: Exception) {
@@ -105,11 +110,10 @@ class SignupViewModel(
                         feedbackUI = Pair(
                             FeedbackType.ERROR,
                             FirebaseHelper.validateError(exception.message)
-                        )
+                        ),
+                        isLoading = false
                     )
                 }
-                Log.i("SUVM", "exception: ${exception.message.toString()}, " +
-                        "\n uid: ${FirebaseHelper.getUserId()}")
             }
         }
     }

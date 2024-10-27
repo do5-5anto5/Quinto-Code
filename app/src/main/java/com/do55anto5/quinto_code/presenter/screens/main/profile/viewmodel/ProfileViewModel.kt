@@ -3,9 +3,11 @@ package com.do55anto5.quinto_code.presenter.screens.main.profile.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.do55anto5.quinto_code.R
 import com.do55anto5.quinto_code.core.enums.feedback.FeedbackType
 import com.do55anto5.quinto_code.core.enums.input.EditFieldType
 import com.do55anto5.quinto_code.core.helper.FirebaseHelper
+import com.do55anto5.quinto_code.core.helper.FirebaseHelper.Companion.getCurrentUserEmail
 import com.do55anto5.quinto_code.domain.remote.model.User
 import com.do55anto5.quinto_code.domain.remote.usecase.user.GetUserUseCase
 import com.do55anto5.quinto_code.domain.remote.usecase.user.SaveUserUseCase
@@ -40,6 +42,10 @@ class ProfileViewModel(
             is ProfileAction.OnGetUser -> {
                 loadUser()
             }
+
+            is ProfileAction.ResetErrorState -> {
+                resetErrorState()
+            }
         }
     }
 
@@ -53,7 +59,7 @@ class ProfileViewModel(
                         name = user.name ?: "",
                         surname = user.surname ?: "",
                         city = user.city ?: "",
-                        email = user.email ?: "",
+                        email = getCurrentUserEmail(),
                         isLoading = false
                     )
                 }
@@ -76,13 +82,28 @@ class ProfileViewModel(
     private fun onSave() {
         viewModelScope.launch {
             try {
+                _state.update { currentState ->
+                    currentState.copy(isLoading = true)
+                }
                 saveUserUseCase(
                     user = User(
                         name = _state.value.name,
                         surname = _state.value.surname,
-                        city = _state.value.city
+                        city = _state.value.city,
+                        email = _state.value.email
                     )
                 )
+
+                _state.update { currentState ->
+                    currentState.copy(
+                        hasFeedBack = true,
+                        feedbackUI = Pair(
+                            FeedbackType.SUCCESS,
+                            R.string.snack_bar_text_success_profile_screen
+                        ),
+                        isLoading = false
+                    )
+                }
             } catch (exception: Exception) {
                 exception.printStackTrace()
 
@@ -135,6 +156,15 @@ class ProfileViewModel(
         _state.update { currentState ->
             currentState.copy(
                 city = value
+            )
+        }
+    }
+
+    private fun resetErrorState() {
+        _state.update { currentState ->
+            currentState.copy(
+                hasFeedBack = false,
+                feedbackUI = null
             )
         }
     }

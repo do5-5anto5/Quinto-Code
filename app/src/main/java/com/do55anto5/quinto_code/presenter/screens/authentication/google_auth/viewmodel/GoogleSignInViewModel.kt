@@ -29,12 +29,12 @@ class GoogleSignInViewModel(
 
     private fun signIn(context: Context) {
         viewModelScope.launch {
-            _state.update { currentState ->
-                currentState.copy(
-                    isLoading = true
-                )
-            }
             try {
+                _state.update { currentState ->
+                    currentState.copy(
+                        isLoading = true
+                    )
+                }
                 useCase(context).fold(
                     onSuccess = {
                         _state.update { currentState ->
@@ -65,6 +65,11 @@ class GoogleSignInViewModel(
                         }
                     }
                 )
+                _state.update { currentState ->
+                    currentState.copy(
+                        isLoading = false
+                    )
+                }
             } catch (e: Exception) {
                 _state.update { currentState ->
                     currentState.copy(
