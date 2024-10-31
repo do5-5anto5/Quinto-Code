@@ -1,7 +1,9 @@
 package com.do55anto5.quinto_code.presenter.screens.main.profile.screen
 
 
+import android.content.Intent
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -332,6 +334,11 @@ private fun ProfileContent(
             )
         }
     )
+    BackHandler {
+        Intent(Intent.ACTION_MAIN).apply {
+            addCategory(Intent.CATEGORY_LAUNCHER)
+        }
+    }
 }
 
 @PreviewLightDark
