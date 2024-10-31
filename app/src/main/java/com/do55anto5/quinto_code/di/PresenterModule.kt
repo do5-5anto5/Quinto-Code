@@ -64,7 +64,8 @@ val presenterModule = module {
     viewModel {
         ProfileViewModel(
             saveUserUseCase = get(),
-            getUserUseCase = get()
+            getUserUseCase = get(),
+            saveImageUseCase = get()
         )
     }
 
