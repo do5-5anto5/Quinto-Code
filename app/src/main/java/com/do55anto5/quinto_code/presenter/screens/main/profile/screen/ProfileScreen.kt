@@ -1,9 +1,16 @@
 package com.do55anto5.quinto_code.presenter.screens.main.profile.screen
 
 
+import android.content.Intent
+import android.net.Uri
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,8 +31,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.BottomEnd
 import androidx.compose.ui.Modifier
@@ -37,6 +47,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.do55anto5.quinto_code.R
 import com.do55anto5.quinto_code.core.enums.input.EditFieldType
 import com.do55anto5.quinto_code.presenter.components.button.PrimaryButton
@@ -61,17 +72,54 @@ fun ProfileScreen(
     val viewModel = koinViewModel<ProfileViewModel>()
     val state by viewModel.state.collectAsState()
     val action = viewModel::submitAction
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+    var uriSaveable by rememberSaveable { mutableStateOf<Uri?>(null) }
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri ->
+        uriSaveable = uri
+    }
 
-    LaunchedEffect(state.isLoading) {
-        if (state.isLoading) {
-            action(OnGetUser)
+    LaunchedEffect(state.isUserLoaded, state.hasFeedBack, uriSaveable) {
+        with(state) {
+            if (!isUserLoaded) {
+                action(OnGetUser)
+            }
+
+            if (uriSaveable != null) {
+                scope.launch {
+                    action(
+                        ProfileAction.OnImagePick(
+                            context = context,
+                            currentImage = uriSaveable
+                        )
+                    )
+                }
+            }
+
+            scope.launch {
+                val result = snackbarHostState
+                    .showSnackbar(
+                        message = context.getString(
+                            state.feedbackUI?.second ?: R.string.error_generic
+                        )
+                    )
+
+                if (result == SnackbarResult.Dismissed) {
+                    action(ResetErrorState)
+                }
+            }
         }
     }
 
     ProfileContent(
         state = state,
         action = action,
-        navigateBack = navigateBack
+        navigateBack = navigateBack,
+        galleryLauncher = galleryLauncher,
+        snackbarHostState = snackbarHostState
     )
 }
 
@@ -79,30 +127,11 @@ fun ProfileScreen(
 private fun ProfileContent(
     state: ProfileState,
     action: (ProfileAction) -> Unit,
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    snackbarHostState: SnackbarHostState,
+    galleryLauncher: ManagedActivityResultLauncher<String, Uri?>
 ) {
-
-    val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
-
-    LaunchedEffect(state.hasFeedBack) {
-        scope.launch {
-            val result = snackbarHostState
-                .showSnackbar(
-                    message = context.getString(
-                        state.feedbackUI?.second ?: R.string.error_generic
-                    )
-                )
-
-            if (result == SnackbarResult.Dismissed) {
-                action(ResetErrorState)
-            }
-        }
-    }
-
     Scaffold(
-
         topBar = {
             Column(
                 verticalArrangement = Arrangement.Center
@@ -130,6 +159,7 @@ private fun ProfileContent(
                 }
             )
         },
+        containerColor = QuintoCodeTheme.colorScheme.backgroundColor,
         content = { paddingValues ->
             Column(
                 modifier = Modifier
@@ -141,28 +171,47 @@ private fun ProfileContent(
                 content = {
                     Box(
                         modifier = Modifier
-                            .padding(top = 10.dp, bottom = 8.dp),
+                            .padding(top = 10.dp, bottom = 8.dp)
+                            .clickable {
+                                galleryLauncher.launch("image/*")
+                            },
                         content = {
-                            Image(
-                                modifier = Modifier
-                                    .padding(4.dp)
-                                    .clip(RoundedCornerShape(60.dp))
-                                    .border(
-                                        width = 2.dp,
-                                        color = QuintoCodeTheme.colorScheme.defaultColor,
-                                        shape = RoundedCornerShape(110.dp)
-                                    )
-                                    .size(120.dp),
-                                painter = painterResource(id = R.drawable.ic_user_mock),
-                                contentDescription = null
-                            )
-                            Icon(
-                                modifier = Modifier
-                                    .align(BottomEnd),
-                                painter = painterResource(id = R.drawable.ic_camera_fill),
-                                contentDescription = stringResource(R.string.icon_description_edit_label_profile_screen),
-                                tint = QuintoCodeTheme.colorScheme.defaultColor
-                            )
+                            if (state.compressedImage?.first != null) {
+                                AsyncImage(
+                                    modifier = Modifier
+                                        .padding(4.dp)
+                                        .clip(RoundedCornerShape(60.dp))
+                                        .border(
+                                            width = 2.dp,
+                                            color = QuintoCodeTheme.colorScheme.defaultColor,
+                                            shape = RoundedCornerShape(110.dp)
+                                        )
+                                        .size(120.dp),
+                                    model = state.compressedImage.first,
+                                    contentDescription = null
+                                )
+                            } else {
+                                Image(
+                                    modifier = Modifier
+                                        .padding(4.dp)
+                                        .clip(RoundedCornerShape(60.dp))
+                                        .border(
+                                            width = 2.dp,
+                                            color = QuintoCodeTheme.colorScheme.defaultColor,
+                                            shape = RoundedCornerShape(110.dp)
+                                        )
+                                        .size(120.dp),
+                                    painter = painterResource(id = R.drawable.ic_user_mock),
+                                    contentDescription = null
+                                )
+                                Icon(
+                                    modifier = Modifier
+                                        .align(BottomEnd),
+                                    painter = painterResource(id = R.drawable.ic_camera_fill),
+                                    contentDescription = stringResource(R.string.icon_description_edit_label_profile_screen),
+                                    tint = QuintoCodeTheme.colorScheme.defaultColor
+                                )
+                            }
                         }
                     )
 
@@ -285,6 +334,11 @@ private fun ProfileContent(
             )
         }
     )
+    BackHandler {
+        Intent(Intent.ACTION_MAIN).apply {
+            addCategory(Intent.CATEGORY_LAUNCHER)
+        }
+    }
 }
 
 @PreviewLightDark

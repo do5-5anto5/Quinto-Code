@@ -17,16 +17,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(QuintoCodeTheme.colorScheme.backgroundColor),
-                content = {
-                    QuintoCodeTheme {
+
+            QuintoCodeTheme {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(QuintoCodeTheme.colorScheme.backgroundColor),
+                    content = {
                         OnboardingNavHost(navHostController = rememberNavController())
                     }
-                }
-            )
+                )
+            }
         }
     }
 }

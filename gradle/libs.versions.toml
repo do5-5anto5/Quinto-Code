@@ -9,7 +9,7 @@ espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.6"
 activityCompose = "1.9.3"
 composeBom = "2024.10.00"
-firebaseBom = "33.4.0"
+firebaseBom = "33.5.1"
 lifecycleViewmodelCompose = "2.8.6"
 lottie-compose= "6.5.0"
 google-services = "4.4.2"
@@ -21,6 +21,7 @@ googleid = "1.1.1"
 coilCompose = "3.0.0-rc01"
 cameraxVersion = "1.3.4"
 materialIconsExtended = "1.7.4"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -62,6 +63,9 @@ firebase-authentication = { module = "com.google.firebase:firebase-auth" }
 
 # Firestore
 firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
+
+# Firebase Storage
+firebase-storage = { module = "com.google.firebase:firebase-storage" }
 
 # Lottie
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie-compose" }
