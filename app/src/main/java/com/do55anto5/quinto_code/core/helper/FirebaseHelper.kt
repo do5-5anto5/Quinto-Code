@@ -3,15 +3,17 @@ package com.do55anto5.quinto_code.core.helper
 import com.do55anto5.quinto_code.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 
 class FirebaseHelper {
-
 
     companion object {
 
         fun getAuth() = FirebaseAuth.getInstance()
 
         fun getDatabase() = FirebaseFirestore.getInstance()
+
+        fun getFirebaseStorage() = FirebaseStorage.getInstance()
 
         fun getCurrentUser() = getAuth().currentUser
 
