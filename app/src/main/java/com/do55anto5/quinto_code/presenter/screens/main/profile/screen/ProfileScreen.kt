@@ -55,7 +55,6 @@ import com.do55anto5.quinto_code.presenter.components.snackbar.FeedbackUI
 import com.do55anto5.quinto_code.presenter.components.text_field.TextFieldUI
 import com.do55anto5.quinto_code.presenter.components.top_app_bar.TopAppBarUI
 import com.do55anto5.quinto_code.presenter.screens.main.profile.action.ProfileAction
-import com.do55anto5.quinto_code.presenter.screens.main.profile.action.ProfileAction.OnGetUser
 import com.do55anto5.quinto_code.presenter.screens.main.profile.action.ProfileAction.OnSave
 import com.do55anto5.quinto_code.presenter.screens.main.profile.action.ProfileAction.OnValueChange
 import com.do55anto5.quinto_code.presenter.screens.main.profile.action.ProfileAction.ResetErrorState
@@ -82,34 +81,28 @@ fun ProfileScreen(
         uriSaveable = uri
     }
 
-    LaunchedEffect(state.isUserLoaded, state.hasFeedBack, uriSaveable) {
-        with(state) {
-            if (!isUserLoaded) {
-                action(OnGetUser)
-            }
-
-            if (uriSaveable != null) {
-                scope.launch {
-                    action(
-                        ProfileAction.OnImagePick(
-                            context = context,
-                            currentImage = uriSaveable
-                        )
-                    )
-                }
-            }
-
+    LaunchedEffect(state.hasFeedBack, uriSaveable) {
+        if (uriSaveable != null) {
             scope.launch {
-                val result = snackbarHostState
-                    .showSnackbar(
-                        message = context.getString(
-                            state.feedbackUI?.second ?: R.string.error_generic
-                        )
+                action(
+                    ProfileAction.OnImagePick(
+                        context = context,
+                        currentImage = uriSaveable
                     )
+                )
+            }
+        }
 
-                if (result == SnackbarResult.Dismissed) {
-                    action(ResetErrorState)
-                }
+        scope.launch {
+            val result = snackbarHostState
+                .showSnackbar(
+                    message = context.getString(
+                        state.feedbackUI?.second ?: R.string.error_generic
+                    )
+                )
+
+            if (result == SnackbarResult.Dismissed) {
+                action(ResetErrorState)
             }
         }
     }
@@ -335,6 +328,7 @@ private fun ProfileContent(
         }
     )
     BackHandler {
+        navigateBack()
         Intent(Intent.ACTION_MAIN).apply {
             addCategory(Intent.CATEGORY_LAUNCHER)
         }
