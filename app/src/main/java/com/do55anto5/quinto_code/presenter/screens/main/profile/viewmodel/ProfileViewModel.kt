@@ -33,6 +33,10 @@ class ProfileViewModel(
     private val _state = MutableStateFlow(ProfileState())
     val state = _state.asStateFlow()
 
+    init {
+        loadUser()
+    }
+
     fun submitAction(action: ProfileAction) {
         when (action) {
             is ProfileAction.OnValueChange -> {
@@ -44,10 +48,6 @@ class ProfileViewModel(
 
             is ProfileAction.OnSave -> {
                 onSave()
-            }
-
-            is ProfileAction.OnGetUser -> {
-                loadUser()
             }
 
             is ProfileAction.ResetErrorState -> {
@@ -108,8 +108,7 @@ class ProfileViewModel(
                         name = user.name ?: "",
                         surname = user.surname ?: "",
                         city = user.city ?: "",
-                        email = getCurrentUserEmail(),
-                        isUserLoaded = true
+                        email = getCurrentUserEmail()
                     )
                 }
                 stopLoading()
@@ -131,7 +130,7 @@ class ProfileViewModel(
     }
 
     private fun onSave() {
-                startLoading()
+        startLoading()
         viewModelScope.launch {
             try {
                 delay(1200)
@@ -143,7 +142,7 @@ class ProfileViewModel(
                         email = _state.value.email
                     )
                 )
-                _state.value.compressedImage?.second.let {
+                _state.value.compressedImage?.second?.let {
                     saveImageUseCase(it)
                 }
 
@@ -171,7 +170,7 @@ class ProfileViewModel(
                         )
                     )
                 }
-            stopLoading()
+                stopLoading()
             }
         }
     }

@@ -14,8 +14,6 @@ sealed class ProfileAction {
 
     data object OnSave : ProfileAction()
 
-    data object OnGetUser: ProfileAction()
-
     data object ResetErrorState: ProfileAction()
 
     data class OnImagePick(

@@ -13,7 +13,6 @@ data class ProfileState(
     val hasFeedBack: Boolean = false,
     val feedbackUI: Pair<FeedbackType, Int>? = null,
     val isLoading: Boolean = true,
-    val isUserLoaded: Boolean = false,
     val currentImageUri: Uri = Uri.EMPTY,
     val compressedImage: Pair<Bitmap?, ByteArray?>? = null
 )
