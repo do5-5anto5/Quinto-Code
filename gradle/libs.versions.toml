@@ -19,7 +19,6 @@ serialization-json = "1.7.1"
 credentials = "1.3.0"
 googleid = "1.1.1"
 coilCompose = "3.0.0-rc01"
-cameraxVersion = "1.4.0"
 materialIconsExtended = "1.7.5"
 
 
@@ -72,14 +71,6 @@ lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "
 
 # Coil
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
-
-# Camera
-androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraxVersion" }
-androidx-camera-core = { module = "androidx.camera:camera-core", version.ref = "cameraxVersion" }
-androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "cameraxVersion" }
-androidx-camera-video = { module = "androidx.camera:camera-video", version.ref = "cameraxVersion" }
-androidx-camera-extensions = { module = "androidx.camera:camera-extensions" }
-androidx-camera-view = { module = "androidx.camera:camera-view" }
 
 # Icons
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
