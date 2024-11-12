@@ -5,24 +5,37 @@ This project offers a starter template for Android application development using
 ## Initial Features
 
 * **User Authentication:** Allows customers, users, and managers to authenticate themselves to the application securely using Firebase Authentication.
+* **Image Loading:** Efficient image loading and caching using Coil.
+* **Image compression:** Implemented image compression to reduce file size and improve performance.
 
 ## Architecture and Development
 
-* **Architecture:** MVVM
+* **Architecture:** MVVM / Clean Architecture
 * **Toolkit:** Jetpack Compose
 * **Cloud Services:**
     * Firebase
-        * Authentication
-        * Realtime Database
+        * Authentication 
+        * Firestore
+        * Storage
 * **Dependencies:**
-    * Koin: Dependency injection framework for Kotlin.
-    * ViewModel Compose: Provides ViewModel integration for Jetpack Compose.
-    * Lottie Compose: Enables easy integration of animations into Compose.
-    * Firebase Authentication: Secure authentication solution.
-    * Firebase Realtime Database: NoSQL cloud database for real-time data synchronization.
-    * Google Id: Manage Google Account logins in Android apps.
-    * Android Credentials: Manage user credentials in Android apps.
-    * Android Credentials Play Services Auth: Manage user credentials in Android apps using Play Services Auth.
+    * Development Tools:
+      * Navigation Compose: Navigation framework for Compose
+      * Material Icons Extended: Extended set of Material Design icons
+      * Koin: Dependency injection framework for Kotlin.
+      * ViewModel Compose: Provides ViewModel integration for Jetpack Compose.
+      * Core Splashscreen: Splash screen API support
+    * UI & Graphics:
+      * Coil: Image loading library for Compose
+      * Lottie Compose: Enables easy integration of animations into Compose.
+    * Firebase:
+      * Firebase Authentication: Secure authentication solution.
+      * Firestore: Cloud-based NoSQL database 
+      * Storage: Cloud storage solution
+    * Google Authentication
+      * Google Id: Manage Google Account logins in Android apps.
+      * Android Credentials: Manage user credentials in Android apps.
+      * Android Credentials Play Services Auth: Manage user credentials in Android apps using Play Services Auth.
+    
 
 ## Roadmap
 
@@ -53,21 +66,36 @@ Este projeto oferece um template inicial para desenvolvimento de aplicativos And
 ## Funcionalidades Iniciais
 
 * **Autenticação de Usuários:** Permite que clientes, usuários e gerentes se autentiquem no aplicativo de forma segura usando o Firebase Authentication.
+* **Carregamento de Imagens:** Carregamento e cache eficiente de imagens usando Coil.
+* **Compressão de Imagens:** Implementada compressão de imagens para reduzir o tamanho dos arquivos e melhorar a performance.
 
 ## Arquitetura e Desenvolvimento
 
-* **Arquitetura:** MVVM
+* **Arquitetura:** MVVM / Clean Architecture
 * **Toolkit:** Jetpack Compose
 * **Serviços de Nuvem:**
     * Firebase
         * Autenticação
-        * Realtime Database
+        * Firestore
+        * Storage
 * **Dependências:**
-    * Koin: Framework de injeção de dependência para Kotlin.
-    * ViewModel Compose: Fornece integração do ViewModel com o Jetpack Compose.
-    * Lottie Compose: Permite a fácil integração de animações no Compose.
-    * Firebase Authentication: Solução de autenticação segura.
-    * Firebase Realtime Database: Banco de dados NoSQL na nuvem para sincronização de dados em tempo real.
+    * Ferramentas de Desenvolvimento:
+        * Navigation Compose: Framework de navegação para Compose
+        * Material Icons Extended: Conjunto estendido de ícones do Material Design
+        * Koin: Framework de injeção de dependência para Kotlin.
+        * ViewModel Compose: Fornece integração do ViewModel com o Jetpack Compose.
+        * Core Splashscreen: Suporte à API de tela inicial
+    * UI & Gráficos:
+        * Coil: Biblioteca de carregamento de imagens para Compose
+        * Lottie Compose: Permite a fácil integração de animações no Compose.
+    * Firebase:
+        * Firebase Authentication: Solução de autenticação segura.
+        * Firestore: Banco de dados NoSQL baseado em nuvem
+        * Storage: Solução de armazenamento em nuvem
+    * Autenticação do Google:
+        * Google Id: Gerencia logins de contas do Google em aplicativos Android.
+        * Android Credentials: Gerencia credenciais de usuário em aplicativos Android.
+        * Android Credentials Play Services Auth: Gerencia credenciais de usuário em aplicativos Android usando o Play Services Auth.
 
 ## Roadmap
 
