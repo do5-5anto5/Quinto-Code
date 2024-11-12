@@ -73,9 +73,6 @@ dependencies {
     // View Model
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-    //Lottie
-    implementation(libs.lottie.compose)
-
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.authentication)
@@ -96,6 +93,12 @@ dependencies {
 
     // Coil
     implementation(libs.coil.compose)
+
+    // Landscapist Coil
+    implementation(libs.landscapist.coil)
+
+    //Lottie
+    implementation(libs.lottie.compose)
 
     // Icons
     implementation(libs.androidx.material.icons.extended)
