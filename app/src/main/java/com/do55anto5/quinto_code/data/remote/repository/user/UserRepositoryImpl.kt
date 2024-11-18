@@ -8,10 +8,10 @@ import kotlin.coroutines.suspendCoroutine
 
 class UserRepositoryImpl : UserRepository {
 
-    private val uid = FirebaseHelper.getUserId()
-    private val userRef = getDatabase().collection("users").document(uid)
 
     override suspend fun saveUser(user: User) {
+        val uid = FirebaseHelper.getUserId()
+        val userRef = getDatabase().collection("users").document(uid)
         return suspendCoroutine {
             userRef.set(user)
                 .addOnCompleteListener { task ->
@@ -25,6 +25,8 @@ class UserRepositoryImpl : UserRepository {
     }
 
     override suspend fun getUser(): User {
+        val uid = FirebaseHelper.getUserId()
+        val userRef = getDatabase().collection("users").document(uid)
         return suspendCoroutine {
             userRef.get()
                 .addOnCompleteListener { task ->
