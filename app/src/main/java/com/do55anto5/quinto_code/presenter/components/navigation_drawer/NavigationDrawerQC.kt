@@ -1,6 +1,5 @@
 package com.do55anto5.quinto_code.presenter.components.navigation_drawer
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -32,7 +31,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -42,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.do55anto5.quinto_code.R
 import com.do55anto5.quinto_code.core.navigation.drawer.DrawerItem
+import com.do55anto5.quinto_code.presenter.components.image.ImageUI
 import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
 
 @Composable
@@ -51,7 +50,10 @@ fun NavigationDrawerQC(
     drawerIndex: Int,
     onClick: (Int) -> Unit,
     navigateToProfileScreen: () -> Unit,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
+    fullName: String,
+    profilePhoto: String,
+    isLoading: Boolean
 ) {
 
     DismissibleNavigationDrawer(
@@ -66,9 +68,7 @@ fun NavigationDrawerQC(
                         .padding(horizontal = 16.dp, vertical = 32.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_user_line),
-                        contentDescription = null,
+                    ImageUI(
                         modifier = Modifier
                             .clip(CircleShape)
                             .size(60.dp)
@@ -77,7 +77,8 @@ fun NavigationDrawerQC(
                                 QuintoCodeTheme.colorScheme.borderColor,
                                 CircleShape
                             ),
-                        contentScale = ContentScale.Crop,
+                        imageModel = profilePhoto,
+                        isLoading = isLoading
                     )
 
                     Column(
@@ -88,7 +89,7 @@ fun NavigationDrawerQC(
                             .clickable { navigateToProfileScreen() }
                     ) {
                         Text(
-                            text = "MockName",
+                            text = fullName,
                             style = TextStyle(
                                 color = QuintoCodeTheme.colorScheme.textColor,
                                 fontSize = 16.sp,
@@ -203,7 +204,10 @@ private fun Preview() {
                 drawerIndex = it
             },
             navigateToProfileScreen = {},
-            content = {}
+            content = {},
+            fullName = "John Doe",
+            profilePhoto = "",
+            isLoading = false
         )
     }
 }

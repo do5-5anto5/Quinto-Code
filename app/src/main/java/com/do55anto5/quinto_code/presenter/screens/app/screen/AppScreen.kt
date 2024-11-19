@@ -244,7 +244,10 @@ private fun AppContent(
                     )
                 }
             )
-        }
+        },
+        fullName = "${state.user.name} ${state.user.surname}",
+        isLoading = state.isLoading,
+        profilePhoto = state.user.photo ?: ""
     )
 }
 
