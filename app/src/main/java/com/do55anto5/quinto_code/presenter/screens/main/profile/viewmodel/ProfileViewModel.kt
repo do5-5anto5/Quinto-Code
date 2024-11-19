@@ -3,6 +3,7 @@ package com.do55anto5.quinto_code.presenter.screens.main.profile.viewmodel
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.do55anto5.quinto_code.R
@@ -13,11 +14,13 @@ import com.do55anto5.quinto_code.core.helper.FirebaseHelper.Companion.getCurrent
 import com.do55anto5.quinto_code.core.util.reduceImageSize
 import com.do55anto5.quinto_code.core.util.toDrawable
 import com.do55anto5.quinto_code.domain.remote.model.User
-import com.do55anto5.quinto_code.domain.remote.usecase.image.SaveImageUseCase
+import com.do55anto5.quinto_code.domain.remote.usecase.image.GetProfilePhotoUseCase
+import com.do55anto5.quinto_code.domain.remote.usecase.image.SaveProfilePhotoUseCase
 import com.do55anto5.quinto_code.domain.remote.usecase.user.GetUserUseCase
 import com.do55anto5.quinto_code.domain.remote.usecase.user.SaveUserUseCase
 import com.do55anto5.quinto_code.presenter.screens.main.profile.action.ProfileAction
 import com.do55anto5.quinto_code.presenter.screens.main.profile.state.ProfileState
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,9 +28,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(
-    private val getUserUseCase: GetUserUseCase,
     private val saveUserUseCase: SaveUserUseCase,
-    private val saveImageUseCase: SaveImageUseCase
+    private val getUserUseCase: GetUserUseCase,
+    private val saveProfilePhotoUseCase: SaveProfilePhotoUseCase,
+    private val getProfilePhotoUseCase: GetProfilePhotoUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ProfileState())
@@ -101,14 +105,26 @@ class ProfileViewModel(
     private fun loadUser() {
         viewModelScope.launch {
             try {
-                val user = getUserUseCase()
+                val userDeferred = async { getUserUseCase() }
+                val photoDeferred = async {
+                    try {
+                        getProfilePhotoUseCase()
+                    } catch (e: Exception) {
+                        Log.e("ViewModel", "Error loading photo", e)
+                        ""
+                    }
+                }
+
+                val user = userDeferred.await()
+                val photo = photoDeferred.await()
 
                 _state.update { currentState ->
                     currentState.copy(
                         name = user.name ?: "",
                         surname = user.surname ?: "",
                         city = user.city ?: "",
-                        email = getCurrentUserEmail()
+                        email = getCurrentUserEmail(),
+                        photo = photo
                     )
                 }
                 stopLoading()
@@ -143,7 +159,7 @@ class ProfileViewModel(
                     )
                 )
                 _state.value.compressedImage?.second?.let {
-                    saveImageUseCase(it)
+                    saveProfilePhotoUseCase(it)
                 }
 
                 stopLoading()
