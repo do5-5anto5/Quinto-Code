@@ -57,14 +57,18 @@ val presenterModule = module {
     }
 
     viewModel {
-        AppViewModel()
+        AppViewModel(
+            getUserUseCase = get(),
+            getProfilePhotoUseCase = get()
+        )
     }
 
     viewModel {
         ProfileViewModel(
             saveUserUseCase = get(),
             getUserUseCase = get(),
-            saveImageUseCase = get()
+            saveProfilePhotoUseCase = get(),
+            getProfilePhotoUseCase = get()
         )
     }
 

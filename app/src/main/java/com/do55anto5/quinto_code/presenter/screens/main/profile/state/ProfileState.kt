@@ -10,6 +10,7 @@ data class ProfileState(
     val surname: String = "",
     val email: String = "",
     val city: String = "",
+    val photo: String? = "",
     val hasFeedBack: Boolean = false,
     val feedbackUI: Pair<FeedbackType, Int>? = null,
     val isLoading: Boolean = true,

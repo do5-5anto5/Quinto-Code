@@ -7,10 +7,8 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.BottomEnd
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -47,10 +46,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import com.do55anto5.quinto_code.R
 import com.do55anto5.quinto_code.core.enums.input.EditFieldType
 import com.do55anto5.quinto_code.presenter.components.button.PrimaryButton
+import com.do55anto5.quinto_code.presenter.components.image.ImageUI
 import com.do55anto5.quinto_code.presenter.components.snackbar.FeedbackUI
 import com.do55anto5.quinto_code.presenter.components.text_field.TextFieldUI
 import com.do55anto5.quinto_code.presenter.components.top_app_bar.TopAppBarUI
@@ -164,13 +163,10 @@ private fun ProfileContent(
                 content = {
                     Box(
                         modifier = Modifier
-                            .padding(top = 10.dp, bottom = 8.dp)
-                            .clickable {
-                                galleryLauncher.launch("image/*")
-                            },
+                            .padding(top = 10.dp, bottom = 8.dp),
                         content = {
                             if (state.compressedImage?.first != null) {
-                                AsyncImage(
+                                ImageUI(
                                     modifier = Modifier
                                         .padding(4.dp)
                                         .clip(RoundedCornerShape(60.dp))
@@ -180,11 +176,13 @@ private fun ProfileContent(
                                             shape = RoundedCornerShape(110.dp)
                                         )
                                         .size(120.dp),
-                                    model = state.compressedImage.first,
-                                    contentDescription = null
+                                    imageModel = state.compressedImage.first!!,
+                                    contentScale = ContentScale.Crop,
+                                    onClick = { galleryLauncher.launch("image/*") },
+                                    isLoading = state.isLoading
                                 )
                             } else {
-                                Image(
+                                ImageUI(
                                     modifier = Modifier
                                         .padding(4.dp)
                                         .clip(RoundedCornerShape(60.dp))
@@ -194,8 +192,10 @@ private fun ProfileContent(
                                             shape = RoundedCornerShape(110.dp)
                                         )
                                         .size(120.dp),
-                                    painter = painterResource(id = R.drawable.ic_user_mock),
-                                    contentDescription = null
+                                    imageModel = state.photo ?: "",
+                                    contentScale = ContentScale.Crop,
+                                    onClick = { galleryLauncher.launch("image/*") },
+                                    isLoading = state.isLoading
                                 )
                                 Icon(
                                     modifier = Modifier

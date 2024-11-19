@@ -41,7 +41,8 @@ fun ImageUI(
     borderStroke: BorderStroke = BorderStroke(
         width = 0.dp,
         color = QuintoCodeTheme.colorScheme.transparentColor),
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    isLoading: Boolean
 ) {
     val loadingComposition by rememberLottieComposition(LottieCompositionSpec.Asset("loading.json"))
     val failureComposition by rememberLottieComposition(LottieCompositionSpec.Asset("error-animation.json"))
@@ -50,7 +51,7 @@ fun ImageUI(
        imageModel = { imageModel },
        modifier = modifier
            .clip(shape = shape)
-           .clickable{ onClick() }
+           .clickable { onClick() }
            .border(borderStroke, shape),
        imageOptions = ImageOptions(
            contentScale = contentScale,
@@ -73,13 +74,15 @@ fun ImageUI(
            }
        },
        failure = {
-           LottieAnimation(
-               composition = failureComposition,
-               modifier = Modifier
-                   .align(Alignment.BottomCenter),
-               iterations = LottieConstants.IterateForever,
-               maintainOriginalImageBounds = true
-           )
+           if (!isLoading) {
+               LottieAnimation(
+                   composition = failureComposition,
+                   modifier = Modifier
+                       .align(Alignment.BottomCenter),
+                   iterations = LottieConstants.IterateForever,
+                   maintainOriginalImageBounds = true
+               )
+           }
        }
    )
 }
@@ -102,7 +105,8 @@ private fun ImageUIPreview() {
                 contentScale = ContentScale.Crop,
                 previewPlaceholder = painterResource(id = R.drawable.splash_logo),
                 borderStroke = BorderStroke(2.dp, QuintoCodeTheme.colorScheme.defaultColor),
-                onClick = {}
+                onClick = {},
+                isLoading = true
             )
         }
     }
