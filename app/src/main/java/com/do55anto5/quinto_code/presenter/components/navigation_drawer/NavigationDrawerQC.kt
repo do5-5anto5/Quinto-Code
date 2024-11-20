@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -75,8 +76,9 @@ fun NavigationDrawerQC(
                             .border(
                                 1.dp,
                                 QuintoCodeTheme.colorScheme.borderColor,
-                                CircleShape
                             ),
+                        shape = CircleShape,
+                        contentScale = ContentScale.Crop,
                         imageModel = profilePhoto,
                         isLoading = isLoading
                     )
