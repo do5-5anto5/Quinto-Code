@@ -60,13 +60,22 @@ sealed class DrawerItem(
         unselectedIcon = R.drawable.ic_notification_line
     )
 
+    data object Store : DrawerItem(
+        type = DrawerItemType.STORE,
+        badge = 0,
+        title = R.string.label_my_store_navigation_drawer_item,
+        selectedIcon = R.drawable.ic_store_fill,
+        unselectedIcon = R.drawable.ic_store_line
+    )
+
     enum class DrawerItemType {
         HOME,
         SEARCH,
         BAG,
         HUB,
         FAVORITE,
-        NOTIFICATION
+        NOTIFICATION,
+        STORE
     }
 
     companion object {
@@ -76,7 +85,8 @@ sealed class DrawerItem(
             Bag,
             Hub,
             Favorite,
-            Notification
+            Notification,
+            Store
         )
     }
 
