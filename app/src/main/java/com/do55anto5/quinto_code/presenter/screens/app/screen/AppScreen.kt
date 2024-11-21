@@ -56,7 +56,9 @@ import com.do55anto5.quinto_code.presenter.screens.main.bag.screen.BagScreen
 import com.do55anto5.quinto_code.presenter.screens.main.favorite.screen.FavoriteScreen
 import com.do55anto5.quinto_code.presenter.screens.main.home.screen.HomeScreen
 import com.do55anto5.quinto_code.presenter.screens.main.hub.screen.HubScreen
+import com.do55anto5.quinto_code.presenter.screens.main.notification.screen.NotificationScreen
 import com.do55anto5.quinto_code.presenter.screens.main.search.screen.SearchScreen
+import com.do55anto5.quinto_code.presenter.screens.main.store.screen.MyStoreScreen
 import com.do55anto5.quinto_code.presenter.theme.QuintoCodeTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -184,7 +186,7 @@ private fun AppContent(
                 },
                 content = { paddingValues ->
 
-                    
+
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -207,6 +209,8 @@ private fun AppContent(
                                         2 -> BagScreen()
                                         3 -> HubScreen()
                                         4 -> FavoriteScreen()
+                                        5 -> NotificationScreen()
+                                        6 -> MyStoreScreen()
                                     }
                                     BackHandler {
                                         action(AppAction.NavigateBack)
