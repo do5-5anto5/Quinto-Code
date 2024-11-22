@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.do55anto5.quinto_code.R
 import com.do55anto5.quinto_code.core.enums.feedback.FeedbackType
+import com.do55anto5.quinto_code.core.enums.image.ImageType.PROFILE_PHOTO
 import com.do55anto5.quinto_code.core.enums.input.EditFieldType
 import com.do55anto5.quinto_code.core.helper.FirebaseHelper
 import com.do55anto5.quinto_code.core.helper.FirebaseHelper.Companion.getCurrentUserEmail
@@ -108,7 +109,7 @@ class ProfileViewModel(
                 val userDeferred = async { getUserUseCase() }
                 val photoDeferred = async {
                     try {
-                        getProfilePhotoUseCase()
+                        getProfilePhotoUseCase(PROFILE_PHOTO)
                     } catch (e: Exception) {
                         Log.e("ViewModel", "Error loading photo", e)
                         ""
@@ -159,7 +160,7 @@ class ProfileViewModel(
                     )
                 )
                 _state.value.compressedImage?.second?.let {
-                    saveProfilePhotoUseCase(it)
+                    saveProfilePhotoUseCase(it, imageType = PROFILE_PHOTO)
                 }
 
                 stopLoading()

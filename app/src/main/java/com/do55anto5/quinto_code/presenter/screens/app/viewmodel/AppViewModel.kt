@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.material3.DrawerValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.do55anto5.quinto_code.core.enums.image.ImageType.*
 import com.do55anto5.quinto_code.domain.remote.model.User
 import com.do55anto5.quinto_code.domain.remote.usecase.image.GetProfilePhotoUseCase
 import com.do55anto5.quinto_code.domain.remote.usecase.user.GetUserUseCase
@@ -40,7 +41,7 @@ class AppViewModel(
                 val userDeferred = async { getUserUseCase() }
                 val photoDeferred = async {
                     try {
-                        getProfilePhotoUseCase()
+                        getProfilePhotoUseCase(PROFILE_PHOTO)
                     } catch (e: Exception) {
                         Log.e("ViewModel", "Error loading photo", e)
                         ""
