@@ -1,35 +1,57 @@
 package com.do55anto5.quinto_code.data.remote.repository.image
 
 import android.util.Log
+import com.do55anto5.quinto_code.core.enums.image.ImageType
 import com.do55anto5.quinto_code.core.helper.FirebaseHelper.Companion.getFirebaseStorage
 import com.do55anto5.quinto_code.core.helper.FirebaseHelper.Companion.getUserId
 import com.do55anto5.quinto_code.domain.remote.repository.image.ImageRepository
+import com.google.firebase.storage.StorageReference
+import java.util.UUID
 import kotlin.coroutines.suspendCoroutine
 
 class ImageRepositoryImpl : ImageRepository {
     private val storage = getFirebaseStorage()
 
-    private val profilePhotoRef = storage.getReference()
+    private val baseImageRef = storage.getReference()
         .child("images")
         .child("users")
         .child(getUserId())
-        .child("profile-photo")
-        .child("profile-photo.jpg")
 
-    override suspend fun saveProfilePhoto(imageBytes: ByteArray?) {
+    private fun getStorageReference(imageType: ImageType): StorageReference {
+        return when (imageType) {
+            ImageType.PROFILE_PHOTO -> baseImageRef
+                .child("profile-photo").child("profile-photo.jpg")
+
+            ImageType.STORE_LOGO -> baseImageRef
+                .child("store").child("logo").child("store-logo.jpg")
+
+            ImageType.PRODUCT_IMAGE -> baseImageRef
+                .child("store").child("products").child("${UUID.randomUUID()}.jpg")
+
+            ImageType.SERVICE_IMAGE -> baseImageRef
+                .child("store").child("services").child("${UUID.randomUUID()}.jpg")
+        }
+    }
+
+    override suspend fun saveImage(imageBytes: ByteArray?, imageType: ImageType) {
         return suspendCoroutine { continuation ->
             imageBytes?.let { imageBytes ->
-                Log.d("ImageRepository", "Upload Start - Path: ${profilePhotoRef.path}")
+                val reference = getStorageReference(imageType)
+                Log.d("ImageRepository", "Upload Start - Path: ${reference.path}")
 
-                profilePhotoRef.putBytes(imageBytes)
+                reference.putBytes(imageBytes)
                     .addOnSuccessListener { taskSnapshot ->
-                        profilePhotoRef.downloadUrl
+                        reference.downloadUrl
                             .addOnSuccessListener { uri ->
                                 Log.d("ImageRepository", "Upload concluded, URL: $uri")
                                 continuation.resumeWith(Result.success(Unit))
                             }
                             .addOnFailureListener { exception ->
-                                Log.e("ImageRepository", "Upload ok, but fail to generate URL", exception)
+                                Log.e(
+                                    "ImageRepository",
+                                    "Upload ok, but fail to generate URL",
+                                    exception
+                                )
                                 continuation.resumeWith(Result.failure(exception))
                             }
                     }
@@ -41,11 +63,13 @@ class ImageRepositoryImpl : ImageRepository {
         }
     }
 
-    override suspend fun getProfilePhoto(): String {
-        return suspendCoroutine { continuation ->
-            Log.d("ImageRepository", "Try to get URL - Path: ${profilePhotoRef.path}")
 
-            profilePhotoRef.downloadUrl
+    override suspend fun getImage(imageType: ImageType): String {
+        return suspendCoroutine { continuation ->
+            val reference = getStorageReference(imageType)
+            Log.d("ImageRepository", "Try to get URL - Path: ${reference.path}")
+
+            reference.downloadUrl
                 .addOnSuccessListener { uri ->
                     Log.d("ImageRepository", "Got URL: $uri")
                     continuation.resumeWith(Result.success(uri.toString()))
