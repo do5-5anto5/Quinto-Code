@@ -10,3 +10,11 @@ enum class EditFieldType {
     SURNAME,
     CITY
 }
+
+enum class CreateStoreFieldType {
+    NAME,
+    DESCRIPTION,
+    CITY,
+    ADDRESS,
+    PHONE_NUMBER
+}
