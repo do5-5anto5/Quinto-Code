@@ -29,6 +29,7 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -65,13 +66,18 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AppScreen(
-    navigateToProfileScreen: () -> Unit
+    navigateToProfileScreen: () -> Unit,
+    fullName: String = "",
 ) {
 
     val viewModel = koinViewModel<AppViewModel>()
     val appState by viewModel.state.collectAsState()
 
     val context = LocalContext.current
+
+    val fullNameState = remember { mutableStateOf("") }
+    if (fullName.isNotBlank()) fullNameState.value = fullName
+    else fullNameState.value = "${appState.user.name} ${appState.user.surname}"
 
     LaunchedEffect(!appState.isAuthenticated) {
         if (!appState.isAuthenticated) {
@@ -84,7 +90,8 @@ fun AppScreen(
     AppContent(
         state = appState,
         action = viewModel::submitAction,
-        navigateToProfileScreen = navigateToProfileScreen
+        navigateToProfileScreen = navigateToProfileScreen,
+        fullNameState = fullNameState
     )
 }
 
@@ -93,7 +100,8 @@ fun AppScreen(
 private fun AppContent(
     state: AppState,
     action: (AppAction) -> Unit,
-    navigateToProfileScreen: () -> Unit
+    navigateToProfileScreen: () -> Unit,
+    fullNameState: MutableState<String>
 ) {
 
     val drawerState = rememberDrawerState(state.drawerStateValue)
@@ -249,7 +257,7 @@ private fun AppContent(
                 }
             )
         },
-        fullName = "${state.user.name} ${state.user.surname}",
+        fullName = fullNameState,
         isLoading = state.isLoading,
         profilePhoto = state.user.photo ?: ""
     )
