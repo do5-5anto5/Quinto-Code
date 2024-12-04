@@ -27,6 +27,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -65,7 +66,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ProfileScreen(
-    navigateBack: () -> Unit
+    navigateBack: (String) -> Unit
 ) {
     val viewModel = koinViewModel<ProfileViewModel>()
     val state by viewModel.state.collectAsState()
@@ -79,6 +80,8 @@ fun ProfileScreen(
     ) { uri ->
         uriSaveable = uri
     }
+
+    val fullName = remember { mutableStateOf("") }
 
     LaunchedEffect(state.hasFeedBack, uriSaveable) {
         if (uriSaveable != null) {
@@ -111,7 +114,8 @@ fun ProfileScreen(
         action = action,
         navigateBack = navigateBack,
         galleryLauncher = galleryLauncher,
-        snackbarHostState = snackbarHostState
+        snackbarHostState = snackbarHostState,
+        fullName = fullName
     )
 }
 
@@ -119,9 +123,10 @@ fun ProfileScreen(
 private fun ProfileContent(
     state: ProfileState,
     action: (ProfileAction) -> Unit,
-    navigateBack: () -> Unit,
+    navigateBack: (String) -> Unit,
     snackbarHostState: SnackbarHostState,
-    galleryLauncher: ManagedActivityResultLauncher<String, Uri?>
+    galleryLauncher: ManagedActivityResultLauncher<String, Uri?>,
+    fullName: MutableState<String>
 ) {
     Scaffold(
         topBar = {
@@ -131,7 +136,7 @@ private fun ProfileContent(
                 TopAppBarUI(
                     title = stringResource(id = R.string.top_bar_label_profile_screen),
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = { navigateBack() }
+                    onClick = { navigateBack(fullName.value) }
                 )
                 HorizontalDivider(
                     color = QuintoCodeTheme.colorScheme.dividerColor,
@@ -321,14 +326,18 @@ private fun ProfileContent(
                     PrimaryButton(
                         text = stringResource(R.string.text_button_edit_profile_screen),
                         isLoading = state.isLoading,
-                        onClick = { action(OnSave) }
+                        onClick = {
+                            fullName.value = "${state.name} ${state.surname}"
+                            action(OnSave)
+                        }
                     )
                 }
             )
         }
     )
+
     BackHandler {
-        navigateBack()
+        navigateBack(fullName.value)
         Intent(Intent.ACTION_MAIN).apply {
             addCategory(Intent.CATEGORY_LAUNCHER)
         }
