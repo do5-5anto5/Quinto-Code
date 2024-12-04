@@ -21,6 +21,7 @@ import com.do55anto5.quinto_code.domain.remote.usecase.user.GetUserUseCase
 import com.do55anto5.quinto_code.domain.remote.usecase.user.SaveUserUseCase
 import com.do55anto5.quinto_code.presenter.screens.main.profile.action.ProfileAction
 import com.do55anto5.quinto_code.presenter.screens.main.profile.state.ProfileState
+import com.google.firebase.Timestamp
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -111,7 +112,7 @@ class ProfileViewModel(
                     try {
                         getProfilePhotoUseCase(PROFILE_PHOTO)
                     } catch (e: Exception) {
-                        Log.e("ViewModel", "Error loading photo", e)
+                        Log.e("ProfileViewModel", "Error loading photo", e)
                         ""
                     }
                 }
@@ -125,9 +126,11 @@ class ProfileViewModel(
                         surname = user.surname ?: "",
                         city = user.city ?: "",
                         email = getCurrentUserEmail(),
-                        photo = photo
+                        photo = photo,
+                        createdAt = user.createdAt
                     )
                 }
+                Log.i("ProfileViewModel", "User loaded: $user")
                 stopLoading()
             } catch (exception: Exception) {
                 exception.printStackTrace()
@@ -156,7 +159,8 @@ class ProfileViewModel(
                         name = _state.value.name,
                         surname = _state.value.surname,
                         city = _state.value.city,
-                        email = _state.value.email
+                        email = _state.value.email,
+                        createdAt = if (_state.value.createdAt == null) Timestamp.now() else _state.value.createdAt
                     )
                 )
                 _state.value.compressedImage?.second?.let {
