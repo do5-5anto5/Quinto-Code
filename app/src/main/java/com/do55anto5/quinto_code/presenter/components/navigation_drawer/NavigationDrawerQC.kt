@@ -23,8 +23,10 @@ import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -52,7 +54,7 @@ fun NavigationDrawerQC(
     onClick: (Int) -> Unit,
     navigateToProfileScreen: () -> Unit,
     content: @Composable () -> Unit,
-    fullName: String,
+    fullName: State<String>,
     profilePhoto: String,
     isLoading: Boolean
 ) {
@@ -91,7 +93,7 @@ fun NavigationDrawerQC(
                             .clickable { navigateToProfileScreen() }
                     ) {
                         Text(
-                            text = fullName,
+                            text = fullName.value,
                             style = TextStyle(
                                 color = QuintoCodeTheme.colorScheme.textColor,
                                 fontSize = 16.sp,
@@ -198,6 +200,7 @@ private fun Preview() {
     QuintoCodeTheme {
         val drawerState = rememberDrawerState(DrawerValue.Open)
         var drawerIndex by remember { mutableIntStateOf(0) }
+        val fullName = remember { mutableStateOf("John Doe") }
         NavigationDrawerQC(
             drawerState = drawerState,
             items = DrawerItem.items,
@@ -207,7 +210,7 @@ private fun Preview() {
             },
             navigateToProfileScreen = {},
             content = {},
-            fullName = "John Doe",
+            fullName = fullName,
             profilePhoto = "",
             isLoading = false
         )
