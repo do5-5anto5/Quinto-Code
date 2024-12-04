@@ -6,9 +6,7 @@ import com.do55anto5.quinto_code.core.enums.feedback.FeedbackType
 import com.do55anto5.quinto_code.core.enums.input.InputType
 import com.do55anto5.quinto_code.core.helper.FirebaseHelper
 import com.do55anto5.quinto_code.core.util.isValidEmail
-import com.do55anto5.quinto_code.domain.remote.model.User
 import com.do55anto5.quinto_code.domain.remote.usecase.authentication.RegisterUseCase
-import com.do55anto5.quinto_code.domain.remote.usecase.user.SaveUserUseCase
 import com.do55anto5.quinto_code.presenter.screens.authentication.signup.action.SignupAction
 import com.do55anto5.quinto_code.presenter.screens.authentication.signup.state.SignupState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,8 +15,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SignupViewModel(
-    private val registerUseCase: RegisterUseCase,
-    private val saveUserUseCase: SaveUserUseCase
+    private val registerUseCase: RegisterUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SignupState())
@@ -100,7 +97,6 @@ class SignupViewModel(
                         isLoading = false
                     )
                 }
-                saveUserUseCase(user = User(email = _state.value.email))
             } catch (exception: Exception) {
                 exception.printStackTrace()
 
