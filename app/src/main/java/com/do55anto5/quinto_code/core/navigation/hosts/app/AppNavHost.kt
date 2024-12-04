@@ -27,11 +27,13 @@ fun NavGraphBuilder.appNavHost(navHostController: NavHostController) {
                     transformOrigin = TransformOrigin(0.5f, 0.5f)
                 )
             }
-        ) {
+        ) { backStackEntry ->
+            val fullName = backStackEntry.savedStateHandle.get<String>("fullName")
             AppScreen(
                 navigateToProfileScreen = {
                     navHostController.navigate(AppRoutes.Profile)
-                }
+                },
+                fullName = fullName ?: ""
             )
         }
 
@@ -48,7 +50,10 @@ fun NavGraphBuilder.appNavHost(navHostController: NavHostController) {
             }
         ) {
             ProfileScreen(
-                navigateBack = { navHostController.navigateUp() }
+                navigateBack = { fullName ->
+                    navHostController.previousBackStackEntry?.savedStateHandle?.set("fullName", fullName)
+                    navHostController.navigateUp()
+                }
             )
         }
 
