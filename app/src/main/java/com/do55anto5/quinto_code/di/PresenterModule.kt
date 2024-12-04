@@ -34,8 +34,7 @@ val presenterModule = module {
 
     viewModel {
         SignupViewModel(
-            registerUseCase = get(),
-            saveUserUseCase = get()
+            registerUseCase = get()
         )
     }
 
