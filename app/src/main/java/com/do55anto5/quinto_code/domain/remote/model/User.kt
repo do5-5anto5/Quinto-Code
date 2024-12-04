@@ -10,5 +10,5 @@ data class User(
     val city: String? = null,
     val storeRef: String? = null,
     val isVendor: Boolean = false,
-    val createdAt: Timestamp = Timestamp.now()
+    val createdAt: Timestamp? = null
 )
